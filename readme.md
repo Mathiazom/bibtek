@@ -1,5 +1,8 @@
-# Group gr2021 repository
+#bibtek
+### Group gr2021 repository
 
-Welcome to IT1901 course fall 2020
+Here comes the next level book-tracking app!
 
-Good luck!
+
+
+
