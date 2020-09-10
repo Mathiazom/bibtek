@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it1901</groupId>
-	<artifactId>javafx-app</artifactId>
+	<artifactId>bibtek</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<dependencies>
@@ -58,10 +58,10 @@
 				</includes>
 			</resource>
 		</resources>
-		<testSourceDirectory>test</testSourceDirectory>
+		<testSourceDirectory>src.test</testSourceDirectory>
 		<testResources>
 			<testResource>
-				<directory>test</directory>
+				<directory>src.test</directory>
 				<includes>
 					<include>**/*.fxml</include>
 					<include>**/*.png</include>
@@ -97,7 +97,7 @@
 				<artifactId>javafx-maven-plugin</artifactId>
 				<version>0.0.4</version>
 				<configuration>
-					<mainClass>javafxapp.App</mainClass>
+					<mainClass>bibtek.ui.App</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>
