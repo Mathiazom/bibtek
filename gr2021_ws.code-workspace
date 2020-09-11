@@ -1,0 +1,14 @@
+{
+	
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"java.dependency.packagePresentation": "hierarchical",
+		"java.home": "",
+		"java.configuration.updateBuildConfiguration": "automatic"
+	}
+}
+	
