@@ -19,7 +19,7 @@ As a user I would like to delete a book I don't want in my library
 
 As a user I would like to view each individual book by themself
 
-## View details about each book
+## View details about each book(us-5)
 
 As a user I would like to view details about my book, as author, date of publishing, edition, description, length and ISBN number
 
