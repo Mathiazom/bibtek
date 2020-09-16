@@ -15,12 +15,12 @@ As a user I would like to get an overview of all the books that have been added 
 
 As a user I would like to delete a book I don't want in my library
 
-## View individuall books (us-4)
+## View individual books (us-4)
 
 As a user I would like to view each individual book by themself
 
 ## View details about each book(us-5)
 
-As a user I would like to view details about my book, as author, date of publishing, edition, description, length and ISBN number
+As a user I would like to view details about my book, like author, date of publishing, edition, description, length and ISBN number
 
 
