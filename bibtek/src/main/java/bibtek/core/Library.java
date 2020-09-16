@@ -6,17 +6,43 @@ import java.util.Set;
 
 import bibtek.json.StorageHandler;
 
+/**
+ *
+ * Class representing a users personal library storing book entries
+ *
+ * Persists data continuously in local storage by using a {@link StorageHandler}
+ *
+ * Implements the singleton pattern, meaning at most one instance exists at any moment
+ *
+ */
 public class Library {
-    private StorageHandler storageHandler = new StorageHandler();
+
+    private static Library instance;
+
+    private final StorageHandler storageHandler = new StorageHandler();
+
     private Set<BookEntry> bookEntries;
 
-    public Library() {
+
+    private Library() {
+
         try {
             setBookEntries(storageHandler.fetchBookEntries());
         } catch (IOException e) {
             setBookEntries(new HashSet<>());
             e.getMessage();
         }
+
+    }
+
+    public static Library getInstance() {
+
+        if (instance == null) {
+            instance = new Library();
+        }
+
+        return instance;
+
     }
 
     private void setBookEntries(Set<BookEntry> bookEntries) {
@@ -24,6 +50,7 @@ public class Library {
     }
 
     public void addBookEntry(BookEntry bookEntry) {
+
         if (!isValidBookEntry(bookEntry)) {
             throw new IllegalArgumentException("The book entry has illegal formatting!");
         }
@@ -31,39 +58,53 @@ public class Library {
         bookEntries.add(bookEntry);
 
         try {
-            storageHandler.saveBookEntries(bookEntries);
+            storageHandler.storeBookEntries(bookEntries);
         } catch (IOException e) {
+            // Undo add book
             bookEntries.remove(bookEntry);
             e.getMessage();
         }
+
     }
 
     public void removeBookEntry(BookEntry bookEntry) {
+
         bookEntries.remove(bookEntry);
-            
+
         try {
-            storageHandler.saveBookEntries(bookEntries);
+            storageHandler.storeBookEntries(bookEntries);
         } catch (IOException e) {
             bookEntries.add(bookEntry);
             e.getMessage();
         }
+
     }
 
     public Set<BookEntry> getBookEntries() {
-            return bookEntries;
+        return bookEntries;
     }
 
-    public void removeBookEntriesByProperty(String property, String value) {
-        // TODO
-    }
+    // TODO
+    /*public void removeBookEntriesByProperty(String property, String value) {
+
+    }*/
 
     private boolean isValidBookEntry(BookEntry bookEntry) {
-        return bookEntry != null && bookEntry.getBook() != null && bookEntry.getDateAcquired() != null && bookEntry.getReadingState() != null && bookEntry.getBook().getAuthor() != null && bookEntry.getBook().getTitle() != null;
+
+        return
+                bookEntry != null &&
+                bookEntry.getBook() != null &&
+                bookEntry.getDateAcquired() != null &&
+                bookEntry.getReadingState() != null &&
+                bookEntry.getBook().getAuthor() != null &&
+                bookEntry.getBook().getTitle() != null;
+
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+
+        final StringBuilder sb = new StringBuilder();
 
         if (getBookEntries() == null || getBookEntries().isEmpty()) {
             return "No books in library.";
@@ -74,6 +115,7 @@ public class Library {
         sb.append("}");
 
         return sb.toString();
+
     }
 
 }

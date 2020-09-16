@@ -2,9 +2,9 @@ package bibtek.core;
 
 public class Book {
 
-    private String title;
-    private String author;
-    private int yearPublished;
+    private final String title;
+    private final String author;
+    private final int yearPublished;
 
     public Book(String title, String author, int yearPublished) {
         this.title = title;
@@ -24,4 +24,8 @@ public class Book {
         return yearPublished;
     }
 
+    @Override
+    public String toString() {
+        return title + " (" + getYearPublished() + "), " + getAuthor();
+    }
 }

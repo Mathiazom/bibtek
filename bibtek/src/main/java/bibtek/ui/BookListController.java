@@ -1,5 +1,7 @@
 package bibtek.ui;
 
+import bibtek.core.BookEntry;
+import bibtek.core.Library;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,6 +11,8 @@ import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class BookListController {
 
@@ -19,19 +23,24 @@ public class BookListController {
     Button addBookButton;
 
 
-    @FXML
-    private void initialize(){
+    private final Library library = Library.getInstance();
 
+
+    @FXML
+    private void initialize() {
+
+        final Set<BookEntry> bookEntrySet = library.getBookEntries();
+
+        // Display book entries in list view
         bookListView.getItems().setAll(
-                "1984, George Orwell, COMPLETED",
-                "Neuromancer, William Gibson, COMPLETED",
-                "Superintelligence, Nick Bostrom, NOT_STARTED"
+                // Convert list of book entries to list of strings
+                bookEntrySet.stream().map(BookEntry::toPrintString).collect(Collectors.toList())
         );
 
     }
 
     @FXML
-    private void handleAddBook(){
+    private void handleAddBook() {
 
         final Stage stage = (Stage) addBookButton.getScene().getWindow();
 

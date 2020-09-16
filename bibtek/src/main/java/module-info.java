@@ -7,7 +7,8 @@ module bibtek {
 	exports bibtek.core;
 	exports bibtek.json;
 	exports bibtek.ui;
-	
+
+	opens bibtek.core to com.google.gson;
 
 	opens bibtek.ui to javafx.fxml;
 }
