@@ -3,19 +3,16 @@ package bibtek.ui;
 import bibtek.core.Book;
 import bibtek.core.BookEntry;
 import bibtek.core.BookReadingState;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import bibtek.core.Library;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.text.ParsePosition;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Date;
@@ -48,7 +45,6 @@ public class AddBookController {
 
     @FXML
     private void initialize(){
-
         addBookReadingStatusCombo.setItems(FXCollections.observableArrayList(BookReadingState.values()));
         addBookReadingStatusCombo.getSelectionModel().selectFirst();
 
@@ -74,15 +70,8 @@ public class AddBookController {
                 addBookReadingStatusCombo.getValue()
 
         );
-
-        System.out.println(
-                bookEntry.getBook().getTitle() + ", " +
-                bookEntry.getBook().getAuthor() + ", " +
-                bookEntry.getBook().getYearPublished() + ", " +
-                bookEntry.getDateAcquired().toString() + ", " +
-                bookEntry.getReadingState().name()
-        );
-
+        Library library = new Library();
+        library.addBookEntry(bookEntry);
     }
 
 
