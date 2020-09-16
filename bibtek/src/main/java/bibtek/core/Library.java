@@ -1,57 +1,64 @@
 package bibtek.core;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
 import bibtek.json.StorageHandler;
-import bibtek.json.StorageHandler.BookEntryData;
-import bibtek.json.StorageHandler.LibraryData;
 
 public class Library {
     private StorageHandler storageHandler = new StorageHandler();
-    private Set<BookEntry> BOOK_ENTRIES;
+    private Set<BookEntry> bookEntries;
 
     public Library() {
-        this.BOOK_ENTRIES = getLibraryData();
+        try {
+            setBookEntries(storageHandler.fetchBookEntries());
+        } catch (IOException e) {
+            setBookEntries(new HashSet<>());
+            e.getMessage();
+        }
     }
 
-    public Library(LibraryData libraryData) {
-        this.BOOK_ENTRIES = convertToLibrary(libraryData.bookEntries);
+    private void setBookEntries(Set<BookEntry> bookEntries) {
+        this.bookEntries = bookEntries;
     }
 
     public void addBookEntry(BookEntry bookEntry) {
-            BOOK_ENTRIES.add(bookEntry);
-            storageHandler.saveLibraryData(this);
+        if (!isValidBookEntry(bookEntry)) {
+            throw new IllegalArgumentException("The book entry has illegal formatting!");
         }
 
+        bookEntries.add(bookEntry);
+
+        try {
+            storageHandler.saveBookEntries(bookEntries);
+        } catch (IOException e) {
+            bookEntries.remove(bookEntry);
+            e.getMessage();
+        }
+    }
+
     public void removeBookEntry(BookEntry bookEntry) {
-        BOOK_ENTRIES.remove(bookEntry);
+        bookEntries.remove(bookEntry);
             
-        storageHandler.saveLibraryData(this);
+        try {
+            storageHandler.saveBookEntries(bookEntries);
+        } catch (IOException e) {
+            bookEntries.add(bookEntry);
+            e.getMessage();
+        }
     }
 
     public Set<BookEntry> getBookEntries() {
-            return BOOK_ENTRIES;
+            return bookEntries;
     }
 
     public void removeBookEntriesByProperty(String property, String value) {
         // TODO
     }
 
-    private Set<BookEntry> getLibraryData() {
-        return storageHandler.fetchLibraryData();
-
-    }
-
-    private Set<BookEntry> convertToLibrary(Set<BookEntryData> bookEntriesData) {
-        Set<BookEntry> bookEntries = new HashSet<>();
-
-        bookEntriesData.forEach(bookEntryData -> {
-            BookEntry bookEntry = new BookEntry(bookEntryData);
-            bookEntries.add(bookEntry);
-        });
-    
-        return bookEntries;
+    private boolean isValidBookEntry(BookEntry bookEntry) {
+        return bookEntry != null && bookEntry.getBook() != null && bookEntry.getDateAcquired() != null && bookEntry.getReadingState() != null && bookEntry.getBook().getAuthor() != null && bookEntry.getBook().getTitle() != null;
     }
 
     @Override
