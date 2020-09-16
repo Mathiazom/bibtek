@@ -15,58 +15,40 @@ import com.google.gson.Gson;
 import bibtek.core.Book;
 import bibtek.core.BookEntry;
 import bibtek.core.BookReadingState;
-import bibtek.core.Library;
 
-public class StorageHandler {
+public final class StorageHandler {
+    private static final String PATH_TO_LOCAL_STORAGE = "bibtek/target/library.json";
 
     public StorageHandler() {
-        Path libraryPath = Paths.get("bibtek/target/library.json");
+        Path libraryPath = Paths.get(PATH_TO_LOCAL_STORAGE);
         if (!Files.exists(libraryPath)) {
-            System.out.println("No library.json file detected. Creating new file.");
             try {
                 Files.createFile(libraryPath);
             } catch (IOException e) {
+                System.err.println("Exception when creating library.json: " + e.getCause());
                 e.printStackTrace();
             }
         }
     }
     
-    public void saveLibraryData(Library library) {
-        try {
-            Gson gson = new Gson();
-        
-            Writer writer = Files.newBufferedWriter(Paths.get("bibtek/target/library.json"));
-        
-            LibraryData libraryData = new LibraryData(library);
-            
-            gson.toJson(libraryData, writer);
-        
-            writer.close();
-        
-        } catch (Exception ex) {
-            System.out.println("saveLibraryException: " + ex.getCause());
-            ex.printStackTrace();
-        }
+    public void saveBookEntries(Set<BookEntry> bookEntries) throws IOException {
+        Gson gson = new Gson();
+        Writer writer = Files.newBufferedWriter(Paths.get(PATH_TO_LOCAL_STORAGE));
+        LibraryData libraryData = new LibraryData(bookEntries);
+        gson.toJson(libraryData, writer);
+        writer.close();
     }
 
-    public Set<BookEntry> fetchLibraryData() {
-        try {
+    public Set<BookEntry> fetchBookEntries() throws IOException {
             Gson gson = new Gson();
-            Reader reader = Files.newBufferedReader(Paths.get("bibtek/target/library.json"));
+            Reader reader = Files.newBufferedReader(Paths.get(PATH_TO_LOCAL_STORAGE));
             LibraryData libraryData = gson.fromJson(reader, LibraryData.class);
-
             reader.close();
+            
             if (libraryData == null)
                 return new HashSet<>();
 
-            Library library = new Library(libraryData);
-            return library.getBookEntries();
-        
-        } catch (Exception ex) {
-            System.out.println("fetchLibraryException: " + ex.getCause());
-            ex.printStackTrace();
-        }
-        return null;
+            return libraryData.getBookEntries();
     }
 
     public class BookData {
@@ -79,8 +61,11 @@ public class StorageHandler {
             this.author = book.getAuthor();
             this.yearPublished = book.getYearPublished();
         }
-    }
 
+        private Book toBook() {
+            return new Book(this.title, this.author, this.yearPublished);
+        }
+    }
     public class BookEntryData {
         public BookData bookData;
         public Date dateAcquired;
@@ -91,15 +76,25 @@ public class StorageHandler {
             this.dateAcquired = bookEntry.getDateAcquired();
             this.readingState = bookEntry.getReadingState();
         }
+
+        private BookEntry toBookEntry() {
+            return new BookEntry(this.bookData.toBook(), this.dateAcquired, this.readingState);
+        }
     }
-
     public class LibraryData {
-        public StorageHandler storageHandler;
-        public Set<BookEntryData> bookEntries;
+        public Set<BookEntryData> bookEntriesData;
 
-        private LibraryData(Library library) {
-            this.bookEntries = convertBookEntryData(library.getBookEntries());
-            this.storageHandler = new StorageHandler();
+        private LibraryData(Set<BookEntry> bookEntries) {
+            this.bookEntriesData = convertBookEntryData(bookEntries);
+        }
+
+        private Set<BookEntry> getBookEntries() {
+            Set<BookEntry> bookEntries = new HashSet<>();
+
+            this.bookEntriesData.forEach(bookEntryData -> {
+                bookEntries.add(bookEntryData.toBookEntry());
+            });
+            return bookEntries;
         }
     }
 

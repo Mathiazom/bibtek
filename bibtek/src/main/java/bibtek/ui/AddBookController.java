@@ -18,7 +18,7 @@ import java.time.ZoneId;
 import java.util.Date;
 
 public class AddBookController {
-    
+    private final static Library library = new Library();
 
     @FXML
     Button addBookButton;
@@ -70,7 +70,7 @@ public class AddBookController {
                 addBookReadingStatusCombo.getValue()
 
         );
-        Library library = new Library();
+
         library.addBookEntry(bookEntry);
     }
 

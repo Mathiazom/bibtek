@@ -2,8 +2,6 @@ package bibtek.core;
 
 import java.util.Date;
 
-import bibtek.json.StorageHandler.BookEntryData;
-
 public class BookEntry {
 
     private Book book;
@@ -14,12 +12,6 @@ public class BookEntry {
         this.book = book;
         this.dateAcquired = dateAcquired;
         this.readingState = readingState;
-    }
-
-    public BookEntry(BookEntryData bookEntryData) {
-        this.book = new Book(bookEntryData.bookData);
-        this.dateAcquired = bookEntryData.dateAcquired;
-        this.readingState = bookEntryData.readingState;
     }
 
     public Book getBook() {

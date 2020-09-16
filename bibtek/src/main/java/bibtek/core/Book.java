@@ -1,7 +1,5 @@
 package bibtek.core;
 
-import bibtek.json.StorageHandler.BookData;
-
 public class Book {
 
     private String title;
@@ -12,12 +10,6 @@ public class Book {
         this.title = title;
         this.author = author;
         this.yearPublished = yearPublished;
-    }
-
-    public Book(BookData bookData) {
-        this.title = bookData.title;
-        this.author = bookData.author;
-        this.yearPublished = bookData.yearPublished;
     }
 
     public String getTitle() {
