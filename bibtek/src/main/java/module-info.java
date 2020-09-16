@@ -2,6 +2,7 @@ module bibtek {
 	requires javafx.fxml;
 	requires transitive javafx.graphics;
 	requires javafx.controls;
+	requires com.google.gson;
 	
 	exports bibtek.core;
 	exports bibtek.json;
