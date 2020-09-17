@@ -115,4 +115,8 @@ public class Library {
 
     }
 
+    public void setStorageHandler(StorageHandler storageHandler){
+        this.storageHandler = storageHandler;
+    }
+
 }

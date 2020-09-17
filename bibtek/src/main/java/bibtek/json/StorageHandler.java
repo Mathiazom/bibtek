@@ -6,17 +6,20 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import bibtek.core.BookEntry;
 import com.google.gson.reflect.TypeToken;
 
 /**
  *
- * Converts book entries to json format, which is then stored as a file in local storage
+ * Converts book entries to json format, which is then stored as a file in local
+ * storage
  *
  */
 public final class StorageHandler {
@@ -42,7 +45,11 @@ public final class StorageHandler {
 
     public void storeBookEntries(final Set<BookEntry> bookEntries) throws IOException {
 
-        final Gson gson = new Gson();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateSerializer());
+        gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateDeserializer());
+        final Gson gson = gsonBuilder.setPrettyPrinting().create();
+
         final Writer writer = Files.newBufferedWriter(storagePath);
         gson.toJson(bookEntries, writer);
         writer.close();
@@ -51,12 +58,25 @@ public final class StorageHandler {
 
     public Set<BookEntry> fetchBookEntries() throws IOException {
 
+<<<<<<< HEAD
         final Gson gson = new Gson();
         final Reader reader = Files.newBufferedReader(storagePath);
         final Set<BookEntry> bookEntries = gson.fromJson(reader, new TypeToken<Set<BookEntry>>() {}.getType());
         reader.close();
 
         return  bookEntries == null ? new HashSet<>() : bookEntries;
+=======
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateSerializer());
+        gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateDeserializer());
+        final Gson gson = gsonBuilder.setPrettyPrinting().create();
+        final Reader reader = Files.newBufferedReader(storagePath);
+        final Set<BookEntry> bookEntries = gson.fromJson(reader, new TypeToken<Set<BookEntry>>() {
+        }.getType());
+        reader.close();
+
+        return bookEntries == null ? new HashSet<>() : bookEntries;
+>>>>>>> Made Library no longer singleton and added custom path support
 
     }
 

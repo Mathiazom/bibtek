@@ -28,4 +28,24 @@ public class Book {
     public String toString() {
         return title + " (" + getYearPublished() + "), " + getAuthor();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj.getClass().equals(this.getClass()))){
+            return false;
+        }
+        else{
+            if(this.toString().equals(((Book) obj).toString())){
+                return true;
+            }
+            return false;
+
+        }
+
+    }
+
+    @Override
+    public int hashCode() {
+        return this.toString().hashCode();
+    }
 }
