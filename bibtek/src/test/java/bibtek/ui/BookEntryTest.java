@@ -38,7 +38,7 @@ public class BookEntryTest extends ApplicationTest {
 
         // delete json file to ensure it is empty
         try {
-            File json = new File("target/testLibrary");
+            File json = new File("target/testLibrary.json");
             json.delete();
         } catch (Exception e) {
         } // if it fails, then it doesn not matter
