@@ -14,10 +14,10 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class BookListController {
+public class LibraryController {
 
     @FXML
-    ListView<String> bookListView;
+    ListView<String> libraryView;
 
     @FXML
     Button addBookButton;
@@ -31,7 +31,7 @@ public class BookListController {
         final Set<BookEntry> bookEntrySet = library.getBookEntries();
 
         // Display book entries in list view
-        bookListView.getItems().setAll(
+        libraryView.getItems().setAll(
                 // Convert list of book entries to list of strings
                 bookEntrySet.stream().map(BookEntry::toPrintString).collect(Collectors.toList())
         );

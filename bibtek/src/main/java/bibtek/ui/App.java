@@ -14,8 +14,8 @@ public class App extends Application {
     primaryStage.setTitle("Bibtek");
     primaryStage.getIcons().add(new Image("/bibtek/ui/icon.png"));
 
-    final Scene bookListScene = new Scene(FXMLLoader.load(getClass().getResource("/bibtek/ui/BookList.fxml")));
-    primaryStage.setScene(bookListScene);
+    final Scene libraryScene = new Scene(FXMLLoader.load(getClass().getResource("/bibtek/ui/Library.fxml")));
+    primaryStage.setScene(libraryScene);
 
     primaryStage.show();
 

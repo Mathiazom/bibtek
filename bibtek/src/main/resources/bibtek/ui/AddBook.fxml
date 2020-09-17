@@ -17,7 +17,7 @@
          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0">
             <Text fill="#212121" strokeType="OUTSIDE" strokeWidth="0.0" text="Add new book">
                <font>
-                  <Font name="System Bold" size="32.0" />
+                  <Font size="36.0" />
                </font>
             </Text>
             <VBox minHeight="-Infinity" minWidth="-Infinity">
@@ -104,7 +104,7 @@
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="bookListButton" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleShowBookList" style="-fx-background-color: #454545;" text="Cancel" textFill="WHITE">
+                  <Button fx:id="libraryButton" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleShowLibrary" style="-fx-background-color: #454545;" text="Cancel" textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font>

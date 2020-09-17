@@ -36,7 +36,7 @@ public class AddBookController {
     ComboBox<BookReadingState> addBookReadingStatusCombo;
 
     @FXML
-    Button bookListButton;
+    Button libraryButton;
 
 
     private Library library;
@@ -75,19 +75,19 @@ public class AddBookController {
 
         library.addBookEntry(bookEntry);
 
-        handleShowBookList();
+        handleShowLibrary();
 
     }
 
 
     @FXML
-    private void handleShowBookList(){
+    private void handleShowLibrary(){
 
-        final Stage stage = (Stage) bookListButton.getScene().getWindow();
+        final Stage stage = (Stage) libraryButton.getScene().getWindow();
 
         final Parent root;
         try {
-            root = FXMLLoader.load(getClass().getResource("/bibtek/ui/BookList.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/bibtek/ui/Library.fxml"));
             final Scene scene = new Scene(root);
             stage.setScene(scene);
         } catch (IOException e) {
