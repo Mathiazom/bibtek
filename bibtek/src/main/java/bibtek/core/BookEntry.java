@@ -1,6 +1,5 @@
 package bibtek.core;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
 public class BookEntry {

@@ -58,14 +58,6 @@ public final class StorageHandler {
 
     public Set<BookEntry> fetchBookEntries() throws IOException {
 
-<<<<<<< HEAD
-        final Gson gson = new Gson();
-        final Reader reader = Files.newBufferedReader(storagePath);
-        final Set<BookEntry> bookEntries = gson.fromJson(reader, new TypeToken<Set<BookEntry>>() {}.getType());
-        reader.close();
-
-        return  bookEntries == null ? new HashSet<>() : bookEntries;
-=======
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateSerializer());
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateDeserializer());
@@ -76,7 +68,6 @@ public final class StorageHandler {
         reader.close();
 
         return bookEntries == null ? new HashSet<>() : bookEntries;
->>>>>>> Made Library no longer singleton and added custom path support
 
     }
 
