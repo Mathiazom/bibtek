@@ -55,7 +55,7 @@ public final class StorageHandler {
         final Set<BookEntry> bookEntries = gson.fromJson(reader, new TypeToken<Set<BookEntry>>() {}.getType());
         reader.close();
 
-        return Objects.requireNonNullElseGet(bookEntries, HashSet::new);
+        return  bookEntries == null ? new HashSet() : bookEntries; 
 
     }
 
