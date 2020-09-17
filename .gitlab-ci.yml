@@ -1,5 +1,46 @@
-image: bibtek
-job1:
+image: maven:latest
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+cache:
+  paths:
+    - bibtek/.m2/repository/
+    - bibtek/target/
+
+stages:
+  - build
+  - test
+
+build:
+  stage: build
   script:
-    - "mvn install -B"
-    - "cat target/site/jacoco/index.html"
+    - cd bibtek
+    - mvn compile
+
+# CODE COVERAGE - Run these commands to see project code coverage. Will be added to Gitlab CI if we need continous code coverage testing and minimum coverage rules.
+
+# code coverage:
+#   stage: test
+#   script:
+#     - cd bibtek
+#     - mvn jacoco:report
+#   after_script:
+#     - |
+#       awk -F, \
+#       '{ instructions += $4 + $5; covered += $5 } END \
+#       { print covered, "/", instructions, " instructions covered"; \
+#       print 100*covered/instructions, "% covered (for more details, run mvn jacoco:report locally and look at the target/site/jacoco/index.html file)" }' \
+#       target/site/jacoco/jacoco.csv
+
+code style:
+  stage: test
+  script:
+    - cd bibtek
+    - mvn checkstyle:checkstyle
+
+spotbugs:
+  stage: test
+  script:
+    - cd bibtek
+    - mvn spotbugs:check

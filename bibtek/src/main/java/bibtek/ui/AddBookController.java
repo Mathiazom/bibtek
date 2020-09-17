@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-
 public class AddBookController {
 
     @FXML
@@ -38,11 +37,10 @@ public class AddBookController {
     @FXML
     Button libraryButton;
 
-
     private Library library;
 
     @FXML
-    private void initialize(){
+    private void initialize() {
 
         library = new Library();
 
@@ -58,18 +56,13 @@ public class AddBookController {
 
     }
 
-
     @FXML
-    private void handleAddBook(){
+    private void handleAddBook() {
 
         final BookEntry bookEntry = new BookEntry(
-                new Book(
-                        addBookTitleField.getText(),
-                        addBookAuthorField.getText(),
-                        Integer.parseInt(addBookYearPublishedField.getText())
-                ),
-                addBookDatePicker.getValue(),
-                addBookReadingStatusCombo.getValue()
+                new Book(addBookTitleField.getText(), addBookAuthorField.getText(),
+                        Integer.parseInt(addBookYearPublishedField.getText())),
+                addBookDatePicker.getValue(), addBookReadingStatusCombo.getValue()
 
         );
 
@@ -79,9 +72,8 @@ public class AddBookController {
 
     }
 
-
     @FXML
-    private void handleShowLibrary(){
+    private void handleShowLibrary() {
 
         final Stage stage = (Stage) libraryButton.getScene().getWindow();
 
@@ -96,10 +88,8 @@ public class AddBookController {
 
     }
 
-    public Library getLibrary(){
+    public Library getLibrary() {
         return this.library;
     }
-
-
 
 }

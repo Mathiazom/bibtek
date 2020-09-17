@@ -31,11 +31,10 @@ public class Book {
 
     @Override
     public boolean equals(Object obj) {
-        if(!(obj.getClass().equals(this.getClass()))){
+        if (!(obj.getClass().equals(this.getClass()))) {
             return false;
-        }
-        else{
-            if(this.toString().equals(((Book) obj).toString())){
+        } else {
+            if (this.toString().equals(((Book) obj).toString())) {
                 return true;
             }
             return false;
