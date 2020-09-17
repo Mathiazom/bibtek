@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.File;
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
@@ -27,6 +28,21 @@ public class BookEntryTest extends ApplicationTest {
 
     private Parent parent;
     private AddBookController controller;
+
+    @BeforeAll
+    public static void headless() {
+        if (Boolean.parseBoolean(System.getProperty("gitlab-ci", "false"))) {
+            System.setProperty("prism.verbose", "true");
+            System.setProperty("java.awt.headless", "true");
+            System.setProperty("testfx.robot", "glass");
+            System.setProperty("testfx.headless", "true");
+            System.setProperty("glass.platform", "Monocle");
+            System.setProperty("monocle.platform", "Headless");
+            System.setProperty("prism.order", "sw");
+            System.setProperty("prism.text", "t2k");
+            System.setProperty("testfx.setup.timeout", "2500");
+        }
+    }
 
     @Override
     public void start(final Stage stage) throws Exception {
