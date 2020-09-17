@@ -7,7 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 import com.google.gson.Gson;
@@ -22,14 +21,16 @@ import com.google.gson.reflect.TypeToken;
  */
 public final class StorageHandler {
 
-    private static final Path PATH_TO_LOCAL_STORAGE = Paths.get("target/library.json");
+    private final Path storagePath;
 
-    public StorageHandler() {
+    public StorageHandler(final String path) {
 
-        if (!Files.exists(PATH_TO_LOCAL_STORAGE)) {
+        this.storagePath = Paths.get(path);
+
+        if (!Files.exists(storagePath)) {
 
             try {
-                Files.createFile(PATH_TO_LOCAL_STORAGE);
+                Files.createFile(storagePath);
             } catch (IOException e) {
                 System.err.println("Exception when creating library.json: " + e.getCause());
                 e.printStackTrace();
@@ -42,7 +43,7 @@ public final class StorageHandler {
     public void storeBookEntries(final Set<BookEntry> bookEntries) throws IOException {
 
         final Gson gson = new Gson();
-        final Writer writer = Files.newBufferedWriter(PATH_TO_LOCAL_STORAGE);
+        final Writer writer = Files.newBufferedWriter(storagePath);
         gson.toJson(bookEntries, writer);
         writer.close();
 
@@ -51,11 +52,11 @@ public final class StorageHandler {
     public Set<BookEntry> fetchBookEntries() throws IOException {
 
         final Gson gson = new Gson();
-        final Reader reader = Files.newBufferedReader(PATH_TO_LOCAL_STORAGE);
+        final Reader reader = Files.newBufferedReader(storagePath);
         final Set<BookEntry> bookEntries = gson.fromJson(reader, new TypeToken<Set<BookEntry>>() {}.getType());
         reader.close();
 
-        return  bookEntries == null ? new HashSet() : bookEntries; 
+        return  bookEntries == null ? new HashSet<>() : bookEntries;
 
     }
 

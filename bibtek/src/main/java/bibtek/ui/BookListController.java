@@ -23,11 +23,10 @@ public class BookListController {
     Button addBookButton;
 
 
-    private final Library library = Library.getInstance();
-
-
     @FXML
     private void initialize() {
+
+        final Library library = new Library();
 
         final Set<BookEntry> bookEntrySet = library.getBookEntries();
 
