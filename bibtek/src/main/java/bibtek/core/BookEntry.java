@@ -1,15 +1,14 @@
 package bibtek.core;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class BookEntry {
 
     private final Book book;
-    private final Date dateAcquired;
+    private final LocalDate dateAcquired;
     private final BookReadingState readingState;
 
-    public BookEntry(Book book, Date dateAcquired, BookReadingState readingState) {
+    public BookEntry(Book book, LocalDate dateAcquired, BookReadingState readingState) {
         this.book = book;
         this.dateAcquired = dateAcquired;
         this.readingState = readingState;
@@ -19,7 +18,7 @@ public class BookEntry {
         return book;
     }
 
-    public Date getDateAcquired() {
+    public LocalDate getDateAcquired() {
         return dateAcquired;
     }
 
@@ -29,10 +28,8 @@ public class BookEntry {
 
     public String toPrintString(){
 
-        final SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
-
         return book.toString() + ", " +
-                "acquired " + formatter.format(dateAcquired) + ", " +
+                "acquired " + dateAcquired.toString() + ", " +
                 readingState.toString();
 
     }
@@ -45,11 +42,32 @@ public class BookEntry {
         sb.append("title: ").append(this.getBook().getTitle()).append(", ");
         sb.append("author: ").append(this.getBook().getAuthor()).append(", ");
         sb.append("yearPublished: ").append(this.getBook().getYearPublished()).append(", ");
-        sb.append("dateAcquired: ").append(this.getDateAcquired()).append(", ");
+        sb.append("dateAcquired: ").append(this.getDateAcquired().toString()).append(", ");
         sb.append("readingState: ").append(this.getReadingState().name());
         sb.append(" }");
         return sb.toString();
 
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj.getClass().equals(this.getClass()))){
+            return false;
+        }
+        else{
+            if(this.toString().equals(((BookEntry) obj).toString())){
+                return true;
+            }
+            return false;
+
+        }
+    }
+    @Override
+    public int hashCode() {
+        return this.toString().hashCode();
+    }
+
+
+    
 
 }

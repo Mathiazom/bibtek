@@ -3,6 +3,8 @@ module bibtek {
 	requires transitive javafx.graphics;
 	requires javafx.controls;
 	requires com.google.gson;
+	requires java.base;
+
 	
 	exports bibtek.core;
 	exports bibtek.json;

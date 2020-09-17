@@ -12,18 +12,19 @@ import bibtek.json.StorageHandler;
  *
  * Persists data continuously in local storage by using a {@link StorageHandler}
  *
- * Implements the singleton pattern, meaning at most one instance exists at any moment
+ * Implements the singleton pattern, meaning at most one instance exists at any
+ * moment
  *
  */
 public class Library {
 
     private static final String DEFAULT_STORAGE_PATH = "target/library.json";
 
-    private final StorageHandler storageHandler;
+    private StorageHandler storageHandler;
 
     private Set<BookEntry> bookEntries;
 
-    public Library(){
+    public Library() {
 
         this(DEFAULT_STORAGE_PATH);
 
@@ -82,19 +83,17 @@ public class Library {
     }
 
     // TODO
-    /*public void removeBookEntriesByProperty(String property, String value) {
-
-    }*/
+    /*
+     * public void removeBookEntriesByProperty(String property, String value) {
+     * 
+     * }
+     */
 
     private boolean isValidBookEntry(BookEntry bookEntry) {
 
-        return
-                bookEntry != null &&
-                bookEntry.getBook() != null &&
-                bookEntry.getDateAcquired() != null &&
-                bookEntry.getReadingState() != null &&
-                bookEntry.getBook().getAuthor() != null &&
-                bookEntry.getBook().getTitle() != null;
+        return bookEntry != null && bookEntry.getBook() != null && bookEntry.getDateAcquired() != null
+                && bookEntry.getReadingState() != null && bookEntry.getBook().getAuthor() != null
+                && bookEntry.getBook().getTitle() != null;
 
     }
 
@@ -113,6 +112,10 @@ public class Library {
 
         return sb.toString();
 
+    }
+
+    public void setStorageHandler(StorageHandler storageHandler) {
+        this.storageHandler = storageHandler;
     }
 
 }

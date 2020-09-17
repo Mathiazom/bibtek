@@ -13,9 +13,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.util.Date;
+
 
 public class AddBookController {
 
@@ -70,7 +68,7 @@ public class AddBookController {
                         addBookAuthorField.getText(),
                         Integer.parseInt(addBookYearPublishedField.getText())
                 ),
-                Date.from(Instant.from(addBookDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()))),
+                addBookDatePicker.getValue(),
                 addBookReadingStatusCombo.getValue()
 
         );
@@ -96,6 +94,10 @@ public class AddBookController {
             e.printStackTrace();
         }
 
+    }
+
+    public Library getLibrary(){
+        return this.library;
     }
 
 
