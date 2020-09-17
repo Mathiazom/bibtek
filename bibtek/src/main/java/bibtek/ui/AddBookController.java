@@ -41,10 +41,12 @@ public class AddBookController {
     Button bookListButton;
 
 
-    private final Library library = Library.getInstance();
+    private Library library;
 
     @FXML
     private void initialize(){
+
+        library = new Library();
 
         addBookReadingStatusCombo.setItems(FXCollections.observableArrayList(BookReadingState.values()));
         addBookReadingStatusCombo.getSelectionModel().selectFirst();

@@ -17,14 +17,21 @@ import bibtek.json.StorageHandler;
  */
 public class Library {
 
-    private static Library instance;
+    private static final String DEFAULT_STORAGE_PATH = "target/library.json";
 
-    private final StorageHandler storageHandler = new StorageHandler();
+    private final StorageHandler storageHandler;
 
     private Set<BookEntry> bookEntries;
 
+    public Library(){
 
-    private Library() {
+        this(DEFAULT_STORAGE_PATH);
+
+    }
+
+    public Library(final String storagePath) {
+
+        this.storageHandler = new StorageHandler(storagePath);
 
         try {
             setBookEntries(storageHandler.fetchBookEntries());
@@ -32,16 +39,6 @@ public class Library {
             setBookEntries(new HashSet<>());
             e.getMessage();
         }
-
-    }
-
-    public static Library getInstance() {
-
-        if (instance == null) {
-            instance = new Library();
-        }
-
-        return instance;
 
     }
 
