@@ -12,4 +12,5 @@ Biktek will support a number of features once complete (User Stories):
 - (Maybe) A reader shall be able to add a book to their library by entering the ISBN code of the book.
 
 ## Screenshot
-![](./promo.png)
+<img src="promo.png" width="500">
+<img src="promo2.png" width="500">
