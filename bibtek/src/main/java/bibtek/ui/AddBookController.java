@@ -18,7 +18,6 @@ import java.time.ZoneId;
 import java.util.Date;
 
 public class AddBookController {
-    private final static Library library = new Library();
 
     @FXML
     Button addBookButton;
@@ -42,12 +41,15 @@ public class AddBookController {
     Button bookListButton;
 
 
+    private final Library library = Library.getInstance();
 
     @FXML
     private void initialize(){
+
         addBookReadingStatusCombo.setItems(FXCollections.observableArrayList(BookReadingState.values()));
         addBookReadingStatusCombo.getSelectionModel().selectFirst();
 
+        // Make sure year input is only digits
         addBookYearPublishedField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 addBookYearPublishedField.setText(newValue.replaceAll("[^\\d]", ""));
@@ -72,6 +74,9 @@ public class AddBookController {
         );
 
         library.addBookEntry(bookEntry);
+
+        handleShowBookList();
+
     }
 
 
