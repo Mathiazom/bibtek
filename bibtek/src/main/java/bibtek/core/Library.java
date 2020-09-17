@@ -115,7 +115,12 @@ public class Library {
     }
 
     public void setStorageHandler(StorageHandler storageHandler) {
+
         this.storageHandler = storageHandler;
+
+        // Remove entries from old json path
+        bookEntries.clear();
+
     }
 
 }
