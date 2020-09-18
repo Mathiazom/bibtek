@@ -9,12 +9,10 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-class LocalDateSerializer implements JsonSerializer<LocalDate> {
-    
+final class LocalDateSerializer implements JsonSerializer<LocalDate> {
+
     @Override
-    public JsonElement serialize(LocalDate date, Type typeOfSrc, JsonSerializationContext context) {
+    public JsonElement serialize(final LocalDate date, final Type typeOfSrc, final JsonSerializationContext context) {
         return new JsonPrimitive(date.format(DateTimeFormatter.ISO_LOCAL_DATE)); // "yyyy-mm-dd"
     }
-
-    
 }

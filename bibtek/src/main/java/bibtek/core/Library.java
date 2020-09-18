@@ -8,28 +8,44 @@ import bibtek.json.StorageHandler;
 
 /**
  *
- * Class representing a users personal library storing book entries
+ * Class representing a users personal library storing book entries.
  *
  * Persists data continuously in local storage by using a {@link StorageHandler}
  *
  * Implements the singleton pattern, meaning at most one instance exists at any
- * moment
+ * moment.
  *
  */
-public class Library {
+public final class Library {
 
+    /**
+     * The path where the library.json file should be stored by default.
+     */
     private static final String DEFAULT_STORAGE_PATH = "target/library.json";
 
     private StorageHandler storageHandler;
 
+    /**
+     * The collection of all the BookEntries the reader has.
+     */
     private Set<BookEntry> bookEntries;
 
+    /**
+     * Default constructor for Library. Passes the default storage path to the
+     * specific constructor.
+     */
     public Library() {
 
         this(DEFAULT_STORAGE_PATH);
 
     }
 
+    /**
+     * Specific constructor for Library. Sets the path for where the library.json
+     * file should be stored.
+     *
+     * @param storagePath the path where the library.json file should be stored
+     */
     public Library(final String storagePath) {
 
         this.storageHandler = new StorageHandler(storagePath);
@@ -38,16 +54,22 @@ public class Library {
             setBookEntries(storageHandler.fetchBookEntries());
         } catch (IOException e) {
             setBookEntries(new HashSet<>());
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
 
     }
 
-    private void setBookEntries(Set<BookEntry> bookEntries) {
-        this.bookEntries = bookEntries;
+    /**
+     * @param newBookEntries the collection of all the BookEntries the reader has
+     */
+    private void setBookEntries(final Set<BookEntry> newBookEntries) {
+        this.bookEntries = newBookEntries;
     }
 
-    public void addBookEntry(BookEntry bookEntry) {
+    /**
+     * @param bookEntry describes a readers relation with a Book
+     */
+    public void addBookEntry(final BookEntry bookEntry) {
 
         if (!isValidBookEntry(bookEntry)) {
             throw new IllegalArgumentException("The book entry has illegal formatting!");
@@ -60,12 +82,15 @@ public class Library {
         } catch (IOException e) {
             // Undo add book
             bookEntries.remove(bookEntry);
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
 
     }
 
-    public void removeBookEntry(BookEntry bookEntry) {
+    /**
+     * @param bookEntry describes a readers relation with a Book
+     */
+    public void removeBookEntry(final BookEntry bookEntry) {
 
         bookEntries.remove(bookEntry);
 
@@ -73,11 +98,14 @@ public class Library {
             storageHandler.storeBookEntries(bookEntries);
         } catch (IOException e) {
             bookEntries.add(bookEntry);
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
 
     }
 
+    /**
+     * @return the BookEntries in the Library
+     */
     public Set<BookEntry> getBookEntries() {
         return bookEntries;
     }
@@ -85,11 +113,15 @@ public class Library {
     // TODO
     /*
      * public void removeBookEntriesByProperty(String property, String value) {
-     * 
+     *
      * }
      */
 
-    private boolean isValidBookEntry(BookEntry bookEntry) {
+    /**
+     * @param bookEntry describes a readers relation with a Book
+     * @return whether or not the BookEntry is valid
+     */
+    private boolean isValidBookEntry(final BookEntry bookEntry) {
 
         return bookEntry != null && bookEntry.getBook() != null && bookEntry.getDateAcquired() != null
                 && bookEntry.getReadingState() != null && bookEntry.getBook().getAuthor() != null
@@ -114,9 +146,13 @@ public class Library {
 
     }
 
-    public void setStorageHandler(StorageHandler storageHandler) {
+    /**
+     * @param newStorageHandler class responsible for reading and writing book entries
+     *                       to locally stored json files
+     */
+    public void setStorageHandler(final StorageHandler newStorageHandler) {
 
-        this.storageHandler = storageHandler;
+        this.storageHandler = newStorageHandler;
 
         // Remove entries from old json path
         bookEntries.clear();

@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-public class App extends Application {
+public final class App extends Application {
 
   @Override
   public void start(final Stage primaryStage) throws Exception {
@@ -21,6 +21,11 @@ public class App extends Application {
 
   }
 
+  /**
+   * App main method.
+   *
+   * @param args command line arguemnts
+   */
   public static void main(final String[] args) {
     launch(args);
   }

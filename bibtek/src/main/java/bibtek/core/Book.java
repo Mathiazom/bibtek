@@ -1,25 +1,41 @@
 package bibtek.core;
 
-public class Book {
-
+/**
+ * Describes the information about a book.
+ */
+public final class Book {
     private final String title;
     private final String author;
     private final int yearPublished;
 
-    public Book(String title, String author, int yearPublished) {
+    /**
+     * @param title         the book title
+     * @param author        the book author
+     * @param yearPublished the year the book was published
+     */
+    public Book(final String title, final String author, final int yearPublished) {
         this.title = title;
         this.author = author;
         this.yearPublished = yearPublished;
     }
 
+    /**
+     * @return the book title
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * @return the book authur
+     */
     public String getAuthor() {
         return author;
     }
 
+    /**
+     * @return the year the book was published
+     */
     public int getYearPublished() {
         return yearPublished;
     }
@@ -30,7 +46,10 @@ public class Book {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
+        if (obj == null) {
+            return false;
+        }
         if (!(obj.getClass().equals(this.getClass()))) {
             return false;
         } else {

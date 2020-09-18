@@ -17,15 +17,19 @@ import bibtek.core.BookEntry;
 import com.google.gson.reflect.TypeToken;
 
 /**
- *
- * Converts book entries to json format, which is then stored as a file in local
- * storage
- *
+ * Class responsible for reading and writing book entries to locally stored json
+ * files.
  */
 public final class StorageHandler {
 
+    /**
+     * The path where the library.json file will be saved.
+     */
     private final Path storagePath;
 
+    /**
+     * @param path the path where the library.json file will be saved
+     */
     public StorageHandler(final String path) {
 
         this.storagePath = Paths.get(path);
@@ -43,6 +47,10 @@ public final class StorageHandler {
 
     }
 
+    /**
+     * @param bookEntries the collection of all the BookEntries the reader has
+     * @throws IOException if the StorageHandler fails to store the book entries
+     */
     public void storeBookEntries(final Set<BookEntry> bookEntries) throws IOException {
 
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -56,6 +64,11 @@ public final class StorageHandler {
 
     }
 
+    /**
+     *
+     * @return the collection of books saved locally
+     * @throws IOException if the StorageHandler fails to read the book entries
+     */
     public Set<BookEntry> fetchBookEntries() throws IOException {
 
         GsonBuilder gsonBuilder = new GsonBuilder();
