@@ -12,9 +12,6 @@ import bibtek.json.StorageHandler;
  *
  * Persists data continuously in local storage by using a {@link StorageHandler}
  *
- * Implements the singleton pattern, meaning at most one instance exists at any
- * moment.
- *
  */
 public final class Library {
 
