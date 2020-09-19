@@ -23,14 +23,26 @@ import com.google.gson.reflect.TypeToken;
 public final class StorageHandler {
 
     /**
-     * The path where the library.json file will be saved.
+     * The file path where the json data will be stored.
      */
-    private final Path storagePath;
+    private Path storagePath;
 
     /**
-     * @param path the path where the library.json file will be saved
+     * @param path the file path where the json data will be stored
      */
     public StorageHandler(final String path) {
+
+        setStoragePath(path);
+
+    }
+
+    /**
+     * Change the location at which the library entries should be stored.
+     * Attempts to create a new file at this location.
+     *
+     * @param path new storage location
+     */
+    public void setStoragePath(final String path) {
 
         this.storagePath = Paths.get(path);
 
@@ -65,8 +77,7 @@ public final class StorageHandler {
     }
 
     /**
-     *
-     * @return the collection of books saved locally
+     * @return the collection of books stored locally
      * @throws IOException if the StorageHandler fails to read the book entries
      */
     public Set<BookEntry> fetchBookEntries() throws IOException {

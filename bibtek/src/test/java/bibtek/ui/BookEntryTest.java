@@ -57,9 +57,11 @@ public class BookEntryTest extends ApplicationTest {
             File json = new File("target/testLibrary.json");
             json.delete();
         } catch (Exception e) {
-        } // if it fails, then it doesn not matter
-        StorageHandler storageHandler = new StorageHandler("target/testLibrary.json");
-        this.controller.getLibrary().setStorageHandler(storageHandler);
+        } // if it fails, then it does not matter
+
+        // Change local storage path to temporary test file
+        this.controller.getLibrary().setStoragePath("target/testLibrary.json");
+
     }
 
     @Test

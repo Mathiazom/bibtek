@@ -7,11 +7,9 @@ import java.util.Set;
 import bibtek.json.StorageHandler;
 
 /**
- *
  * Class representing a users personal library storing book entries.
- *
+ * <p>
  * Persists data continuously in local storage by using a {@link StorageHandler}
- *
  */
 public final class Library {
 
@@ -144,12 +142,13 @@ public final class Library {
     }
 
     /**
-     * @param newStorageHandler class responsible for reading and writing book entries
-     *                       to locally stored json files
+     * Change the location at which the library entries should be stored by the {@link StorageHandler}.
+     *
+     * @param path new storage location
      */
-    public void setStorageHandler(final StorageHandler newStorageHandler) {
+    public void setStoragePath(final String path) {
 
-        this.storageHandler = newStorageHandler;
+        storageHandler.setStoragePath(path);
 
         // Remove entries from old json path
         bookEntries.clear();
