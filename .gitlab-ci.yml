@@ -1,46 +1,36 @@
-image: maven:latest
+# Docker image for running the CI tests
+image: maven:3.6.3-adoptopenjdk-14-openj9
 
 variables:
-  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+  # This will suppress any download for dependencies and plugins or upload messages which would clutter the console log.
+  # `showDateTime` will show the passed time in milliseconds. You need to specify `--batch-mode` to make this work.
+  MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+  # As of Maven 3.3.0 instead of this you may define these options in `.mvn/maven.config` so the same config is used
+  # when running from the command line.
+  # `installAtEnd` and `deployAtEnd` are only effective with recent version of the corresponding plugins.
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
 
 cache:
   paths:
     - bibtek/.m2/repository/
     - bibtek/target/
 
-stages:
-  - build
-  - test
-
-build:
-  stage: build
-  script:
-    - cd bibtek
-    - mvn compile
-
-# CODE COVERAGE - Run these commands to see project code coverage. Will be added to Gitlab CI if we need continous code coverage testing and minimum coverage rules.
-
-# code coverage:
-#   stage: test
-#   script:
-#     - cd bibtek
-#     - mvn jacoco:report
-#   after_script:
-#     - |
-#       awk -F, \
-#       '{ instructions += $4 + $5; covered += $5 } END \
-#       { print covered, "/", instructions, " instructions covered"; \
-#       print 100*covered/instructions, "% covered (for more details, run mvn jacoco:report locally and look at the target/site/jacoco/index.html file)" }' \
-#       target/site/jacoco/jacoco.csv
-
-code style:
+.verify: &verify
   stage: test
-  script:
-    - cd bibtek
-    - mvn checkstyle:checkstyle
 
-spotbugs:
-  stage: test
+  # Get required dependencies for headless ui tests
+  before_script:
+    - apt-get update > /dev/null # suppress output
+    - apt-get install -y ttf-dejavu fontconfig emacs > /dev/null # suppress output
   script:
-    - cd bibtek
-    - mvn spotbugs:check
+    - "cd bibtek"
+
+    # Run all the tests (build, checkstyle, spotbugs, junit-tests)
+    - "mvn $MAVEN_CLI_OPTS verify"
+
+    # print code coverage report
+    - cat target/site/jacoco/index.html
+
+# Run mvn verify in CI
+mvn verify:
+  <<: *verify
