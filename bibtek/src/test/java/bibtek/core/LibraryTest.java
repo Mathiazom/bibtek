@@ -80,13 +80,13 @@ public class LibraryTest {
     @Test
     public void removeBookEntryTest() {
         // create library with one less book than in bookEntries
-        Library libk = new Library();
+        Library libk = new Library("target/testLibrary.json");
         libk.addBookEntry(bookEntry1);
         libk.addBookEntry(bookEntry2);
         libk.addBookEntry(bookEntry3);
 
         // create full library
-        Library lib2 = new Library();
+        Library lib2 = new Library("target/testLibrary2.json");
         lib2.addBookEntry(bookEntry1);
         lib2.addBookEntry(bookEntry2);
         lib2.addBookEntry(bookEntry3);
