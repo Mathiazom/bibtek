@@ -9,23 +9,23 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Label?>
 
 <AnchorPane prefHeight="800.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bibtek.ui.AddBookController">
    <VBox alignment="CENTER" fillWidth="false" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <Group>
          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0">
-            <Text fill="#212121" strokeType="OUTSIDE" strokeWidth="0.0" text="Add new book">
+            <Label textFill="#212121" text="Add new book">
                <font>
                   <Font size="36.0" />
                </font>
-            </Text>
+            </Label>
             <VBox minHeight="-Infinity" minWidth="-Infinity">
-               <Text fill="#212121" strokeType="OUTSIDE" strokeWidth="0.0" text="Title">
+               <Label textFill="#212121" text="Title">
                   <font>
                      <Font size="16.0" />
                   </font>
-               </Text>
+               </Label>
                <TextField fx:id="addBookTitleField" minWidth="400.0" style="-fx-background-color: #eee;">
                   <VBox.margin>
                      <Insets top="10.0" />
@@ -34,14 +34,14 @@
                      <Font size="18.0" />
                   </font>
                </TextField>
-               <Text fill="#212121" strokeType="OUTSIDE" strokeWidth="0.0" text="Author">
+               <Label textFill="#212121" text="Author">
                   <font>
                      <Font size="16.0" />
                   </font>
                   <VBox.margin>
                      <Insets top="20.0" />
                   </VBox.margin>
-               </Text>
+               </Label>
                <TextField fx:id="addBookAuthorField" style="-fx-background-color: #eee;">
                   <VBox.margin>
                      <Insets top="10.0" />
@@ -50,14 +50,14 @@
                      <Font size="18.0" />
                   </font>
                </TextField>
-               <Text fill="#212121" strokeType="OUTSIDE" strokeWidth="0.0" text="Year published">
+               <Label textFill="#212121" text="Year published">
                   <font>
                      <Font size="16.0" />
                   </font>
                   <VBox.margin>
                      <Insets top="20.0" />
                   </VBox.margin>
-               </Text>
+               </Label>
                <TextField fx:id="addBookYearPublishedField" style="-fx-background-color: #eee;">
                   <font>
                      <Font size="18.0" />
@@ -66,27 +66,27 @@
                      <Insets top="10.0" />
                   </VBox.margin>
                </TextField>
-               <Text fill="#212121" strokeType="OUTSIDE" strokeWidth="0.0" text="Date acquired">
+               <Label textFill="#212121" text="Date acquired">
                   <font>
                      <Font size="16.0" />
                   </font>
                   <VBox.margin>
                      <Insets top="30.0" />
                   </VBox.margin>
-               </Text>
+               </Label>
                <DatePicker fx:id="addBookDatePicker" style="-fx-background-color: #eee; -fx-control-inner-background: #eee; -fx-faint-focus-color: #eee;">
                   <VBox.margin>
                      <Insets top="10.0" />
                   </VBox.margin>
                </DatePicker>
-               <Text fill="#212121" strokeType="OUTSIDE" strokeWidth="0.0" text="Reading status">
+               <Label textFill="#212121" text="Reading status">
                   <font>
                      <Font size="16.0" />
                   </font>
                   <VBox.margin>
                      <Insets top="30.0" />
                   </VBox.margin>
-               </Text>
+               </Label>
                <ComboBox fx:id="addBookReadingStatusCombo" style="-fx-background-color: #ddd;">
                   <VBox.margin>
                      <Insets top="10.0" />

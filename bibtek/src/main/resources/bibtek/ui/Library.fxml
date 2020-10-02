@@ -6,18 +6,18 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Label?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bibtek.ui.LibraryController">
     <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <Text fill="#454545" strokeType="OUTSIDE" strokeWidth="0.0" text="Your library">
+      <Label textFill="#454545" text="Your library">
          <font>
             <Font size="48.0" />
          </font>
          <VBox.margin>
             <Insets bottom="20.0" />
          </VBox.margin>
-      </Text>
+      </Label>
         <ListView fx:id="libraryView" style="-fx-background-color: #ddd;">
          <VBox.margin>
             <Insets top="30.0" />

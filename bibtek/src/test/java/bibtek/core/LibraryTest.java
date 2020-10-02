@@ -2,26 +2,21 @@ package bibtek.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import bibtek.json.StorageHandler;
 
 public class LibraryTest {
-
     // constants
     private final LocalDate someDate = LocalDate.of(2020, 9, 27);
     private final int joyceDate = 1939;
     private final int orwellDate = 1948;
     private final int dostoDate = 1866;
     private final int chriDate = 2016;
-
     private final Book book1 = new Book("Finnegan's Wake", "James Joyce", joyceDate);
     private final Book book2 = new Book("1984", "George Orwell", orwellDate);
     private final Book book3 = new Book("Crime and Punishment", "Fjodor Dostojevskij", dostoDate);
@@ -34,7 +29,6 @@ public class LibraryTest {
      * Set the storage handler.
      */
     private StorageHandler sh;
-
     private StorageHandler sh2;
 
     /**
@@ -71,10 +65,8 @@ public class LibraryTest {
                 + "dateAcquired: 2020-09-27, readingState: COMPLETED },\n"
                 + "bookEntry: { title: Algorithms to Live by, author: Brian Christian, yearPublished: 2016, "
                 + "dateAcquired: 2020-09-27, readingState: ABANDONED },\n}";
-
         // test that the toString creates string like expected
         assertEquals(expectedString, actualString, "The toString method does not create a String like expected");
-
         // test if the toString method creates correct String with an empty Library
         Library emptyLib = new Library("target/testLibrary.json");
         String expectedString2 = "No books in library.";
@@ -92,18 +84,14 @@ public class LibraryTest {
         libk.addBookEntry(bookEntry1);
         libk.addBookEntry(bookEntry2);
         libk.addBookEntry(bookEntry3);
-
         // create full library
         Library lib2 = new Library("target/testLibrary2.json");
         lib2.addBookEntry(bookEntry1);
         lib2.addBookEntry(bookEntry2);
         lib2.addBookEntry(bookEntry3);
         lib2.addBookEntry(bookEntry4);
-
         lib2.removeBookEntry(bookEntry4);
-
         assertEquals(libk.getBookEntries(), lib2.getBookEntries(), "removeBookEntry() did not work");
-
     }
 
     /**
@@ -161,14 +149,11 @@ public class LibraryTest {
         } catch (IllegalArgumentException e) {
             // Succeeds
         }
-
         // Testing if it adds the bookEntry to bookEntries
         lib1.addBookEntry(bookEntry1);
         Set<BookEntry> expected = new HashSet<>();
         expected.add(bookEntry1);
         assertEquals(expected, lib1.getBookEntries(),
                 "The book entries in the library was not as expected after addBookEntry() on lib1");
-
     }
-
 }
