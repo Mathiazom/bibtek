@@ -30,15 +30,23 @@ public class LibraryTest {
     private final BookEntry bookEntry2 = new BookEntry(book2, someDate, BookReadingState.COMPLETED);
     private final BookEntry bookEntry3 = new BookEntry(book3, someDate, BookReadingState.READING);
     private final BookEntry bookEntry4 = new BookEntry(book4, someDate, BookReadingState.ABANDONED);
+    /**
+     * Set the storage handler.
+     */
+    private StorageHandler sh;
+
+    private StorageHandler sh2;
 
     /**
-     * Before each test, the testLibrary.json should be cleared.
+     * The storgaHandler should be emtied before each test.
      */
     @BeforeEach
-    public void clearJson() {
+    public void clearStorageHanndler() {
         try {
-            StorageHandler sh = new StorageHandler("target/testLibrary.json");
+            sh = new StorageHandler("target/testLibrary.json");
+            sh2 = new StorageHandler("target/testLibrary2.json");
             sh.storeBookEntries(null);
+            sh2.storeBookEntries(null);
         } catch (IOException e) {
             e.printStackTrace();
         }
