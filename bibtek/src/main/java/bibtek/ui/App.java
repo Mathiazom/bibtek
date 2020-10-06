@@ -12,7 +12,11 @@ public final class App extends Application {
   public void start(final Stage primaryStage) throws Exception {
 
     primaryStage.setTitle("Bibtek");
-    primaryStage.getIcons().add(new Image("/bibtek/ui/icon.png"));
+    try {
+      primaryStage.getIcons().add(new Image("/bibtek/ui/icon.png"));
+    } catch (Exception e) {
+      // Don't add this icon.
+    }
 
     final Scene libraryScene = new Scene(FXMLLoader.load(getClass().getResource("/bibtek/ui/Library.fxml")));
     primaryStage.setScene(libraryScene);
@@ -21,10 +25,11 @@ public final class App extends Application {
 
   }
 
+
   /**
    * App main method.
    *
-   * @param args command line arguemnts
+   * @param args command line arguments
    */
   public static void main(final String[] args) {
     launch(args);

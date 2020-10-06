@@ -43,9 +43,8 @@ public final class Library {
      */
     public Library(final String storagePath) {
 
-        this.storageHandler = new StorageHandler(storagePath);
-
         try {
+            this.storageHandler = new StorageHandler(storagePath);
             setBookEntries(storageHandler.fetchBookEntries());
         } catch (IOException e) {
             setBookEntries(new HashSet<>());
@@ -129,7 +128,7 @@ public final class Library {
 
         final StringBuilder sb = new StringBuilder();
 
-        if (getBookEntries() == null || getBookEntries().isEmpty()) {
+        if (getBookEntries().isEmpty()) {
             return "No books in library.";
         }
 
@@ -142,13 +141,17 @@ public final class Library {
     }
 
     /**
-     * Change the location at which the library entries should be stored by the {@link StorageHandler}.
+     * Change the location at which the library entries should be stored by the
+     * {@link StorageHandler}.
      *
      * @param path new storage location
      */
-    public void setStoragePath(final String path) {
-
-        storageHandler.setStoragePath(path);
+    public void setStoragePath(final String path) throws IOException {
+        try {
+            storageHandler.setStoragePath(path);
+        } catch (IOException e) {
+            throw new IOException("Exception when setting path");
+        }
 
         // Remove entries from old json path
         bookEntries.clear();

@@ -30,19 +30,19 @@ public final class StorageHandler {
     /**
      * @param path the file path where the json data will be stored
      */
-    public StorageHandler(final String path) {
+    public StorageHandler(final String path) throws IOException {
 
         setStoragePath(path);
 
     }
 
     /**
-     * Change the location at which the library entries should be stored.
-     * Attempts to create a new file at this location.
+     * Change the location at which the library entries should be stored. Attempts
+     * to create a new file at this location.
      *
      * @param path new storage location
      */
-    public void setStoragePath(final String path) {
+    public void setStoragePath(final String path) throws IOException {
 
         this.storagePath = Paths.get(path);
 
@@ -51,8 +51,7 @@ public final class StorageHandler {
             try {
                 Files.createFile(storagePath);
             } catch (IOException e) {
-                System.err.println("Exception when creating library.json: " + e.getCause());
-                e.printStackTrace();
+                throw new IOException("Exception when creating file");
             }
 
         }

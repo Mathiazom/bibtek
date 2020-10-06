@@ -22,19 +22,17 @@ public final class LibraryController {
     @FXML
     Button addBookButton;
 
+    private final Library library = new Library();
 
     @FXML
     private void initialize() {
-
-        final Library library = new Library();
 
         final Set<BookEntry> bookEntrySet = library.getBookEntries();
 
         // Display book entries in list view
         libraryView.getItems().setAll(
                 // Convert list of book entries to list of strings
-                bookEntrySet.stream().map(BookEntry::toPrintString).collect(Collectors.toList())
-        );
+                bookEntrySet.stream().map(BookEntry::toPrintString).collect(Collectors.toList()));
 
     }
 
@@ -55,6 +53,11 @@ public final class LibraryController {
 
     }
 
+    /**
+     * @return the current library
+     */
+    public Library getLibrary() {
+        return this.library;
+    }
 
 }
-

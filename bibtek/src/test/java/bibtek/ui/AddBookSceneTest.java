@@ -22,13 +22,15 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import bibtek.core.Library;
-import bibtek.json.StorageHandler;
 
-public class BookEntryTest extends ApplicationTest {
+public class AddBookSceneTest extends ApplicationTest {
 
     private Parent parent;
     private AddBookController controller;
 
+    /**
+     * Prepares the system.
+     */
     @BeforeAll
     public static void headless() {
         if (Boolean.parseBoolean(System.getProperty("gitlab-ci", "false"))) {
@@ -44,6 +46,11 @@ public class BookEntryTest extends ApplicationTest {
         }
     }
 
+    /**
+     * Starts the app to test it.
+     *
+     * @param stage takes the stage of the app
+     */
     @Override
     public void start(final Stage stage) throws Exception {
         final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/AddBook.fxml"));
@@ -64,12 +71,18 @@ public class BookEntryTest extends ApplicationTest {
 
     }
 
+    /**
+     * Testing that the TextFields works properly, and tests if it creates the
+     * Library and sotres the books correctly.
+     */
     @Test
-    public void testCreateBookEntry() {
+    public void createBookEntryTest() {
 
         // testing if the fields work correctly
-        LocalDate timeStamp = LocalDate.now();
-
+        final int year2020 = 2020;
+        final int month9 = 9;
+        final int day30 = 30;
+        LocalDate timeStamp = LocalDate.of(year2020, month9, day30);
         final TextField addBookTitleField = (TextField) parent.lookup("#addBookTitleField");
         final TextField addBookAuthorField = (TextField) parent.lookup("#addBookAuthorField");
         final TextField addBookYearPublishedField = (TextField) parent.lookup("#addBookYearPublishedField");
@@ -77,9 +90,9 @@ public class BookEntryTest extends ApplicationTest {
         final ComboBox<BookReadingState> addBookReadingStatusCombo = (ComboBox<BookReadingState>) parent
                 .lookup("#addBookReadingStatusCombo");
         final Button addBookButton = (Button) parent.lookup("#addBookButton");
-        addBookTitleField.setText("Finnegans Wake");
-        addBookAuthorField.setText("James Joyce");
-        addBookYearPublishedField.setText("1939");
+        clickOn(addBookTitleField).write("Finnegans Wake");
+        clickOn(addBookAuthorField).write("James Joyce");
+        clickOn(addBookYearPublishedField).write("1939");
         addBookDatePicker.setValue(timeStamp);
         addBookReadingStatusCombo.setValue(BookReadingState.NOT_STARTED);
         assertEquals("Finnegans Wake", addBookTitleField.getText(), "Book Title should be \"Finnegans Wake\" ");
@@ -101,8 +114,12 @@ public class BookEntryTest extends ApplicationTest {
 
     }
 
+    /**
+     * Testing if the year published field does not register letters.
+     */
+
     @Test
-    public void testYearPublishedField() {
+    public void yearPublishedFieldTest() {
         // testing if the year published field does not register letters
         final TextField addBookYearPublishedField = (TextField) parent.lookup("#addBookYearPublishedField");
         addBookYearPublishedField.setText("Hello123");
@@ -110,4 +127,12 @@ public class BookEntryTest extends ApplicationTest {
                 "This is a numbers only field, letters are not allowed");
 
     }
+
+    /*
+     * Close application after all tests.
+     */
+    /*
+     * @AfterAll public static void closeApp() { Platform.exit(); }
+     */
+
 }
