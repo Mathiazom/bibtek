@@ -51,7 +51,7 @@ public class LibraryTest {
      */
     @Test
     public void toStringTest() {
-        Library lib = new Library();
+        Library lib = new Library("target/testLibrary2.json");
         lib.addBookEntry(bookEntry1);
         lib.addBookEntry(bookEntry2);
         lib.addBookEntry(bookEntry3);
@@ -59,12 +59,12 @@ public class LibraryTest {
         String actualString = lib.toString();
         String expectedString = "Book entries: { \n" + "bookEntry: { title: Finnegan's Wake, author: James Joyce, "
                 + "yearPublished: 1939, dateAcquired: 2020-09-27, readingState: NOT_STARTED },\n"
+                + "bookEntry: { title: Algorithms to Live by, author: Brian Christian, yearPublished: 2016, "
+                + "dateAcquired: 2020-09-27, readingState: ABANDONED },\n"
                 + "bookEntry: { title: Crime and Punishment, author: Fjodor Dostojevskij, yearPublished: 1866, "
                 + "dateAcquired: 2020-09-27, readingState: READING },\n"
                 + "bookEntry: { title: 1984, author: George Orwell, yearPublished: 1948, "
-                + "dateAcquired: 2020-09-27, readingState: COMPLETED },\n"
-                + "bookEntry: { title: Algorithms to Live by, author: Brian Christian, yearPublished: 2016, "
-                + "dateAcquired: 2020-09-27, readingState: ABANDONED },\n}";
+                + "dateAcquired: 2020-09-27, readingState: COMPLETED },\n}";
         // test that the toString creates string like expected
         assertEquals(expectedString, actualString, "The toString method does not create a String like expected");
         // test if the toString method creates correct String with an empty Library
