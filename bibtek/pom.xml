@@ -96,7 +96,7 @@
                 <plugin>
                     <groupId>com.github.spotbugs</groupId>
                     <artifactId>spotbugs-maven-plugin</artifactId>
-                    <version>4.0.4</version>
+                    <version>4.1.3</version>
                     <configuration>
                         <xmlOutput>false</xmlOutput>
                         <htmlOutput>true</htmlOutput>
@@ -116,7 +116,7 @@
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.8.5</version>
+                    <version>0.8.6</version>
                     <executions>
                         <execution>
                             <id>jacoco-prepare-agent</id>
