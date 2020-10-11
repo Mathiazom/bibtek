@@ -33,15 +33,22 @@ public final class AddBookController {
 
     @FXML
     TextField addBookImagePathField;
+<<<<<<< HEAD
+
+    @FXML
+    DatePicker addBookDatePicker;
+=======
+>>>>>>> Redesigned Library and AddBook scenes and established stylesheets
 
     @FXML
     DatePicker addBookDatePicker;
 
     @FXML
-    ComboBox<BookReadingState> addBookReadingStatusCombo;
-
-    @FXML
+<<<<<<< HEAD
     Label errorLabel;
+=======
+    ComboBox<BookReadingState> addBookReadingStatusCombo;
+>>>>>>> Redesigned Library and AddBook scenes and established stylesheets
 
     private User user;
 
