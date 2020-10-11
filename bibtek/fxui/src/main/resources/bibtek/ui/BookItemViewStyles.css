@@ -1,0 +1,38 @@
+#bookItemView{
+    -fx-max-width: 800;
+    -fx-background-color: #eee;
+    -fx-padding: 20 0 10 0;
+}
+
+.bookItemCard {
+    -fx-background-color: #fff;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+}
+
+.bookItemCard:hover{
+    -fx-cursor: hand;
+    -fx-background-color: #f4f4f4;
+}
+
+.bookItemCard Label {
+    -fx-text-fill: #212121;
+}
+
+#bookEntryTitle{
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
+
+#bookEntryAuthor, #bookEntryYearPublished{
+    -fx-font-size: 20;
+}
+
+.bookEntryImage {
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+}
+
+.bookEntryInfo {
+    -fx-padding: 20 0 0 30;
+}

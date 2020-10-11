@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public final class LibraryController {
 
     @FXML
-    ListView<String> libraryView;
+    ListView<BookItemView> libraryList;
 
     @FXML
     Button addBookButton;
