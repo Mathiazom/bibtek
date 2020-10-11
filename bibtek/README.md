@@ -1,18 +1,29 @@
 # Bibtek
 
+
+## Architecture layers
+
 The project is a three layered application consisting of the following layers:
 
-- **domain** (*[bibtek.core](src/main/java/bibtek/core)*) - classes to represent data models used in the app
-- **persistance** (*[bibtek.json](src/main/java/bibtek/json)*) - handles storing and loading of user generated data
-- **user interface** (*[bibtek.ui](src/main/java/bibtek/ui)*) - handles display to screen and user input
+- **domain** (*[bibtek.core](core/src/main/java/bibtek/core)*) - classes to represent data models used in the app
+- **persistance** (*[bibtek.json](core/src/main/java/bibtek/json)*) - handles storing and loading of user generated data
+- **user interface** (*[bibtek.ui](fxui/src/main/java/bibtek/ui)*) - handles display to screen and user input
 
+## Modules
 
+The app is also divided into two modules:
+- **core** - domain and persistance
+- **fxui** - user interface
+
+This enables for example dependencies like **javafx** to be exclusive for the parts that actually need it
+
+This does not mean that the modules are completely independent (e.g. the **fxui** module depends on the **core** module)
 
 ## Source code structure
 
-- **src/main/java** application code
-- **src/main/resources** mainly FXML-files and app icon
-- **src/test/java** for testing
+- **../src/main/java** application code
+- **../src/main/resources** mainly FXML-files and app icon (in **fxui**-module)
+- **../src/test/java** for testing
 
 
 
@@ -22,10 +33,10 @@ The project utilizes the build tool Maven for handling things like dependencies 
 
 Dependencies include:
 
-- **javafx-fxml** - JavaFX
+- **javafx-fxml** - JavaFX (only **fxui**-module)
 - **junit-jupiter-api, junit-jupiter-engine, mockito-core** - testing with JUnit5
 - **testfx-core, testfx-junit5** - testing with TestFX
-- **gson** - JSON serialization and deserialization 
+- **gson** - JSON serialization and deserialization  (only **core**-module)
 
 in addition to the following plugins:
 
