@@ -1,37 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.control.Label?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bibtek.ui.LibraryController">
-    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <Label textFill="#454545" text="Your library">
-         <font>
-            <Font size="48.0" />
-         </font>
-         <VBox.margin>
-            <Insets bottom="20.0" />
-         </VBox.margin>
-      </Label>
-        <ListView fx:id="libraryView" style="-fx-background-color: #ddd;">
-         <VBox.margin>
-            <Insets top="30.0" />
-         </VBox.margin></ListView>
-        <Button fx:id="addBookButton" mnemonicParsing="false" onAction="#handleAddBook" style="-fx-background-color: orange;" text="Add book" textFill="WHITE">
-            <font>
-                <Font size="18.0" />
-            </font>
-            <VBox.margin>
-                <Insets top="40.0" />
-            </VBox.margin>
-        </Button>
-        <padding>
-            <Insets left="80.0" right="80.0" />
-        </padding>
+<?import java.net.URL?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+
+<AnchorPane styleClass="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
+            prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="bibtek.ui.LibraryController">
+    <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+          AnchorPane.topAnchor="0.0">
+        <AnchorPane styleClass="toolbarPane">
+            <VBox AnchorPane.bottomAnchor="0.0"
+                  AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <Label styleClass="toolbarTitle" text="Your library"/>
+            </VBox>
+            <Button fx:id="addBookButton" mnemonicParsing="false" onAction="#handleAddBook" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="0.0">
+                <graphic>
+                    <FontAwesomeIconView glyphName="PLUS_CIRCLE" size="38px"/>
+                </graphic>
+            </Button>
+            <Button fx:id="menuButton"
+                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="0.0">
+                <graphic>
+                    <FontAwesomeIconView glyphName="USER" size="38px"/>
+                </graphic>
+            </Button>
+        </AnchorPane>
+        <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
+            <ListView fx:id="libraryList" VBox.vgrow="ALWAYS"/>
+        </VBox>
     </VBox>
+    <stylesheets>
+        <URL value="@BaseStyles.css"/>
+        <URL value="@LibraryStyles.css"/>
+    </stylesheets>
 </AnchorPane>
