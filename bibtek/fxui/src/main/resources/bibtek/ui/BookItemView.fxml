@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<?import java.net.URL?>
+<fx:root fx:id="bookItemView" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+
+    <HBox styleClass="bookItemCard">
+
+        <ImageView fx:id="bookEntryImage" styleClass="bookEntryImage" fitWidth="120" preserveRatio="true"/>
+
+        <VBox styleClass="bookEntryInfo">
+
+            <Label fx:id="bookEntryTitle"/>
+            <Label fx:id="bookEntryAuthor"/>
+            <Label fx:id="bookEntryYearPublished"/>
+
+        </VBox>
+
+    </HBox>
+
+    <stylesheets>
+        <URL value="@BookItemViewStyles.css" />
+    </stylesheets>
+
+</fx:root>

@@ -1,0 +1,69 @@
+ScrollPane Region{
+    -fx-padding: 0 0 0 0;
+}
+
+ScrollPane{
+    -fx-fit-to-width: true;
+}
+
+#inputContainerWrap{
+    -fx-background-color: #eee;
+}
+
+#inputContainer{
+    -fx-padding: 20 30 30 30;
+    -fx-max-width: 500;
+}
+
+#inputContainer TextField{
+
+    -fx-padding: 10 15 10 15;
+    -fx-background-color: white;
+    -fx-text-fill: #212121;
+    -fx-font-size: 18;
+
+}
+
+#inputContainer Label {
+    -fx-font-size: 16;
+    -fx-text-fill: #212121;
+    -fx-padding: 15 0 5 0;
+}
+
+#addBookDatePicker{
+    -fx-background-color: white;
+    -fx-control-inner-background: white;
+    -fx-faint-focus-color: white;
+    -fx-text-fill: #212121;
+    -fx-font-size: 16;
+}
+
+#addBookReadingStatusCombo{
+    -fx-background-color: white;
+    -fx-text-fill: #212121;
+    -fx-font-size: 16;
+}
+
+#cancelButton{
+    -fx-background-color: white;
+}
+
+#cancelButton FontAwesomeIconView {
+    -fx-fill: #696969;
+}
+
+#cancelButton:hover FontAwesomeIconView {
+    -fx-fill: #454545;
+}
+
+#confirmAddBookButton{
+    -fx-background-color: white;
+}
+
+#confirmAddBookButton FontAwesomeIconView {
+    -fx-fill: rgba(255, 165, 0, 0.8);
+}
+
+#confirmAddBookButton:hover FontAwesomeIconView {
+    -fx-fill: orange;
+}

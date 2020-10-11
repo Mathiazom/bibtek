@@ -9,18 +9,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 import java.io.IOException;
 
 public final class AddBookController {
-
-    @FXML
-    Button addBookButton;
 
     @FXML
     TextField addBookTitleField;
@@ -32,13 +29,13 @@ public final class AddBookController {
     TextField addBookYearPublishedField;
 
     @FXML
+    TextField addBookImagePathField;
+
+    @FXML
     DatePicker addBookDatePicker;
 
     @FXML
     ComboBox<BookReadingState> addBookReadingStatusCombo;
-
-    @FXML
-    Button libraryButton;
 
     private Library library;
 
@@ -48,6 +45,17 @@ public final class AddBookController {
         library = new Library();
 
         addBookReadingStatusCombo.setItems(FXCollections.observableArrayList(BookReadingState.values()));
+        addBookReadingStatusCombo.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(final BookReadingState readingState) {
+                return readingState.toString();
+            }
+
+            @Override
+            public BookReadingState fromString(final String s) {
+                return BookReadingState.fromString(s);
+            }
+        });
         addBookReadingStatusCombo.getSelectionModel().selectFirst();
 
         // Make sure year input is only digits
@@ -64,7 +72,8 @@ public final class AddBookController {
 
         final BookEntry bookEntry = new BookEntry(
                 new Book(addBookTitleField.getText(), addBookAuthorField.getText(),
-                        Integer.parseInt(addBookYearPublishedField.getText())),
+                        Integer.parseInt(addBookYearPublishedField.getText()),
+                        addBookImagePathField.getText()),
                 addBookDatePicker.getValue(), addBookReadingStatusCombo.getValue()
 
         );
@@ -78,7 +87,7 @@ public final class AddBookController {
     @FXML
     private void handleShowLibrary() {
 
-        final Stage stage = (Stage) libraryButton.getScene().getWindow();
+        final Stage stage = (Stage) addBookTitleField.getScene().getWindow();
 
         final Parent root;
         try {

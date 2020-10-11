@@ -1,88 +1,95 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>it1901.bibtek</groupId>
-		<artifactId>parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>it1901.bibtek</groupId>
+        <artifactId>parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
 
-	<artifactId>fxui</artifactId>
+    <artifactId>fxui</artifactId>
 
-	<dependencies>
-		<dependency>
-			<groupId>it1901.bibtek</groupId>
-			<artifactId>core</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+    <dependencies>
+        <dependency>
+            <groupId>it1901.bibtek</groupId>
+            <artifactId>core</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
 
-		<!-- JavaFX -->
-		<dependency>
-			<groupId>org.openjfx</groupId>
-			<artifactId>javafx-fxml</artifactId>
-			<version>16-ea+2</version>
-		</dependency>
+        <!-- JavaFX -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>16-ea+2</version>
+        </dependency>
 
-		<!-- Test with JUnit5 -->
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-engine</artifactId>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-		</dependency>
+        <!-- Test with JUnit5 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+        </dependency>
 
-		<!-- Test with TextFX -->
-		<dependency>
-			<groupId>org.testfx</groupId>
-			<artifactId>testfx-core</artifactId>
-			<version>4.0.16-alpha</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.testfx</groupId>
-			<artifactId>testfx-junit5</artifactId>
-			<version>4.0.16-alpha</version>
-			<scope>test</scope>
-		</dependency>
+        <!-- Test with TextFX -->
+        <dependency>
+            <groupId>org.testfx</groupId>
+            <artifactId>testfx-core</artifactId>
+            <version>4.0.16-alpha</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testfx</groupId>
+            <artifactId>testfx-junit5</artifactId>
+            <version>4.0.16-alpha</version>
+            <scope>test</scope>
+        </dependency>
 
-		<dependency>
-				<groupId>org.testfx</groupId>
-				<artifactId>openjfx-monocle</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>org.testfx</groupId>
+            <artifactId>openjfx-monocle</artifactId>
+        </dependency>
 
-	</dependencies>
+        <!-- https://mvnrepository.com/artifact/de.jensd/fontawesomefx-controls -->
+        <dependency>
+            <groupId>de.jensd</groupId>
+            <artifactId>fontawesomefx-fontawesome</artifactId>
+            <version>4.7.0-9.1.2</version>
+        </dependency>
 
-	<build>
-		<plugins>
-			<!-- Compiling code -->
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-			</plugin>
+    </dependencies>
 
-			<!-- Running tests -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-			</plugin>
+    <build>
+        <plugins>
+            <!-- Compiling code -->
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
 
-			<!-- Running JavaFX code -->
-			<plugin>
-				<groupId>org.openjfx</groupId>
-				<artifactId>javafx-maven-plugin</artifactId>
-				<version>0.0.4</version>
-				<configuration>
-					<mainClass>bibtek.ui.App</mainClass>
-				</configuration>
+            <!-- Running tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+
+            <!-- Running JavaFX code -->
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.4</version>
+                <configuration>
+                    <mainClass>bibtek.ui.App</mainClass>
+                </configuration>
             </plugin>
 
             <!-- Run the checkstyle code quality tool -->
@@ -102,6 +109,14 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
             </plugin>
-		</plugins>
-	</build>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>13</source>
+                    <target>13</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
