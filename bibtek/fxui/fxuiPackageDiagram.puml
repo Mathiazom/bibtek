@@ -1,0 +1,21 @@
+@startuml fxuiPackageDiagram
+title Package Diagram for fxui
+namespace fxui {
+    namespace src {
+        namespace main.java.bibtek {
+            class AddBookController
+            class LibraryController
+            class App
+        }
+        namespace test.java.bibtek {
+            namespace ui {
+                class AddBookSceneTest
+                class LibrarySceneTest
+            }
+        }
+        
+    }
+}
+
+
+@enduml

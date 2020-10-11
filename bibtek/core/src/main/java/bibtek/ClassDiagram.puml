@@ -1,0 +1,71 @@
+@startuml ClassDiagram
+title Class diagram of main.java.bibtek
+
+
+
+
+class Book {
+    - String title
+    - String author
+    - String yearPublished
+ 
+    + String getTitle()
+    + String getAuthor()
+    + int getYearPublished()
+
+}
+
+class BookEntry {
+    - Book book
+    - LocalDate dateAquired
+    - BookReadingState readingState
+ 
+    + Book getBook()
+    + LocalDate getDateAquired()
+    + BookReadingState getReadingState()
+    + String toPrintString()
+}
+
+class Library {
+    - StorageHandler storageHandler
+    - Set<BookEntry> bookEntries 
+    + void addBookEntry(BookEntry)
+    + void removeBookEntry(BookEntry)
+    + Set<BookEntry> getBookEntries()
+    + void setStoragePath(String)
+    - boolean isValiedBookEntry(BookEntry)
+    - void setBookEntries(Set<BookEntry>)
+} 
+class StorageHandler {
+    -Path storagePath
+
+    + void setStoragePath(String)
+    + void storeBookEntries(Set<BookEntry>)
+    + Set<BookEntry> fetchBookEntries()
+
+     
+}
+
+class LocalDateSerializer{
+
+}
+class LocalDateDeserializer{
+    
+}
+enum BookReadingState {
+    NOT_STARTED
+    READING
+    COMPLETED
+    ABANDONED
+
+
+}
+Library --> "*" BookEntry
+Library --> "1" StorageHandler
+BookEntry --> "1" Book
+BookEntry --> "1" BookReadingState
+StorageHandler ..> LocalDateDeserializer
+StorageHandler ..> LocalDateSerializer
+
+
+@enduml
