@@ -31,7 +31,7 @@ public final class Library {
      */
     public Library() {
 
-        this(DEFAULT_STORAGE_PATH);
+        this(Library.DEFAULT_STORAGE_PATH);
 
     }
 
