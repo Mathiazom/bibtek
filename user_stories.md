@@ -23,4 +23,8 @@ As a user I would like to view each individual book by themself
 
 As a user I would like to view details about my book, like author, date of publishing, edition, description, length and ISBN number
 
+## View details about each book(us-6)
+
+As a user I would like to have my own profile that has my library of books online such that I can have access to that library wherever I go. 
+
 
