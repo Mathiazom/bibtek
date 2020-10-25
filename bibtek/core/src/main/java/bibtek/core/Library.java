@@ -1,10 +1,9 @@
 package bibtek.core;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import bibtek.json.StorageHandler;
+import com.google.gson.annotations.Expose;
 
 /**
  * Class representing a users personal library storing book entries.
@@ -13,71 +12,34 @@ import bibtek.json.StorageHandler;
  */
 public final class Library {
 
-    /**
-     * The path where the library.json file should be stored by default.
-     */
-    private static final String DEFAULT_STORAGE_PATH = "target/library.json";
-
-    private StorageHandler storageHandler;
-
-    /**
-     * The collection of all the BookEntries the reader has.
-     */
+    @Expose(serialize = true, deserialize = true)
     private Set<BookEntry> bookEntries;
 
     /**
-     * Default constructor for Library. Passes the default storage path to the
-     * specific constructor.
+     * Initializing an empty library.
+     *
      */
     public Library() {
-
-        this(Library.DEFAULT_STORAGE_PATH);
-
-    }
-
-    /**
-     * Specific constructor for Library. Sets the path for where the library.json
-     * file should be stored.
-     *
-     * @param storagePath the path where the library.json file should be stored
-     */
-    public Library(final String storagePath) {
-
-        try {
-            this.storageHandler = new StorageHandler(storagePath);
-            setBookEntries(storageHandler.fetchBookEntries());
-        } catch (IOException e) {
-            setBookEntries(new HashSet<>());
-            System.out.println(e.getMessage());
-        }
+        bookEntries = new HashSet<BookEntry>();
 
     }
 
-    /**
+    /*
      * @param newBookEntries the collection of all the BookEntries the reader has
      */
-    private void setBookEntries(final Set<BookEntry> newBookEntries) {
-        this.bookEntries = newBookEntries;
-    }
+    /*
+     * private void setBookEntries(final Set<BookEntry> newBookEntries) {
+     * this.bookEntries = newBookEntries; }
+     */
 
     /**
      * @param bookEntry describes a readers relation with a Book
      */
     public void addBookEntry(final BookEntry bookEntry) {
-
         if (!isValidBookEntry(bookEntry)) {
             throw new IllegalArgumentException("The book entry has illegal formatting!");
         }
-
         bookEntries.add(bookEntry);
-
-        try {
-            storageHandler.storeBookEntries(bookEntries);
-        } catch (IOException e) {
-            // Undo add book
-            bookEntries.remove(bookEntry);
-            System.out.println(e.getMessage());
-        }
 
     }
 
@@ -87,13 +49,6 @@ public final class Library {
     public void removeBookEntry(final BookEntry bookEntry) {
 
         bookEntries.remove(bookEntry);
-
-        try {
-            storageHandler.storeBookEntries(bookEntries);
-        } catch (IOException e) {
-            bookEntries.add(bookEntry);
-            System.out.println(e.getMessage());
-        }
 
     }
 
@@ -132,29 +87,11 @@ public final class Library {
             return "No books in library.";
         }
 
-        sb.append("Book entries: { \n");
+        sb.append("bookEntries: { \n");
         getBookEntries().forEach(bookEntry -> sb.append(bookEntry.toString()).append(",\n"));
         sb.append("}");
 
         return sb.toString();
-
-    }
-
-    /**
-     * Change the location at which the library entries should be stored by the
-     * {@link StorageHandler}.
-     *
-     * @param path new storage location
-     */
-    public void setStoragePath(final String path) throws IOException {
-        try {
-            storageHandler.setStoragePath(path);
-        } catch (IOException e) {
-            throw new IOException("Exception when setting path");
-        }
-
-        // Remove entries from old json path
-        bookEntries.clear();
 
     }
 

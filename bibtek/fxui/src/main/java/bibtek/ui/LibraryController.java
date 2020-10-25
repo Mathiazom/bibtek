@@ -1,7 +1,7 @@
 package bibtek.ui;
 
 import bibtek.core.BookEntry;
-import bibtek.core.Library;
+import bibtek.core.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,42 +22,41 @@ public final class LibraryController {
     @FXML
     Button addBookButton;
 
-    private final Library library = new Library();
+    private User user;
 
     @FXML
-    private void initialize() {
+    private void handleAddBook() {
+        AddBookController controller;
+        final Stage stage = (Stage) addBookButton.getScene().getWindow();
+        final Parent root;
+        try {
+            final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/AddBook.fxml"));
+            root = fxmlLoader.load();
+            final Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+            controller = fxmlLoader.getController();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        controller.update(user);
 
-        final Set<BookEntry> bookEntrySet = library.getBookEntries();
+    }
+
+    /**
+     * Updates who the user is, and displays the updated library.
+     *
+     * @param u the updated user
+     */
+    public void update(final User u) {
+        this.user = u;
+        final Set<BookEntry> bookEntrySet = user.getLibrary().getBookEntries();
 
         // Display book entries in list view
         libraryView.getItems().setAll(
                 // Convert list of book entries to list of strings
                 bookEntrySet.stream().map(BookEntry::toPrintString).collect(Collectors.toList()));
-
-    }
-
-    @FXML
-    private void handleAddBook() {
-
-        final Stage stage = (Stage) addBookButton.getScene().getWindow();
-
-        final Parent root;
-        try {
-            root = FXMLLoader.load(getClass().getResource("/bibtek/ui/AddBook.fxml"));
-            final Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    /**
-     * @return the current library
-     */
-    public Library getLibrary() {
-        return this.library;
     }
 
 }

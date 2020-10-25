@@ -2,13 +2,10 @@ package bibtek.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import bibtek.json.StorageHandler;
 
 public class LibraryTest {
     // constants
@@ -25,39 +22,19 @@ public class LibraryTest {
     private final BookEntry bookEntry2 = new BookEntry(book2, someDate, BookReadingState.COMPLETED);
     private final BookEntry bookEntry3 = new BookEntry(book3, someDate, BookReadingState.READING);
     private final BookEntry bookEntry4 = new BookEntry(book4, someDate, BookReadingState.ABANDONED);
-    /**
-     * Set the storage handler.
-     */
-    private StorageHandler sh;
-    private StorageHandler sh2;
-
-    /**
-     * The storgaHandler should be emtied before each test.
-     */
-    @BeforeEach
-    public void clearStorageHanndler() {
-        try {
-            sh = new StorageHandler("target/testLibrary.json");
-            sh2 = new StorageHandler("target/testLibrary2.json");
-            sh.storeBookEntries(null);
-            sh2.storeBookEntries(null);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Testing if the toString method returns excpected string.
      */
     @Test
     public void toStringTest() {
-        Library lib = new Library("target/testLibrary2.json");
+        Library lib = new Library();
         lib.addBookEntry(bookEntry1);
         lib.addBookEntry(bookEntry2);
         lib.addBookEntry(bookEntry3);
         lib.addBookEntry(bookEntry4);
         String actualString = lib.toString();
-        String expectedString = "Book entries: { \n" + "bookEntry: { title: Finnegan's Wake, author: James Joyce, "
+        String expectedString = "bookEntries: { \n" + "bookEntry: { title: Finnegan's Wake, author: James Joyce, "
                 + "yearPublished: 1939, dateAcquired: 2020-09-27, readingState: NOT_STARTED },\n"
                 + "bookEntry: { title: Algorithms to Live by, author: Brian Christian, yearPublished: 2016, "
                 + "dateAcquired: 2020-09-27, readingState: ABANDONED },\n"
@@ -68,7 +45,7 @@ public class LibraryTest {
         // test that the toString creates string like expected
         assertEquals(expectedString, actualString, "The toString method does not create a String like expected");
         // test if the toString method creates correct String with an empty Library
-        Library emptyLib = new Library("target/testLibrary.json");
+        Library emptyLib = new Library();
         String expectedString2 = "No books in library.";
         String actualString2 = emptyLib.toString();
         assertEquals(expectedString2, actualString2, "The toString method created wrong string for a null library");
@@ -80,12 +57,12 @@ public class LibraryTest {
     @Test
     public void removeBookEntryTest() {
         // create library with one less book than in bookEntries
-        Library libk = new Library("target/testLibrary.json");
+        Library libk = new Library();
         libk.addBookEntry(bookEntry1);
         libk.addBookEntry(bookEntry2);
         libk.addBookEntry(bookEntry3);
         // create full library
-        Library lib2 = new Library("target/testLibrary2.json");
+        Library lib2 = new Library();
         lib2.addBookEntry(bookEntry1);
         lib2.addBookEntry(bookEntry2);
         lib2.addBookEntry(bookEntry3);
@@ -106,7 +83,7 @@ public class LibraryTest {
         Book bookNullAuthor = new Book("Algorithms to Live by", null, chriDate);
         Book bookNull = null;
         BookEntry bookEntryNull = null;
-        Library lib1 = new Library("target/testLibrary.json");
+        Library lib1 = new Library();
         // testing for a null book Entry
         try {
             lib1.addBookEntry(bookEntryNull);
@@ -149,11 +126,12 @@ public class LibraryTest {
         } catch (IllegalArgumentException e) {
             // Succeeds
         }
+        Library lib2 = new Library();
         // Testing if it adds the bookEntry to bookEntries
-        lib1.addBookEntry(bookEntry1);
+        lib2.addBookEntry(bookEntry1);
         Set<BookEntry> expected = new HashSet<>();
         expected.add(bookEntry1);
-        assertEquals(expected, lib1.getBookEntries(),
+        assertEquals(expected, lib2.getBookEntries(),
                 "The book entries in the library was not as expected after addBookEntry() on lib1");
     }
 }

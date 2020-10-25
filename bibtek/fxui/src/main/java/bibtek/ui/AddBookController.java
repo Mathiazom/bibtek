@@ -3,7 +3,8 @@ package bibtek.ui;
 import bibtek.core.Book;
 import bibtek.core.BookEntry;
 import bibtek.core.BookReadingState;
-import bibtek.core.Library;
+import bibtek.core.User;
+import bibtek.json.StorageHandler;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +13,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -40,12 +43,13 @@ public final class AddBookController {
     @FXML
     Button libraryButton;
 
-    private Library library;
+    @FXML
+    Label errorLabel;
+
+    private User user;
 
     @FXML
     private void initialize() {
-
-        library = new Library();
 
         addBookReadingStatusCombo.setItems(FXCollections.observableArrayList(BookReadingState.values()));
         addBookReadingStatusCombo.getSelectionModel().selectFirst();
@@ -69,7 +73,14 @@ public final class AddBookController {
 
         );
 
-        library.addBookEntry(bookEntry);
+        user.getLibrary().addBookEntry(bookEntry);
+        try {
+            StorageHandler storageHandler = new StorageHandler();
+            storageHandler.updateUser(user);
+        } catch (IOException e) {
+            errorLabel.setText("Was not able to update the user library");
+            errorLabel.setTextFill(Color.RED);
+        }
 
         handleShowLibrary();
 
@@ -77,25 +88,40 @@ public final class AddBookController {
 
     @FXML
     private void handleShowLibrary() {
-
+        LibraryController controller;
         final Stage stage = (Stage) libraryButton.getScene().getWindow();
-
         final Parent root;
         try {
-            root = FXMLLoader.load(getClass().getResource("/bibtek/ui/Library.fxml"));
+            final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/Library.fxml"));
+            root = fxmlLoader.load();
             final Scene scene = new Scene(root);
             stage.setScene(scene);
+            // stage.show();
+            controller = fxmlLoader.getController();
         } catch (IOException e) {
             e.printStackTrace();
+            return;
         }
+        controller.update(user);
 
     }
 
     /**
-     * @return the current library
+     * Updating the user of this controller.
+     *
+     * @param u
      */
-    public Library getLibrary() {
-        return this.library;
+    public void update(final User u) {
+        this.user = u;
+    }
+
+    /**
+     * Get method for user.
+     *
+     * @return the user.
+     */
+    public User getUser() {
+        return this.user;
     }
 
 }
