@@ -2,20 +2,15 @@ package bibtek.core;
 
 import java.time.LocalDate;
 
-import com.google.gson.annotations.Expose;
-
 /**
  * Describes a readers relation with a Book.
  */
 public final class BookEntry {
 
-    @Expose(serialize = true, deserialize = true)
     private final Book book;
 
-    @Expose(serialize = true, deserialize = true)
     private final LocalDate dateAcquired;
 
-    @Expose(serialize = true, deserialize = true)
     private final BookReadingState readingState;
 
     /**

@@ -104,7 +104,7 @@ public class CreateUserController implements Initializable {
         try {
             User user = new User(userName1, age);
             StorageHandler storageHandler = new StorageHandler();
-            storageHandler.storeUserInServer(user);
+            storageHandler.storeUserInRemote(user);
         } catch (IOException e) {
             errorLabel.setText(e.getMessage());
             errorLabel.setTextFill(Color.RED);

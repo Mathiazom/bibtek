@@ -1,19 +1,15 @@
 package bibtek.core;
 
-import com.google.gson.annotations.Expose;
 
 /**
  * Describes the information about a book.
  */
 public final class Book {
 
-    @Expose(serialize = true, deserialize = true)
     private final String title;
 
-    @Expose(serialize = true, deserialize = true)
     private final String author;
 
-    @Expose(serialize = true, deserialize = true)
     private final int yearPublished;
 
     /**

@@ -3,16 +3,12 @@ package bibtek.core;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.google.gson.annotations.Expose;
-
 /**
- * Class representing a users personal library storing book entries.
- * <p>
- * Persists data continuously in local storage by using a {@link StorageHandler}
+ * Class representing a users personal library storing book entries. Persists
+ * data continuously in local storage by using a {@link StorageHandler}
  */
 public final class Library {
 
-    @Expose(serialize = true, deserialize = true)
     private Set<BookEntry> bookEntries;
 
     /**
@@ -23,14 +19,6 @@ public final class Library {
         bookEntries = new HashSet<BookEntry>();
 
     }
-
-    /*
-     * @param newBookEntries the collection of all the BookEntries the reader has
-     */
-    /*
-     * private void setBookEntries(final Set<BookEntry> newBookEntries) {
-     * this.bookEntries = newBookEntries; }
-     */
 
     /**
      * @param bookEntry describes a readers relation with a Book

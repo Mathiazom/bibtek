@@ -17,8 +17,7 @@ import bibtek.core.User;
 import com.google.gson.reflect.TypeToken;
 
 /**
- * Class responsible for reading and writing user(s) to locally stored json
- * files.
+ * Class responsible for reading and writing user to locally stored json files.
  */
 public final class StorageHandler {
     /**
@@ -78,7 +77,7 @@ public final class StorageHandler {
      * @param user the user you want to store
      * @throws IOException if the StorageHandler fails to store the user
      */
-    public void storeUserInServer(final User user) throws IOException {
+    public void storeUserInRemote(final User user) throws IOException {
         // Temporary code
     }
 
@@ -88,11 +87,10 @@ public final class StorageHandler {
      * @param user
      * @throws IOException
      */
-    public void setLocalUser(final User user) throws IOException {
+    public void storeUserLocally(final User user) throws IOException {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateSerializer());
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateDeserializer());
-        gsonBuilder.excludeFieldsWithoutExposeAnnotation();
         final Gson gson = gsonBuilder.setPrettyPrinting().create();
         final Writer writer = Files.newBufferedWriter(storagePath);
         gson.toJson(user, writer);
@@ -116,7 +114,6 @@ public final class StorageHandler {
             GsonBuilder gsonBuilder = new GsonBuilder();
             gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateSerializer());
             gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateDeserializer());
-            gsonBuilder.excludeFieldsWithoutExposeAnnotation();
             final Gson gson = gsonBuilder.setPrettyPrinting().create();
             final Writer writer = Files.newBufferedWriter(storagePath);
             gson.toJson(user, writer);
@@ -155,7 +152,7 @@ public final class StorageHandler {
      * @return the user with that username from the backend
      * @throws IOExeption if it does not find a user with that username
      */
-    public User getUserFromServer(final String userName) throws IOException {
+    public User fetchUserFromRemote(final String userName) throws IOException {
         // This is temporary code
         if (!userName.equals("sigmund")) {
             throw new IOException("Could not find user with given username");
@@ -167,22 +164,9 @@ public final class StorageHandler {
     /**
      * @return all the user names from the backend.
      */
-    public List<String> getAllUserNamesFromServer() {
+    public List<String> fetchAllUserNamesFromRemote() {
         // This is temporary code
         return List.of("sigmund");
     }
 
-    /**
-     * Checks if the username exists among the locally saved usernames.
-     *
-     * @param userName
-     * @return true if it finds it and false otherwise
-     */
-    public boolean exists(final String userName) {
-        boolean result = true;
-        // CODE
-        return result;
-    }
-
-    // MAYBE REMOVE THIS METHOD ????
 }

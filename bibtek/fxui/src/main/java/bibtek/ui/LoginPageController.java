@@ -58,7 +58,7 @@ public class LoginPageController implements Initializable {
      */
     @FXML
     public void logIn() {
-        List<String> usernames = storageHandler.getAllUserNamesFromServer();
+        List<String> usernames = storageHandler.fetchAllUserNamesFromRemote();
         LibraryController controller;
         String name = userNameInput.getText();
         if (!usernames.contains(name)) {
@@ -67,7 +67,7 @@ public class LoginPageController implements Initializable {
             return;
         }
         try {
-            user = storageHandler.getUserFromServer(name);
+            user = storageHandler.fetchUserFromRemote(name);
         } catch (IOException e1) {
             errorLabel.setText("There was an error retreiving user data, try again later");
             errorLabel.setTextFill(Color.RED);

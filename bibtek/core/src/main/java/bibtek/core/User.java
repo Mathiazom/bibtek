@@ -1,7 +1,5 @@
 package bibtek.core;
 
-import com.google.gson.annotations.Expose;
-
 public class User {
 
     /**
@@ -11,13 +9,10 @@ public class User {
     /**
      * User attributes.
      */
-    @Expose(serialize = true, deserialize = true)
     private String userName;
 
-    @Expose(serialize = true, deserialize = true)
     private int age;
 
-    @Expose(serialize = true, deserialize = true)
     private Library library;
 
     /**
