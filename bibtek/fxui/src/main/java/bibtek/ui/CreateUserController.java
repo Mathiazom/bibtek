@@ -3,7 +3,9 @@ package bibtek.ui;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import bibtek.core.User;
+import bibtek.json.StorageHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -99,9 +101,18 @@ public class CreateUserController implements Initializable {
             return;
         }
 
-        User user = new User(userName1, age);
-        user.saveUser();
-
+        try {
+            User user = new User(userName1, age);
+            StorageHandler storageHandler = new StorageHandler();
+            storageHandler.storeUserInServer(user);
+        } catch (IOException e) {
+            errorLabel.setText(e.getMessage());
+            errorLabel.setTextFill(Color.RED);
+        } catch (Exception e) {
+            errorLabel.setText("An error occurred");
+            errorLabel.setTextFill(Color.RED);
+            e.printStackTrace();
+        }
         // Insert code for feedback that the user was created.
 
         final Stage stage = (Stage) createUserButton.getScene().getWindow();
@@ -113,7 +124,6 @@ public class CreateUserController implements Initializable {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-
         }
 
     }

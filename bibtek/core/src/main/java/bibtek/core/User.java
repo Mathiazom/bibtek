@@ -1,5 +1,7 @@
 package bibtek.core;
 
+import com.google.gson.annotations.Expose;
+
 public class User {
 
     /**
@@ -9,12 +11,17 @@ public class User {
     /**
      * User attributes.
      */
+    @Expose(serialize = true, deserialize = true)
     private String userName;
-    private Library library;
+
+    @Expose(serialize = true, deserialize = true)
     private int age;
 
+    @Expose(serialize = true, deserialize = true)
+    private Library library;
+
     /**
-     * Full constructor for all parameters, making a user with a library.
+     * Creates a file.
      *
      * @param userName
      * @param age
@@ -24,20 +31,22 @@ public class User {
         this.userName = userName;
         this.age = age;
         this.library = library;
+
     }
 
     /**
-     * Constructor that keeps the current library (from json file).
+     * Constructor that creates a User with a userName and age and an empty library.
      *
      * @param userName
      * @param age
      */
     public User(final String userName, final int age) {
         this(userName, age, new Library());
+
     }
 
     /**
-     * @return the user name of this user.
+     * @return the username of this user.
      */
     public String getUserName() {
         return this.userName;
@@ -87,9 +96,17 @@ public class User {
     }
 
     /**
-     * Saves the user's information i a json file.
+     * toString method for this class.
      */
-    public void saveUser() {
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("user: { \n");
+        sb.append("userName: " + getUserName() + "\n");
+        sb.append("age: " + getAge() + "\n");
+        sb.append("library: " + getLibrary().toString() + "\n");
+        sb.append("}");
+        return sb.toString();
     }
 
 }

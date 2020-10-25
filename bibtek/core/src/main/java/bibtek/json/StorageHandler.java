@@ -7,20 +7,24 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import bibtek.core.BookEntry;
+import bibtek.core.User;
+
 import com.google.gson.reflect.TypeToken;
 
 /**
- * Class responsible for reading and writing book entries to locally stored json
+ * Class responsible for reading and writing user(s) to locally stored json
  * files.
  */
 public final class StorageHandler {
+    /**
+     * The path where the library.json file should be stored by default.
+     */
+    private static final String DEFAULT_STORAGE_PATH = "target/user.json";
 
     /**
      * The file path where the json data will be stored.
@@ -34,6 +38,16 @@ public final class StorageHandler {
 
         setStoragePath(path);
 
+    }
+
+    /**
+     * Default constructor of storageHandler, creating a storageHandler with the
+     * default storage path.
+     *
+     * @throws IOException
+     */
+    public StorageHandler() throws IOException {
+        this(StorageHandler.DEFAULT_STORAGE_PATH);
     }
 
     /**
@@ -59,39 +73,116 @@ public final class StorageHandler {
     }
 
     /**
-     * @param bookEntries the collection of all the BookEntries the reader has
-     * @throws IOException if the StorageHandler fails to store the book entries
+     * Stores the given user in the backend.
+     *
+     * @param user the user you want to store
+     * @throws IOException if the StorageHandler fails to store the user
      */
-    public void storeBookEntries(final Set<BookEntry> bookEntries) throws IOException {
+    public void storeUserInServer(final User user) throws IOException {
+        // Temporary code
+    }
 
+    /**
+     * Stores the given user in the local user.json file.
+     *
+     * @param user
+     * @throws IOException
+     */
+    public void setLocalUser(final User user) throws IOException {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateSerializer());
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateDeserializer());
+        gsonBuilder.excludeFieldsWithoutExposeAnnotation();
         final Gson gson = gsonBuilder.setPrettyPrinting().create();
-
         final Writer writer = Files.newBufferedWriter(storagePath);
-        gson.toJson(bookEntries, writer);
+        gson.toJson(user, writer);
         writer.close();
+    }
+
+    /**
+     * Updates the user attributes locally and in the server.
+     *
+     * @param user the user you want to update to
+     * @throws IOException
+     */
+    public void updateUser(final User user) throws IOException {
+        String localName;
+        try {
+            localName = getLocalUser().getUserName();
+        } catch (Exception e) {
+            localName = "";
+        }
+        if (localName.equals("") || user.getUserName().equals(localName)) {
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateSerializer());
+            gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateDeserializer());
+            gsonBuilder.excludeFieldsWithoutExposeAnnotation();
+            final Gson gson = gsonBuilder.setPrettyPrinting().create();
+            final Writer writer = Files.newBufferedWriter(storagePath);
+            gson.toJson(user, writer);
+            writer.close();
+
+            // Also code to update this user in the back end
+        } else {
+            throw new IOException("Cannot update user with that username");
+        }
 
     }
 
     /**
-     * @return the collection of books stored locally
-     * @throws IOException if the StorageHandler fails to read the book entries
+     * Fetches the user from the information saved locally.
+     *
+     * @return the the user saved locally
+     * @throws IOException if the StorageHandler fails to read the JSON file
      */
-    public Set<BookEntry> fetchBookEntries() throws IOException {
-
+    public User getLocalUser() throws IOException {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateSerializer());
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateDeserializer());
         final Gson gson = gsonBuilder.setPrettyPrinting().create();
         final Reader reader = Files.newBufferedReader(storagePath);
-        final Set<BookEntry> bookEntries = gson.fromJson(reader, new TypeToken<Set<BookEntry>>() {
+        final User user = gson.fromJson(reader, new TypeToken<User>() {
         }.getType());
         reader.close();
-
-        return bookEntries == null ? new HashSet<>() : bookEntries;
+        return user;
 
     }
 
+    /**
+     * Fetches user by username from the backend.
+     *
+     * @param userName
+     * @return the user with that username from the backend
+     * @throws IOExeption if it does not find a user with that username
+     */
+    public User getUserFromServer(final String userName) throws IOException {
+        // This is temporary code
+        if (!userName.equals("sigmund")) {
+            throw new IOException("Could not find user with given username");
+        }
+        final int fourteen = 14;
+        return new User("sigmund", fourteen);
+    }
+
+    /**
+     * @return all the user names from the backend.
+     */
+    public List<String> getAllUserNamesFromServer() {
+        // This is temporary code
+        return List.of("sigmund");
+    }
+
+    /**
+     * Checks if the username exists among the locally saved usernames.
+     *
+     * @param userName
+     * @return true if it finds it and false otherwise
+     */
+    public boolean exists(final String userName) {
+        boolean result = true;
+        // CODE
+        return result;
+    }
+
+    // MAYBE REMOVE THIS METHOD ????
 }

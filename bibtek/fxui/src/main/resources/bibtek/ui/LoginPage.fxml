@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bibtek.ui.LoginPageController">
    <children>
       <TextField fx:id="userNameInput" layoutX="126.0" layoutY="297.0" promptText="User name" />
@@ -27,7 +26,8 @@
             <Font size="26.0" />
          </font>
       </Label>
-      <Button fx:id="logInButton" layoutX="168.0" layoutY="342.0" mnemonicParsing="false" onAction="#logIn" text="Log in" />
-      <Label fx:id="createNewUserLabel" layoutX="150.0" layoutY="395.0" text="Create new user" textFill="#0062ff" underline="true" />
+      <Button fx:id="logInButton" layoutX="167.0" layoutY="355.0" mnemonicParsing="false" onAction="#logIn" text="Log in" />
+      <Label fx:id="createNewUserLabel" layoutX="149.0" layoutY="410.0" text="Create new user" textFill="#0062ff" underline="true" />
+      <Label fx:id="errorLabel" alignment="CENTER" layoutX="122.0" layoutY="329.0" prefHeight="18.0" prefWidth="156.0" text=" " />
    </children>
 </AnchorPane>
