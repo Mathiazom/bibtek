@@ -111,14 +111,7 @@ public final class StorageHandler {
             localName = "";
         }
         if (localName.equals("") || user.getUserName().equals(localName)) {
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateSerializer());
-            gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateDeserializer());
-            final Gson gson = gsonBuilder.setPrettyPrinting().create();
-            final Writer writer = Files.newBufferedWriter(storagePath);
-            gson.toJson(user, writer);
-            writer.close();
-
+            storeUserLocally(user);
             // Also code to update this user in the back end
         } else {
             throw new IOException("Cannot update user with that username");

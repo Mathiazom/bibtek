@@ -54,9 +54,10 @@ public final class LibraryController {
         final Set<BookEntry> bookEntrySet = user.getLibrary().getBookEntries();
 
         // Display book entries in list view
-        libraryView.getItems().setAll(
+        libraryList.getItems().setAll(
                 // Convert list of book entries to list of strings
-                bookEntrySet.stream().map(BookEntry::toPrintString).collect(Collectors.toList()));
+                bookEntrySet.stream().map(BookItemView::new).collect(Collectors.toList())
+        );
     }
 
 }
