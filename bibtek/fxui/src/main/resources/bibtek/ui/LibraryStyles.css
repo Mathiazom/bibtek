@@ -9,7 +9,7 @@
 .list-cell {
     -fx-alignment: TOP_CENTER;
     -fx-background-color: #eee;
-    -fx-padding: 0 120 0 120;
+    -fx-padding: 0 20 0 20;
 }
 
 

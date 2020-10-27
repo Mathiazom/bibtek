@@ -39,7 +39,6 @@ Button:hover {
 }
 .orangeButton:hover{
     -fx-background-color: rgba(255, 165, 0, 0.2);
-    /*-fx-text-fill: white;*/
 }
 
 .greyButton{

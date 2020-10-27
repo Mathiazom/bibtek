@@ -9,10 +9,13 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
 
+import bibtek.core.Book;
+import bibtek.core.BookEntry;
+import bibtek.core.BookReadingState;
+import bibtek.core.Library;
+import bibtek.core.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import bibtek.core.User;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -150,8 +153,41 @@ public final class StorageHandler {
         if (!userName.equals("sigmund")) {
             throw new IOException("Could not find user with given username");
         }
-        final int fourteen = 14;
-        return new User("sigmund", fourteen);
+
+        final Library library = new Library();
+        final int dummyBookYear = 1953;
+        final int dummyBookYear2 = 1948;
+
+        library.addBookEntry(
+                new BookEntry(
+                    new Book(
+                            "Fahrenheit 451",
+                            "Ray Bradbury",
+                            dummyBookYear,
+                            "https://s2982.pcdn.co/wp-content/uploads/2017/09/fahrenheit-451-flamingo-edition.jpg"
+                    ),
+                        LocalDate.now(),
+                        BookReadingState.READING
+                )
+        );
+        library.addBookEntry(
+                new BookEntry(
+                        new Book(
+                                "1984",
+                                "George Orwell",
+                                dummyBookYear2
+                        ),
+                        LocalDate.now(),
+                        BookReadingState.COMPLETED
+                )
+        );
+
+        final int dummyAge = 14;
+
+        final User sigmund = new User("sigmund", dummyAge);
+        sigmund.setLibrary(library);
+
+        return sigmund;
     }
 
     /**
