@@ -6,6 +6,10 @@ ScrollPane{
     -fx-fit-to-width: true;
 }
 
+#addBookISBNContainer{
+    -fx-background-color: white;
+}
+
 #inputContainerWrap{
     -fx-background-color: #eee;
 }
@@ -15,7 +19,7 @@ ScrollPane{
     -fx-max-width: 500;
 }
 
-#inputContainer TextField{
+#inputContainer TextField, #inputContainer DigitsField, #addBookISBNField{
 
     -fx-padding: 10 15 10 15;
     -fx-background-color: white;
@@ -24,7 +28,11 @@ ScrollPane{
 
 }
 
-#inputContainer Label {
+.inputSection{
+    -fx-padding: 40px 0 0 0;
+}
+
+.inputLabel {
     -fx-font-size: 16;
     -fx-text-fill: #212121;
     -fx-padding: 15 0 5 0;
@@ -44,26 +52,37 @@ ScrollPane{
     -fx-font-size: 16;
 }
 
-#cancelButton{
-    -fx-background-color: white;
+#addBookISBNContainer{
+    -fx-background-color: #454545;
 }
 
-#cancelButton FontAwesomeIconView {
-    -fx-fill: #696969;
+#addBookISBNContainer HBox{
+    -fx-padding: 10 30 10 30;
+    -fx-background-color: orange;
 }
 
-#cancelButton:hover FontAwesomeIconView {
-    -fx-fill: #454545;
+#addBookISBNField{
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #212121;
+    -fx-alignment: center;
 }
 
-#confirmAddBookButton{
-    -fx-background-color: white;
+#addBookISBNButton FontIcon {
+    -fx-icon-color: white;
 }
 
-#confirmAddBookButton FontAwesomeIconView {
-    -fx-fill: rgba(255, 165, 0, 0.8);
+.errorLabel{
+    -fx-text-fill: #f44336;
+    -fx-font-weight: bold;
+    -fx-padding: 5 10;
 }
 
-#confirmAddBookButton:hover FontAwesomeIconView {
-    -fx-fill: orange;
+.inputIcon{
+    -fx-padding: 5px 10px 5px 0;
+}
+
+.inputIcon FontIcon {
+    -fx-icon-color: #454545;
+    -fx-icon-size: 32px;
 }

@@ -4,6 +4,8 @@ import bibtek.core.Book;
 import bibtek.core.BookEntry;
 import bibtek.core.BookReadingState;
 import bibtek.core.User;
+import bibtek.json.BooksAPIHandler;
+import bibtek.json.ISBNUtils;
 import bibtek.json.StorageHandler;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -14,6 +16,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -23,13 +26,22 @@ import java.io.IOException;
 public final class AddBookController {
 
     @FXML
+    VBox addBookISBNContainer;
+
+    @FXML
+    DigitsField addBookISBNField;
+
+    @FXML
+    Label errorLabelISBN;
+
+    @FXML
     TextField addBookTitleField;
 
     @FXML
     TextField addBookAuthorField;
 
     @FXML
-    TextField addBookYearPublishedField;
+    DigitsField addBookYearPublishedField;
 
     @FXML
     TextField addBookImagePathField;
@@ -62,11 +74,8 @@ public final class AddBookController {
         });
         addBookReadingStatusCombo.getSelectionModel().selectFirst();
 
-        // Make sure year input is only digits
-        addBookYearPublishedField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                addBookYearPublishedField.setText(newValue.replaceAll("[^\\d]", ""));
-            }
+        addBookISBNField.textProperty().addListener((observable, oldValue, newValue) -> {
+            errorLabelISBN.setManaged(false);
         });
 
     }
@@ -92,6 +101,50 @@ public final class AddBookController {
         }
 
         handleShowLibrary();
+
+    }
+
+    @FXML
+    private void toggleShowISBNInput() {
+
+        addBookISBNContainer.setManaged(!addBookISBNContainer.isManaged());
+
+    }
+
+    @FXML
+    private void handleLoadBookFromISBNInput() {
+
+        final String isbn = addBookISBNField.getText();
+
+        if (!ISBNUtils.isValidISBN(isbn)) {
+            errorLabelISBN.setText("Looks like an invalid ISBN :(");
+            errorLabelISBN.setManaged(true);
+            return;
+        }
+
+        try {
+            final Book bookFromISBN = new BooksAPIHandler().fetchBook(isbn);
+            if (bookFromISBN == null) {
+                errorLabelISBN.setText("No results for that ISBN :(");
+                errorLabelISBN.setManaged(true);
+                return;
+            }
+            loadBookInput(bookFromISBN);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void loadBookInput(final Book book) {
+
+        addBookTitleField.setText(book.getTitle());
+
+        addBookAuthorField.setText(book.getAuthor());
+
+        addBookYearPublishedField.setText(String.valueOf(book.getYearPublished()));
+
+        addBookImagePathField.setText(book.getImgPath());
 
     }
 

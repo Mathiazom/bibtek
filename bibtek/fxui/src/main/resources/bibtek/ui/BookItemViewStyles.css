@@ -5,7 +5,7 @@
 }
 
 .bookItemCard {
-    -fx-background-color: #fff;
+    -fx-background-color: white;
     -fx-border-radius: 4;
     -fx-background-radius: 4;
 }
@@ -34,5 +34,5 @@
 }
 
 .bookEntryInfo {
-    -fx-padding: 20 0 0 30;
+    -fx-padding: 20 30 0 30;
 }
