@@ -11,16 +11,23 @@ public final class Book {
     private final String author;
 
     private final int yearPublished;
+    private final String imgPath;
 
     /**
      * @param title         the book title
      * @param author        the book author
      * @param yearPublished the year the book was published
+     * @param imgPath       the book cover image path
      */
-    public Book(final String title, final String author, final int yearPublished) {
+    public Book(final String title, final String author, final int yearPublished, final String imgPath) {
         this.title = title;
         this.author = author;
         this.yearPublished = yearPublished;
+        this.imgPath = imgPath;
+    }
+
+    public Book(final String title, final String author, final int yearPublished) {
+        this(title, author, yearPublished, "");
     }
 
     /**
@@ -69,5 +76,9 @@ public final class Book {
     @Override
     public int hashCode() {
         return this.toString().hashCode();
+    }
+
+    public String getImgPath() {
+        return imgPath;
     }
 }

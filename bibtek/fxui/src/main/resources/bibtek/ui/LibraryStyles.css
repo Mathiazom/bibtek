@@ -1,0 +1,38 @@
+#libraryList{
+    -fx-background-color: #eee;
+}
+
+#libraryList Region{
+    -fx-padding: 0 0 0 0;
+}
+
+.list-cell {
+    -fx-alignment: TOP_CENTER;
+    -fx-background-color: #eee;
+    -fx-padding: 0 20 0 20;
+}
+
+
+#menuButton{
+    -fx-background-color: white;
+}
+
+#menuButton FontAwesomeIconView {
+    -fx-fill: #696969;
+}
+
+#menuButton:hover FontAwesomeIconView {
+    -fx-fill: #454545;
+}
+
+#addBookButton{
+    -fx-background-color: white;
+}
+
+#addBookButton FontAwesomeIconView {
+    -fx-fill: rgba(255, 165, 0, 0.8);
+}
+
+#addBookButton:hover FontAwesomeIconView {
+    -fx-fill: orange;
+}
