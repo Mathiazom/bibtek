@@ -44,7 +44,11 @@ public class BookItemView extends VBox {
 
         bookEntryTitle.setText(book.getTitle());
         bookEntryAuthor.setText(book.getAuthor());
-        bookEntryYearPublished.setText(String.valueOf(book.getYearPublished()));
+
+        final int yearPublished = book.getYearPublished();
+        if (yearPublished != Book.YEAR_PUBLISHED_MISSING) {
+            bookEntryYearPublished.setText(String.valueOf(yearPublished));
+        }
 
         Image bookImage;
         try {

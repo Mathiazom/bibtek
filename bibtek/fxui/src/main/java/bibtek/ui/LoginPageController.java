@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import bibtek.core.User;
-import bibtek.json.BooksAPIHandler;
 import bibtek.json.StorageHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

@@ -13,56 +13,85 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDate;
 
+/**
+ * Handler responsible for communicating with the Google Books API.
+ */
 public final class BooksAPIHandler {
 
     private static final String BOOKS_API_URI_PREFIX = "https://www.googleapis.com/books/v1/volumes?q=isbn:";
 
+    /**
+     * Request book data from Google Books API based on ISBN number.
+     *
+     * @param isbn Unique book identification
+     * @return Book loaded with the retrieved API data
+     * @throws IOException if the fetch request could not be created validly
+     * @throws InterruptedException if the fetch operation is interrupted
+     */
     public Book fetchBook(final String isbn) throws IOException, InterruptedException {
 
-        final HttpClient client = HttpClient.newHttpClient();
-
-        final HttpRequest request = HttpRequest.newBuilder(URI.create(getURIFromISBN(isbn)))
+        final HttpRequest fetchRequest = HttpRequest.newBuilder(URI.create(getFetchURIForISBN(isbn)))
                 .GET()
                 .header("accept", "application/json")
                 .build();
 
-        final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        final HttpClient client = HttpClient.newHttpClient();
 
-        final JsonObject responseObject = JsonParser.parseString(response.body()).getAsJsonObject();
+        final HttpResponse<String> fetchResponse = client.send(fetchRequest, HttpResponse.BodyHandlers.ofString());
 
-        final JsonObject bookItem = responseObject.get("items").getAsJsonArray().get(0).getAsJsonObject();
+        final JsonObject responseObject = JsonParser.parseString(fetchResponse.body()).getAsJsonObject();
 
-        final JsonObject volumeInfo = (JsonObject) bookItem.get("volumeInfo");
+        // Pick the first element from search results
+        final JsonObject bookObject = responseObject.get("items").getAsJsonArray().get(0).getAsJsonObject();
 
-        final String bookTitle = volumeInfo.get("title").getAsString();
-        final String bookAuthor = getAuthorsString(volumeInfo.get("authors").getAsJsonArray());
+        final JsonObject bookInfo = (JsonObject) bookObject.get("volumeInfo");
 
-        int bookPublished = -1;
+        final String bookTitle = bookInfo.get("title").getAsString();
+        final String bookAuthor = jsonArrayToSimpleString(bookInfo.get("authors").getAsJsonArray());
+        final String bookImgPath = bookInfo.get("imageLinks").getAsJsonObject().get("smallThumbnail").getAsString();
 
-        if(volumeInfo.get("publishedDate") != null){
-            final String bookPublishedString = volumeInfo.get("publishedDate").getAsString();
-            bookPublished = LocalDate.parse(bookPublishedString).getYear();
+        int bookYearPublished = Book.YEAR_PUBLISHED_MISSING;
+
+        // Check if publishing date is provided in the fetched data
+        final JsonElement publishedDateField = bookInfo.get("publishedDate");
+        if (publishedDateField != null) {
+            final String bookPublishedString = publishedDateField.getAsString();
+            bookYearPublished = LocalDate.parse(bookPublishedString).getYear();
         }
 
-        final String bookImgPath = volumeInfo.get("imageLinks").getAsJsonObject().get("smallThumbnail").getAsString();
-
-        return new Book(bookTitle, bookAuthor, bookPublished, bookImgPath);
+        return new Book(bookTitle, bookAuthor, bookYearPublished, bookImgPath);
 
     }
 
-    public String getURIFromISBN(final String isbn) {
+    /**
+     *
+     * Builds valid URI for fetching book data from Google Books API by ISBN.
+     *
+     * @param isbn Unique book identification
+     * @return URI as string
+     *
+     */
+    public String getFetchURIForISBN(final String isbn) {
 
         return BOOKS_API_URI_PREFIX + isbn;
 
     }
 
-    public String getAuthorsString(final JsonArray authors){
+    /**
+     *
+     * Parses a {@link JsonArray} and creates a comma separated string of elements.
+     *
+     * @param array Array with elements of type {@link JsonElement}
+     * @return string concatenation of {@link JsonElement} strings separated by comma.
+     *
+     */
+    public String jsonArrayToSimpleString(final JsonArray array) {
 
         final StringBuilder builder = new StringBuilder();
 
-        builder.append(authors.remove(0).getAsString());
+        builder.append(array.remove(0).getAsString());
 
-        for (final JsonElement author : authors) {
+        for (final JsonElement author : array) {
             builder.append(", ").append(author.getAsString());
         }
 

@@ -6,6 +6,9 @@ package bibtek.core;
  */
 public final class Book {
 
+    /** Constant to mark published year as missing from data. */
+    public static final int YEAR_PUBLISHED_MISSING = -1;
+
     private final String title;
 
     private final String author;
