@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import bibtek.core.User;
+import bibtek.json.BooksAPIHandler;
 import bibtek.json.StorageHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -43,6 +44,7 @@ public class LoginPageController implements Initializable {
      */
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
+
         createNewUserLabel.setOnMouseClicked((agent) -> this.createNewUser());
         try {
             storageHandler = new StorageHandler("target/user.json");

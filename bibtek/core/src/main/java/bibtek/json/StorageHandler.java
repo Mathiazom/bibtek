@@ -182,6 +182,32 @@ public final class StorageHandler {
                 )
         );
 
+        try {
+            library.addBookEntry(
+                    new BookEntry(
+                            new BooksAPIHandler().fetchBook("9780241242643"),
+                            LocalDate.now(),
+                            BookReadingState.ABANDONED
+                    )
+            );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            library.addBookEntry(
+                    new BookEntry(
+                            new BooksAPIHandler().fetchBook("9783944283111"),
+                            LocalDate.now(),
+                            BookReadingState.NOT_STARTED
+                    )
+            );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(library);
+
         final int dummyAge = 14;
 
         final User sigmund = new User("sigmund", dummyAge);
