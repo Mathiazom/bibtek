@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 <?import bibtek.ui.DigitsField?>
-<?import javafx.scene.image.ImageView?>
+
 <AnchorPane styleClass="mainPane" prefHeight="800.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="bibtek.ui.AddBookController">
     <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
@@ -45,8 +45,8 @@
         </AnchorPane>
         <VBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
             <VBox fx:id="addBookISBNContainer" managed="false" alignment="TOP_CENTER">
-                <HBox alignment="TOP_CENTER">
-                    <DigitsField fx:id="addBookISBNField"/>
+                <HBox alignment="CENTER">
+                    <DigitsField fx:id="addBookISBNField" promptText="ISBN"/>
                     <Button id="addBookISBNButton" mnemonicParsing="false" onAction="#handleLoadBookFromISBNInput">
                         <graphic>
                             <FontIcon iconLiteral="mdi-cloud-download"/>
@@ -110,7 +110,10 @@
                                         <FontIcon iconLiteral="mdi-calendar"/>
                                     </graphic>
                                 </Label>
-                                <DatePicker fx:id="addBookDatePicker" HBox.hgrow="ALWAYS" promptText="Date acquired"/>
+                                <VBox HBox.hgrow="ALWAYS">
+                                    <TextField fx:id="addBookDatePickerField" HBox.hgrow="ALWAYS" promptText="Date acquired" editable="false"/>
+                                    <DatePicker fx:id="addBookDatePicker" managed="false"/>
+                                </VBox>
                             </HBox>
                         </VBox>
 

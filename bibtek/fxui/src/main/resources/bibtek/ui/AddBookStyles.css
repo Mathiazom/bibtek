@@ -1,3 +1,7 @@
+.mainPane{
+    -fx-background-color: white;
+}
+
 ScrollPane Region{
     -fx-padding: 0 0 0 0;
 }
@@ -11,7 +15,7 @@ ScrollPane{
 }
 
 #inputContainerWrap{
-    -fx-background-color: #eee;
+    -fx-background-color: white;
 }
 
 #inputContainer{
@@ -19,13 +23,30 @@ ScrollPane{
     -fx-max-width: 500;
 }
 
-#inputContainer TextField, #inputContainer DigitsField, #addBookISBNField{
+#inputContainer TextField, #inputContainer DigitsField, #addBookISBNField, #addBookReadingStatusCombo{
 
     -fx-padding: 10 15 10 15;
     -fx-background-color: white;
     -fx-text-fill: #212121;
     -fx-font-size: 18;
+    -fx-background-radius: 5px;
 
+}
+
+#inputContainer TextField, #inputContainer DigitsField, #addBookReadingStatusCombo {
+
+    -fx-border-width: 2px;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 5px;
+
+}
+
+.combo-box-base{
+    -fx-padding: 0 !important;
+}
+
+#addBookISBNField{
+    -fx-background-color: white;
 }
 
 .inputSection{
@@ -43,13 +64,7 @@ ScrollPane{
     -fx-control-inner-background: white;
     -fx-faint-focus-color: white;
     -fx-text-fill: #212121;
-    -fx-font-size: 16;
-}
-
-#addBookReadingStatusCombo{
-    -fx-background-color: white;
-    -fx-text-fill: #212121;
-    -fx-font-size: 16;
+    -fx-font-size: 18;
 }
 
 #addBookISBNContainer{
@@ -79,7 +94,9 @@ ScrollPane{
 }
 
 .inputIcon{
-    -fx-padding: 5px 10px 5px 0;
+    -fx-padding: 5px 10px 5px 10px;
+    /*-fx-background-color: #ddd;
+    -fx-background-radius: 5px 0 0 5px;*/
 }
 
 .inputIcon FontIcon {

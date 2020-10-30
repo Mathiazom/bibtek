@@ -17,6 +17,7 @@ public final class ISBNUtils {
         final boolean validLength = VALID_ISBN_LENGTHS.contains(isbn.length());
 
         return onlyDigits && validLength;
+
     }
 
 }

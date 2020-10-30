@@ -10,12 +10,15 @@ import bibtek.json.StorageHandler;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.skin.DatePickerSkin;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -50,6 +53,9 @@ public final class AddBookController {
     DatePicker addBookDatePicker;
 
     @FXML
+    TextField addBookDatePickerField;
+
+    @FXML
     Label errorLabel;
 
     @FXML
@@ -60,7 +66,16 @@ public final class AddBookController {
     @FXML
     private void initialize() {
 
-        addBookReadingStatusCombo.setItems(FXCollections.observableArrayList(BookReadingState.values()));
+        setUpReadingStateDropDown();
+
+        setUpCustomDatePicker();
+
+        addBookISBNField.textProperty().addListener((observable, oldValue, newValue) -> errorLabelISBN.setManaged(false));
+
+    }
+
+    private void setUpReadingStateDropDown() {
+
         addBookReadingStatusCombo.setConverter(new StringConverter<>() {
             @Override
             public String toString(final BookReadingState readingState) {
@@ -72,11 +87,35 @@ public final class AddBookController {
                 return BookReadingState.fromString(s);
             }
         });
+        addBookReadingStatusCombo.setItems(FXCollections.observableArrayList(BookReadingState.values()));
         addBookReadingStatusCombo.getSelectionModel().selectFirst();
 
-        addBookISBNField.textProperty().addListener((observable, oldValue, newValue) -> {
-            errorLabelISBN.setManaged(false);
+    }
+
+    private void setUpCustomDatePicker() {
+
+        final DatePickerSkin datePickerSkin = new DatePickerSkin(addBookDatePicker);
+
+        addBookDatePickerField.focusedProperty().addListener((observableValue, a, focused) -> {
+            if (focused) {
+                showDatePicker();
+                datePickerSkin.getDisplayNode().requestFocus();
+            }
         });
+
+        final TextField addBookDatePickerOutput = ((TextField) datePickerSkin.getDisplayNode());
+        addBookDatePickerField.textProperty().bind(addBookDatePickerOutput.textProperty());
+
+    }
+
+    private void showDatePicker() {
+
+        final DatePickerSkin datePickerSkin = new DatePickerSkin(addBookDatePicker);
+
+        datePickerSkin.show();
+        final Node datePickerNode = datePickerSkin.getPopupContent();
+        final Bounds dateFieldBounds = addBookDatePickerField.getLayoutBounds();
+        datePickerNode.relocate(dateFieldBounds.getMinX(), dateFieldBounds.getMaxY());
 
     }
 
