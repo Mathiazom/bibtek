@@ -7,11 +7,11 @@ import java.time.LocalDate;
  */
 public final class BookEntry {
 
-    private final Book book;
+    private Book book;
 
-    private final LocalDate dateAcquired;
+    private LocalDate dateAcquired;
 
-    private final BookReadingState readingState;
+    private BookReadingState readingState;
 
     /**
      *
@@ -32,6 +32,10 @@ public final class BookEntry {
         return book;
     }
 
+    public void setBook(final Book b) {
+        this.book = b;
+    }
+
     /**
      * @return the date the book was acquired
      */
@@ -39,11 +43,19 @@ public final class BookEntry {
         return dateAcquired;
     }
 
+    public void setDateAcquired(final LocalDate da) {
+        this.dateAcquired = da;
+    }
+
     /**
      * @return the reading status of the book
      */
     public BookReadingState getReadingState() {
         return readingState;
+    }
+
+    public void setReadingState(final BookReadingState state) {
+        this.readingState = state;
     }
 
     /**

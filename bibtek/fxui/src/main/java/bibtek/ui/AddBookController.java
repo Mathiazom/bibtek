@@ -1,29 +1,20 @@
 package bibtek.ui;
 
+import java.io.IOException;
+
 import bibtek.core.Book;
 import bibtek.core.BookEntry;
-import bibtek.core.BookReadingState;
 import bibtek.core.User;
 import bibtek.json.BooksAPIHandler;
 import bibtek.json.ISBNUtils;
 import bibtek.json.StorageHandler;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
-import javafx.scene.Node;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.skin.DatePickerSkin;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 
-import java.io.IOException;
-
-public final class AddBookController extends SceneChangerController {
+public final class AddBookController extends BaseBookController {
 
     @FXML
     VBox addBookISBNContainer;
@@ -35,83 +26,13 @@ public final class AddBookController extends SceneChangerController {
     Label errorLabelISBN;
 
     @FXML
-    TextField addBookTitleField;
+    @Override
+    protected void initialize() {
 
-    @FXML
-    TextField addBookAuthorField;
-
-    @FXML
-    DigitsField addBookYearPublishedField;
-
-    @FXML
-    TextField addBookImagePathField;
-
-    @FXML
-    DatePicker addBookDatePicker;
-
-    @FXML
-    TextField addBookDatePickerField;
-
-    @FXML
-    Label errorLabel;
-
-    @FXML
-    ComboBox<BookReadingState> addBookReadingStatusCombo;
-
-    @FXML
-    private void initialize() {
-
-        setUpReadingStateDropDown();
-
-        setUpCustomDatePicker();
+        super.initialize();
 
         addBookISBNField.textProperty()
                 .addListener((observable, oldValue, newValue) -> errorLabelISBN.setManaged(false));
-
-    }
-
-    private void setUpReadingStateDropDown() {
-
-        addBookReadingStatusCombo.setConverter(new StringConverter<>() {
-            @Override
-            public String toString(final BookReadingState readingState) {
-                return readingState.toString();
-            }
-
-            @Override
-            public BookReadingState fromString(final String s) {
-                return BookReadingState.fromString(s);
-            }
-        });
-        addBookReadingStatusCombo.setItems(FXCollections.observableArrayList(BookReadingState.values()));
-        addBookReadingStatusCombo.getSelectionModel().selectFirst();
-
-    }
-
-    private void setUpCustomDatePicker() {
-
-        final DatePickerSkin datePickerSkin = new DatePickerSkin(addBookDatePicker);
-
-        addBookDatePickerField.focusedProperty().addListener((observableValue, a, focused) -> {
-            if (focused) {
-                showDatePicker();
-                datePickerSkin.getDisplayNode().requestFocus();
-            }
-        });
-
-        final TextField addBookDatePickerOutput = ((TextField) datePickerSkin.getDisplayNode());
-        addBookDatePickerField.textProperty().bind(addBookDatePickerOutput.textProperty());
-
-    }
-
-    private void showDatePicker() {
-
-        final DatePickerSkin datePickerSkin = new DatePickerSkin(addBookDatePicker);
-
-        datePickerSkin.show();
-        final Node datePickerNode = datePickerSkin.getPopupContent();
-        final Bounds dateFieldBounds = addBookDatePickerField.getLayoutBounds();
-        datePickerNode.relocate(dateFieldBounds.getMinX(), dateFieldBounds.getMaxY());
 
     }
 
@@ -126,6 +47,7 @@ public final class AddBookController extends SceneChangerController {
         );
 
         final User user = getUser();
+
         user.getLibrary().addBookEntry(bookEntry);
 
         final StorageHandler storageHandler = new StorageHandler();
@@ -160,20 +82,6 @@ public final class AddBookController extends SceneChangerController {
             return;
         }
         loadBookInput(bookFromISBN);
-
-    }
-
-    private void loadBookInput(final Book book) {
-
-        addBookTitleField.setText(book.getTitle());
-
-        addBookAuthorField.setText(book.getAuthor());
-
-        if (book.getYearPublished() != Book.YEAR_PUBLISHED_MISSING) {
-            addBookYearPublishedField.setText(String.valueOf(book.getYearPublished()));
-        }
-
-        addBookImagePathField.setText(book.getImgPath());
 
     }
 

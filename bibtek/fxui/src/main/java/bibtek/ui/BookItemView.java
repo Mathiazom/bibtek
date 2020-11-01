@@ -1,5 +1,7 @@
 package bibtek.ui;
 
+import java.io.IOException;
+
 import bibtek.core.Book;
 import bibtek.core.BookEntry;
 import javafx.fxml.FXML;
@@ -37,8 +39,7 @@ public class BookItemView extends VBox {
      */
     public BookItemView(final BookEntry bookEntry) {
 
-        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-                "/bibtek/ui/BookItemView.fxml"));
+        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/BookItemView.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
@@ -67,6 +68,5 @@ public class BookItemView extends VBox {
         bookEntryImage.setImage(bookImage);
 
     }
-
 
 }

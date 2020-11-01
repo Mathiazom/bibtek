@@ -28,7 +28,6 @@ public final class Library {
             throw new IllegalArgumentException("The book entry has illegal formatting!");
         }
         bookEntries.add(bookEntry);
-
     }
 
     /**

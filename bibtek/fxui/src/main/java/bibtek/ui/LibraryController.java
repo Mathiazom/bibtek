@@ -30,6 +30,27 @@ public final class LibraryController extends SceneChangerController {
 
     }
 
+    private void viewBook(final BookEntry bookEntry) {
+
+        ViewBookController controller;
+
+        final Stage stage = (Stage) addBookButton.getScene().getWindow();
+        final Parent root;
+        try {
+            final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/ViewBook.fxml"));
+            root = fxmlLoader.load();
+            final Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+            controller = fxmlLoader.getController();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        controller.update(bookEntry, user);
+
+    }
+
     /**
      * Updates who the user is, and displays the updated library. Overrides the
      * standard SceneChangerControllers update(User) method.
@@ -43,8 +64,13 @@ public final class LibraryController extends SceneChangerController {
 
         // Display book entries in list view
         libraryList.getItems().setAll(
-                // Convert list of book entries to list of strings
-                bookEntrySet.stream().map(BookItemView::new).collect(Collectors.toList()));
+                // Convert list of book entries to list of BookItemViews
+                // with attached click listener
+                bookEntrySet.stream().map(bookEntry -> {
+                    final BookItemView bookItemView = new BookItemView(bookEntry);
+                    bookItemView.setOnMouseClicked((event) -> viewBook(bookEntry));
+                    return bookItemView;
+                }).collect(Collectors.toList()));
     }
 
 }
