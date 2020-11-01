@@ -1,3 +1,7 @@
+*{
+    -fx-font-family: sans-serif;
+}
+
 .mainPane{
     -fx-background-color: #eee;
 }
