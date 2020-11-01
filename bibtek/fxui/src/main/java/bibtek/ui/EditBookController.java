@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import bibtek.core.Book;
 import bibtek.core.BookEntry;
+import bibtek.core.BookReadingState;
 import bibtek.core.User;
 import bibtek.json.StorageHandler;
 import javafx.fxml.FXML;
@@ -12,14 +13,22 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public final class EditBookController extends BaseBookController {
+
+    @FXML
+    DatePicker addBookDatePicker;
+
+    @FXML
+    ComboBox<BookReadingState> addBookReadingStatusCombo;
 
     private BookEntry bookEntry;
 
@@ -113,7 +122,17 @@ public final class EditBookController extends BaseBookController {
 
         this.bookEntry = b;
 
+        loadBookEntryInput();
+
+    }
+
+    private void loadBookEntryInput() {
+
         loadBookInput(bookEntry.getBook());
+
+        addBookDatePicker.setValue(bookEntry.getDateAcquired());
+
+        addBookReadingStatusCombo.getSelectionModel().select(bookEntry.getReadingState());
 
     }
 
