@@ -181,7 +181,9 @@ public final class AddBookController {
 
         addBookAuthorField.setText(book.getAuthor());
 
-        addBookYearPublishedField.setText(String.valueOf(book.getYearPublished()));
+        if (book.getYearPublished() != Book.YEAR_PUBLISHED_MISSING) {
+            addBookYearPublishedField.setText(String.valueOf(book.getYearPublished()));
+        }
 
         addBookImagePathField.setText(book.getImgPath());
 

@@ -43,7 +43,7 @@ public final class BooksAPIHandler {
         final JsonObject responseObject = JsonParser.parseString(fetchResponse.body()).getAsJsonObject();
 
         // Make sure there is at least one search result
-        if (responseObject.get("totalItems").getAsInt() == 0) {
+        if (responseObject.get("totalItems").getAsInt() == 0 || responseObject.get("items") == null) {
             return null;
         }
 
@@ -51,9 +51,22 @@ public final class BooksAPIHandler {
         final JsonObject bookObject = responseObject.get("items").getAsJsonArray().get(0).getAsJsonObject();
 
         final JsonObject bookInfo = (JsonObject) bookObject.get("volumeInfo");
+        if (bookInfo == null) {
+            // No volume info found, abort
+            return null;
+        }
 
-        final String bookTitle = bookInfo.get("title").getAsString();
-        final String bookAuthor = jsonArrayToSimpleString(bookInfo.get("authors").getAsJsonArray());
+        final JsonElement bookTitleElement = bookInfo.get("title");
+        String bookTitle = "";
+        if (bookTitleElement != null) {
+            bookTitle = bookTitleElement.getAsString();
+        }
+
+        final JsonElement bookAuthorElement = bookInfo.get("authors");
+        String bookAuthor = "";
+        if (bookAuthorElement != null) {
+            bookAuthor = jsonArrayToSimpleString(bookAuthorElement.getAsJsonArray());
+        }
 
         String bookImgPath = "";
         try {

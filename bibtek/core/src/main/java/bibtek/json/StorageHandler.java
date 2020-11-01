@@ -206,8 +206,6 @@ public final class StorageHandler {
             e.printStackTrace();
         }
 
-        System.out.println(library);
-
         final int dummyAge = 14;
 
         final User sigmund = new User("sigmund", dummyAge);
