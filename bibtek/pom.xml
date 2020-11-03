@@ -130,7 +130,7 @@
                     </executions>
                 </plugin>
 
-                <!-- Configure jacoco code coverage -->
+                               <!-- Computing test coverage -->
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
@@ -141,11 +141,11 @@
                     <executions>
                         <execution>
                             <id>jacoco-prepare-agent</id>
-                            <phase>process-test-classes</phase>
                             <goals>
                                 <goal>prepare-agent</goal>
                             </goals>
                         </execution>
+                        <!-- Generate individual reports for test -->
                         <execution>
                             <id>jacoco-report</id>
                             <phase>test</phase>
@@ -165,6 +165,8 @@
         <module>fxui</module>
         <module>restapi</module>
         <module>restserver</module>
+        <module>aggregator</module>
+
     </modules>
 
 </project>
