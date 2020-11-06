@@ -9,7 +9,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
-final class LocalDateDeserializer implements JsonDeserializer<LocalDate> {
+public final class LocalDateDeserializer implements JsonDeserializer<LocalDate> {
 
     @Override
     public LocalDate deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context)

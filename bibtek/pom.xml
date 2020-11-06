@@ -1,159 +1,289 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+      
+  <modelVersion>4.0.0</modelVersion>
+      
+  <groupId>it1901.bibtek</groupId>
+      
+  <artifactId>parent</artifactId>
+      
+  <version>0.0.1-SNAPSHOT</version>
+      
+  <packaging>pom</packaging>
+      
+  <properties>
+            
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+            
+    <fast>false</fast>
+        
+  </properties>
+      
+  <dependencyManagement>
+            
+    <dependencies>
+                  
+      <dependency>
+                        
+        <groupId>org.junit.jupiter</groupId>
+                        
+        <artifactId>junit-jupiter-api</artifactId>
+                        
+        <version>5.7.0</version>
+                        
+        <scope>test</scope>
+                    
+      </dependency>
+                  
+      <dependency>
+                        
+        <groupId>org.junit.jupiter</groupId>
+                        
+        <artifactId>junit-jupiter-engine</artifactId>
+                        
+        <version>5.7.0</version>
+                        
+        <scope>test</scope>
+                    
+      </dependency>
+                  
+      <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+                  
+      <dependency>
+                        
+        <groupId>org.mockito</groupId>
+                        
+        <artifactId>mockito-core</artifactId>
+                        
+        <version>3.6.0</version>
+                        
+        <scope>test</scope>
+                    
+      </dependency>
+                  
+      <!-- https://mvnrepository.com/artifact/org.testfx/openjfx-monocle -->
+                  
+      <dependency>
+                        
+        <groupId>org.testfx</groupId>
+                        
+        <artifactId>openjfx-monocle</artifactId>
+                        
+        <version>jdk-12.0.1+2</version>
+                        
+        <scope>test</scope>
+                    
+      </dependency>
+              
+    </dependencies>
+        
+  </dependencyManagement>
+      
+  <build>
+            
+    <pluginManagement>
+                  
+      <plugins>
+                        
+        <!-- Compiling code -->
+                        
+        <plugin>
+                              
+          <artifactId>maven-compiler-plugin</artifactId>
+                              
+          <version>3.8.1</version>
+                              
+          <configuration>
+                                    
+            <encoding>UTF-8</encoding>
+                                    
+            <release>14</release>
+                                
+          </configuration>
+                          
+        </plugin>
+                        
+        <!-- Running tests -->
+                        
+        <plugin>
+                              
+          <groupId>org.apache.maven.plugins</groupId>
+                              
+          <artifactId>maven-surefire-plugin</artifactId>
+                              
+          <version>3.0.0-M5</version>
+                              
+          <configuration>
+                                    
+            <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                                    
+            <argLine>@{argLine} --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED --add-exports javafx.graphics/com.sun.glass.ui=ALL-UNNAMED --add-opens javafx.graphics/com.sun.glass.ui=ALL-UNNAMED -Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw</argLine>
+                                    
+            <!-- Replace above with below for running non-headless (useful on Windows) -->
+                                    
+            <!--<argLine>${argLine} &#45;&#45;add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</argLine>-->
+                                    
+            <skip>${fast}</skip>
+                                
+          </configuration>
+                          
+        </plugin>
+                        
+        <!-- Run the checkstyle code quality tool -->
+                        
+        <plugin>
+                              
+          <groupId>org.apache.maven.plugins</groupId>
+                              
+          <artifactId>maven-checkstyle-plugin</artifactId>
+                              
+          <version>3.1.1</version>
+                              
+          <configuration>
+                                    
+            <configLocation>checkstyle.xml</configLocation>
+                                    
+            <encoding>UTF-8</encoding>
+                                    
+            <consoleOutput>true</consoleOutput>
+                                    
+            <failsOnError>true</failsOnError>
+                                    
+            <linkXRef>false</linkXRef>
+                                    
+            <skip>${fast}</skip>
+                                
+          </configuration>
+                              
+          <executions>
+                                    
+            <execution>
+                                          
+              <id>checkstyle-check</id>
+                                          
+              <phase>verify</phase>
+                                          
+              <goals>
+                                                
+                <goal>check</goal>
+                                            
+              </goals>
+                                      
+            </execution>
+                                
+          </executions>
+                          
+        </plugin>
+                        
+        <!-- Run the spotbugs code quality tool -->
+                        
+        <plugin>
+                              
+          <groupId>com.github.spotbugs</groupId>
+                              
+          <artifactId>spotbugs-maven-plugin</artifactId>
+                              
+          <version>4.1.4</version>
+                              
+          <configuration>
+                                    
+            <xmlOutput>false</xmlOutput>
+                                    
+            <htmlOutput>true</htmlOutput>
+                                    
+            <skip>${fast}</skip>
+                                
+          </configuration>
+                              
+          <executions>
+                                    
+            <execution>
+                                          
+              <id>spotbugs-check</id>
+                                          
+              <phase>verify</phase>
+                                          
+              <goals>
+                                                
+                <goal>check</goal>
+                                            
+              </goals>
+                                      
+            </execution>
+                                
+          </executions>
+                          
+        </plugin>
+                        
+        <!-- Configure jacoco code coverage -->
+                        
+        <plugin>
+                              
+          <groupId>org.jacoco</groupId>
+                              
+          <artifactId>jacoco-maven-plugin</artifactId>
+                              
+          <version>0.8.6</version>
+                              
+          <configuration>
+                                    
+            <skip>${fast}</skip>
+                                
+          </configuration>
+                              
+          <executions>
+                                    
+            <execution>
+                                          
+              <id>jacoco-prepare-agent</id>
+                                          
+              <phase>process-test-classes</phase>
+                                          
+              <goals>
+                                                
+                <goal>prepare-agent</goal>
+                                            
+              </goals>
+                                      
+            </execution>
+                                    
+            <execution>
+                                          
+              <id>jacoco-report</id>
+                                          
+              <phase>test</phase>
+                                          
+              <goals>
+                                                
+                <goal>report</goal>
+                                            
+              </goals>
+                                      
+            </execution>
+                                
+          </executions>
+                          
+        </plugin>
+                    
+      </plugins>
+              
+    </pluginManagement>
+        
+  </build>
+      
+  <modules>
+            
+    <module>core</module>
+            
+    <module>fxui</module>
 
-    <groupId>it1901.bibtek</groupId>
-    <artifactId>parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <module>restapi</module>
 
-    <packaging>pom</packaging>
+    <module>restserver</module>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <fast>false</fast>
-    </properties>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-api</artifactId>
-                <version>5.7.0</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-engine</artifactId>
-                <version>5.7.0</version>
-                <scope>test</scope>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
-            <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-core</artifactId>
-                <version>3.6.0</version>
-                <scope>test</scope>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/org.testfx/openjfx-monocle -->
-            <dependency>
-                <groupId>org.testfx</groupId>
-                <artifactId>openjfx-monocle</artifactId>
-                <version>jdk-12.0.1+2</version>
-                <scope>test</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
-    <build>
-        <pluginManagement>
-            <plugins>
 
-                <!-- Compiling code -->
-                <plugin>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.1</version>
-                    <configuration>
-                        <encoding>UTF-8</encoding>
-                        <release>14</release>
-                    </configuration>
-                </plugin>
-
-                <!-- Running tests -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.0.0-M5</version>
-                    <configuration>
-                        <redirectTestOutputToFile>true</redirectTestOutputToFile>
-
-                        <argLine>@{argLine} --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED --add-exports javafx.graphics/com.sun.glass.ui=ALL-UNNAMED --add-opens javafx.graphics/com.sun.glass.ui=ALL-UNNAMED -Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw</argLine>
-
-                        <!-- Replace above with below for running non-headless (useful on Windows) -->
-                        <!--<argLine>${argLine} &#45;&#45;add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</argLine>-->
-
-                        <skip>${fast}</skip>
-
-                    </configuration>
-                </plugin>
-
-                <!-- Run the checkstyle code quality tool -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>3.1.1</version>
-                    <configuration>
-                        <configLocation>checkstyle.xml</configLocation>
-                        <encoding>UTF-8</encoding>
-                        <consoleOutput>true</consoleOutput>
-                        <failsOnError>true</failsOnError>
-                        <linkXRef>false</linkXRef>
-                        <skip>${fast}</skip>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>checkstyle-check</id>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-
-                <!-- Run the spotbugs code quality tool -->
-                <plugin>
-                    <groupId>com.github.spotbugs</groupId>
-                    <artifactId>spotbugs-maven-plugin</artifactId>
-                    <version>4.1.4</version>
-                    <configuration>
-                        <xmlOutput>false</xmlOutput>
-                        <htmlOutput>true</htmlOutput>
-                        <skip>${fast}</skip>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>spotbugs-check</id>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-
-                <!-- Configure jacoco code coverage -->
-                <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.8.6</version>
-                    <configuration>
-                        <skip>${fast}</skip>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>jacoco-prepare-agent</id>
-                            <phase>process-test-classes</phase>
-                            <goals>
-                                <goal>prepare-agent</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>jacoco-report</id>
-                            <phase>test</phase>
-                            <goals>
-                                <goal>report</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
-
-    <modules>
-        <module>core</module>
-        <module>fxui</module>
-    </modules>
-
+  </modules>
+  
 </project>

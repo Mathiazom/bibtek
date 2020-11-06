@@ -9,7 +9,7 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-final class LocalDateSerializer implements JsonSerializer<LocalDate> {
+public final class LocalDateSerializer implements JsonSerializer<LocalDate> {
 
     @Override
     public JsonElement serialize(final LocalDate date, final Type typeOfSrc, final JsonSerializationContext context) {

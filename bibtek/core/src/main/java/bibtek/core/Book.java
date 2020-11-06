@@ -64,15 +64,10 @@ public final class Book {
         if (obj == null) {
             return false;
         }
-        if (!(obj.getClass().equals(this.getClass()))) {
-            return false;
-        } else {
-            if (this.toString().equals(((Book) obj).toString())) {
-                return true;
-            }
-            return false;
-
+        if (obj.getClass().equals(this.getClass())) {
+            return this.toString().equals(((Book) obj).toString());
         }
+        return false;
 
     }
 

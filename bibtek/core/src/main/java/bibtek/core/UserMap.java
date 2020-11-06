@@ -1,0 +1,64 @@
+package bibtek.core;
+
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+public final class UserMap implements Iterable<User> {
+
+    private final Map<String, User> users = new LinkedHashMap<>();
+
+    @Override
+    public Iterator<User> iterator() {
+        return users.values().iterator();
+    }
+
+    /**
+     * Checks if this UserMap already has a User with the provided username.
+     *
+     * @param username the username to check
+     * @return true if a User with the provided name exists, false otherwise
+     */
+    public boolean hasUser(final String username) {
+        return users.containsKey(username);
+    }
+
+
+    /**
+     * Adds the TodoList to this TodoModel.
+     *
+     * @param user the TodoList
+     * @throws IllegalArgumentException if the user's name is invalid
+     */
+    public void addUser(final User user) {
+        users.put(user.getUserName(), user);
+    }
+
+    public void removeUser(final User user) {
+        users.remove(user.getUserName());
+    }
+
+    /**
+     * Gets the TodoList with the provided username.
+     *
+     * @param username the username
+     * @return the TodoList with the provided username
+     */
+    public User getUser(final String username) {
+        return users.get(username);
+    }
+
+    /**
+     * Replaces an existing User with the same username, or adds it.
+     *
+     * @param user the User
+     * @return the replaced User, or null
+     */
+    public User putUser(final User user) {
+        return users.put(user.getUserName(), user);
+    }
+
+
+
+
+}

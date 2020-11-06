@@ -75,15 +75,10 @@ public final class BookEntry {
         if (obj == null) {
             return false;
         }
-        if (!(obj.getClass().equals(this.getClass()))) {
-            return false;
-        } else {
-            if (this.toString().equals(((BookEntry) obj).toString())) {
-                return true;
-            }
-            return false;
-
+        if (obj.getClass().equals(this.getClass())) {
+            return this.toString().equals(((BookEntry) obj).toString());
         }
+        return false;
     }
 
     @Override

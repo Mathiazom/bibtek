@@ -19,7 +19,7 @@ public enum BookReadingState {
      */
     ABANDONED("Abandoned");
 
-    private String s;
+    private final String s;
 
     BookReadingState(final String s) {
         this.s = s;

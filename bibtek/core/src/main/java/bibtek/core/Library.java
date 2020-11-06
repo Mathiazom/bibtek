@@ -9,7 +9,7 @@ import java.util.Set;
  */
 public final class Library {
 
-    private Set<BookEntry> bookEntries;
+    private final Set<BookEntry> bookEntries;
 
     /**
      * Initializing an empty library.
