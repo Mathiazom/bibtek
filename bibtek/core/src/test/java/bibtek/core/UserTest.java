@@ -2,32 +2,16 @@ package bibtek.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.time.LocalDate;
-
 import org.junit.jupiter.api.Test;
 
 public class UserTest {
-    private final LocalDate someDate = LocalDate.of(2020, 9, 27);
-    private final int joyceDate = 1939;
-    private final int orwellDate = 1948;
-    private final int dostoDate = 1866;
-    private final int chriDate = 2016;
-    private final Book book1 = new Book("Finnegan's Wake", "James Joyce", joyceDate);
-    private final Book book2 = new Book("1984", "George Orwell", orwellDate);
-    private final Book book3 = new Book("Crime and Punishment", "Fjodor Dostojevskij", dostoDate);
-    private final Book book4 = new Book("Algorithms to Live by", "Brian Christian", chriDate);
-    private final BookEntry bookEntry1 = new BookEntry(book1, someDate, BookReadingState.NOT_STARTED);
-    private final BookEntry bookEntry2 = new BookEntry(book2, someDate, BookReadingState.COMPLETED);
-    private final BookEntry bookEntry3 = new BookEntry(book3, someDate, BookReadingState.READING);
-    private final BookEntry bookEntry4 = new BookEntry(book4, someDate, BookReadingState.ABANDONED);
-
     @Test
     public void fullConstructorTest() {
         Library lib = new Library();
-        lib.addBookEntry(bookEntry1);
-        lib.addBookEntry(bookEntry2);
-        lib.addBookEntry(bookEntry3);
-        lib.addBookEntry(bookEntry4);
+        lib.addBookEntry(TestConstants.BOOK_ENTRY1);
+        lib.addBookEntry(TestConstants.BOOK_ENTRY2);
+        lib.addBookEntry(TestConstants.BOOK_ENTRY3);
+        lib.addBookEntry(TestConstants.BOOK_ENTRY4);
         final int age = 12;
         User user1 = new User("Name", age, lib);
         String expected = "user: { \n" + "userName: Name\n" + "age: 12\n" + "library: bookEntries: { \n"

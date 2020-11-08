@@ -2,20 +2,34 @@ package bibtek.json;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.File;
+import java.io.IOException;
+
+import bibtek.core.Library;
+import bibtek.core.User;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 public class StorageHandlerTest {
     /**
      * Set the storage handler.
      */
     private LocalStorageHandler sh;
 
-    /*
-     * The storgaHandler should be emtied before each test.
+    /**
+     * Initilize he storage hanlder with a temporary file.
      */
-    /*
-     * @BeforeEach public void clearStorageHanndler() { try { sh = new
-     * StorageHandler("target/testLibrary.json"); sh.storeUser(null); } catch
-     * (IOException e) { e.printStackTrace(); } }
-     */
+    @BeforeEach
+    public void intitilizeStorageHandler() {
+
+        try {
+            File tempFile = File.createTempFile("testLibrary", ".json");
+            sh = new StorageHandler(tempFile.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Test the fetchBookEntries method.
@@ -38,6 +52,12 @@ public class StorageHandlerTest {
         } catch (IOException e) {
             // Succeeds
         }*/
+    }
+
+    @Test
+    public void storeUserLocallyTest() {
+        Library lib = new Library();
+
     }
 
 }

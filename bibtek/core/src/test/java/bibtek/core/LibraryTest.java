@@ -2,26 +2,11 @@ package bibtek.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 public class LibraryTest {
-    // constants
-    private final LocalDate someDate = LocalDate.of(2020, 9, 27);
-    private final int joyceDate = 1939;
-    private final int orwellDate = 1948;
-    private final int dostoDate = 1866;
-    private final int chriDate = 2016;
-    private final Book book1 = new Book("Finnegan's Wake", "James Joyce", joyceDate);
-    private final Book book2 = new Book("1984", "George Orwell", orwellDate);
-    private final Book book3 = new Book("Crime and Punishment", "Fjodor Dostojevskij", dostoDate);
-    private final Book book4 = new Book("Algorithms to Live by", "Brian Christian", chriDate);
-    private final BookEntry bookEntry1 = new BookEntry(book1, someDate, BookReadingState.NOT_STARTED);
-    private final BookEntry bookEntry2 = new BookEntry(book2, someDate, BookReadingState.COMPLETED);
-    private final BookEntry bookEntry3 = new BookEntry(book3, someDate, BookReadingState.READING);
-    private final BookEntry bookEntry4 = new BookEntry(book4, someDate, BookReadingState.ABANDONED);
 
     /**
      * Testing if the toString method returns excpected string.
@@ -29,10 +14,10 @@ public class LibraryTest {
     @Test
     public void toStringTest() {
         Library lib = new Library();
-        lib.addBookEntry(bookEntry1);
-        lib.addBookEntry(bookEntry2);
-        lib.addBookEntry(bookEntry3);
-        lib.addBookEntry(bookEntry4);
+        lib.addBookEntry(TestConstants.BOOK_ENTRY1);
+        lib.addBookEntry(TestConstants.BOOK_ENTRY2);
+        lib.addBookEntry(TestConstants.BOOK_ENTRY3);
+        lib.addBookEntry(TestConstants.BOOK_ENTRY4);
         String actualString = lib.toString();
         String expectedString = "bookEntries: { \n" + "bookEntry: { title: Finnegan's Wake, author: James Joyce, "
                 + "yearPublished: 1939, dateAcquired: 2020-09-27, readingState: NOT_STARTED },\n"
@@ -58,16 +43,16 @@ public class LibraryTest {
     public void removeBookEntryTest() {
         // create library with one less book than in bookEntries
         Library libk = new Library();
-        libk.addBookEntry(bookEntry1);
-        libk.addBookEntry(bookEntry2);
-        libk.addBookEntry(bookEntry3);
+        libk.addBookEntry(TestConstants.BOOK_ENTRY1);
+        libk.addBookEntry(TestConstants.BOOK_ENTRY2);
+        libk.addBookEntry(TestConstants.BOOK_ENTRY3);
         // create full library
         Library lib2 = new Library();
-        lib2.addBookEntry(bookEntry1);
-        lib2.addBookEntry(bookEntry2);
-        lib2.addBookEntry(bookEntry3);
-        lib2.addBookEntry(bookEntry4);
-        lib2.removeBookEntry(bookEntry4);
+        lib2.addBookEntry(TestConstants.BOOK_ENTRY1);
+        lib2.addBookEntry(TestConstants.BOOK_ENTRY2);
+        lib2.addBookEntry(TestConstants.BOOK_ENTRY3);
+        lib2.addBookEntry(TestConstants.BOOK_ENTRY4);
+        lib2.removeBookEntry(TestConstants.BOOK_ENTRY4);
         assertEquals(libk.getBookEntries(), lib2.getBookEntries(), "removeBookEntry() did not work");
     }
 
@@ -79,8 +64,8 @@ public class LibraryTest {
         // Testing if it throws illegalArgumentException when not not valid entry
         // Creating invalid BookEntry
         // Also isValidBookEntry is tested here, as it is a private method
-        Book bookNullTitle = new Book(null, "Brian Christian", chriDate);
-        Book bookNullAuthor = new Book("Algorithms to Live by", null, chriDate);
+        Book bookNullTitle = new Book(null, "Brian Christian", TestConstants.CHRI_DATE);
+        Book bookNullAuthor = new Book("Algorithms to Live by", null, TestConstants.CHRI_DATE);
         Book bookNull = null;
         BookEntry bookEntryNull = null;
         Library lib1 = new Library();
@@ -93,44 +78,44 @@ public class LibraryTest {
         }
         // Testing for a BookEntry with a null as Book
         try {
-            lib1.addBookEntry(new BookEntry(bookNull, someDate, BookReadingState.NOT_STARTED));
+            lib1.addBookEntry(new BookEntry(bookNull, TestConstants.SOME_DATE, BookReadingState.NOT_STARTED));
             fail("Should throw IllegalArgumentException when Book is null");
         } catch (IllegalArgumentException e) {
             // Succeeds
         }
         // Testing for a BookEntry with a null as date
         try {
-            lib1.addBookEntry(new BookEntry(book4, null, BookReadingState.NOT_STARTED));
+            lib1.addBookEntry(new BookEntry(TestConstants.BOOK4, null, BookReadingState.NOT_STARTED));
             fail("Should throw IllegalArgumentException when dateAquired is null");
         } catch (IllegalArgumentException e) {
             // Succeeds
         }
         // Testing for a BookEntry with a null as readingState
         try {
-            lib1.addBookEntry(new BookEntry(book4, someDate, null));
+            lib1.addBookEntry(new BookEntry(TestConstants.BOOK4, TestConstants.SOME_DATE, null));
             fail("Should throw IllegalArgumentException when readingState is null");
         } catch (IllegalArgumentException e) {
             // Succeeds
         }
         // Testing for a BookEntry with a null as author
         try {
-            lib1.addBookEntry(new BookEntry(bookNullAuthor, someDate, BookReadingState.NOT_STARTED));
+            lib1.addBookEntry(new BookEntry(bookNullAuthor, TestConstants.SOME_DATE, BookReadingState.NOT_STARTED));
             fail("Should throw IllegalArgumentException when author of the book is null");
         } catch (IllegalArgumentException e) {
             // Succeeds
         }
         // Testing for a BookEntry with a null as title
         try {
-            lib1.addBookEntry(new BookEntry(bookNullTitle, someDate, BookReadingState.NOT_STARTED));
+            lib1.addBookEntry(new BookEntry(bookNullTitle, TestConstants.SOME_DATE, BookReadingState.NOT_STARTED));
             fail("Should throw IllegalArgumentException when title of the book is null");
         } catch (IllegalArgumentException e) {
             // Succeeds
         }
         Library lib2 = new Library();
         // Testing if it adds the bookEntry to bookEntries
-        lib2.addBookEntry(bookEntry1);
+        lib2.addBookEntry(TestConstants.BOOK_ENTRY1);
         Set<BookEntry> expected = new HashSet<>();
-        expected.add(bookEntry1);
+        expected.add(TestConstants.BOOK_ENTRY1);
         assertEquals(expected, lib2.getBookEntries(),
                 "The book entries in the library was not as expected after addBookEntry() on lib1");
     }
