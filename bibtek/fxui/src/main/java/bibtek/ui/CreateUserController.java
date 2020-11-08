@@ -99,7 +99,7 @@ public class CreateUserController extends SceneChangerController implements Init
         try {
             User user = new User(userName1, age);
             StorageHandler storageHandler = new StorageHandler();
-            storageHandler.storeUserInRemote(user);
+            storageHandler.putUser(user);
         } catch (IOException e) {
             errorLabel.setText(e.getMessage());
             errorLabel.setTextFill(Color.RED);

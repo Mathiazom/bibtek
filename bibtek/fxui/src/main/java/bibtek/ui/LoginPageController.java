@@ -2,7 +2,6 @@ package bibtek.ui;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import bibtek.json.StorageHandler;
@@ -53,21 +52,19 @@ public class LoginPageController extends SceneChangerController implements Initi
      */
     @FXML
     public void logIn() {
-        List<String> usernames = storageHandler.fetchAllUserNamesFromRemote();
-        String name = userNameInput.getText();
-        if (!usernames.contains(name)) {
+
+        final String username = userNameInput.getText();
+        if (!storageHandler.hasUser(username)) {
             errorLabel.setText("No user with given username");
             errorLabel.setTextFill(Color.RED);
             return;
         }
-        try {
-            this.update(storageHandler.fetchUserFromRemote(name));
-        } catch (IOException e1) {
-            errorLabel.setText("There was an error retreiving user data, try again later");
-            errorLabel.setTextFill(Color.RED);
-            return;
-        }
+
+        user = storageHandler.getUser(username);
+
         final Stage stage = (Stage) logInButton.getScene().getWindow();
+        final Parent root;
+        LibraryController controller;
         try {
             this.changeSceneAndUpdateUser(stage, "/bibtek/ui/Library.fxml");
         } catch (IOException e) {

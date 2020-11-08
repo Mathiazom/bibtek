@@ -17,8 +17,11 @@ public final class Main {
      */
     public static final String BASE_URI = "http://localhost:8080/bibtek/";
 
+
+    // Private constructor to prevent instantiating of utility class
     private Main() {
     }
+
 
     /**
      * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
@@ -36,10 +39,9 @@ public final class Main {
     }
 
     /**
-     * Main method.
+     * Main method to start server.
      *
-     * @param args
-     * @throws IOException
+     * @param args ignored
      */
     public static void main(final String[] args) throws IOException {
         final HttpServer server = startServer();

@@ -1,9 +1,16 @@
 package bibtek.restserver;
 
-import bibtek.core.*;
+import bibtek.core.Book;
+import bibtek.core.BookEntry;
+import bibtek.core.BookReadingState;
+import bibtek.core.Library;
+import bibtek.core.User;
+import bibtek.core.UserMap;
+import bibtek.json.BooksAPIHandler;
 import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 public final class BibtekConfig extends ResourceConfig {
@@ -14,7 +21,7 @@ public final class BibtekConfig extends ResourceConfig {
     public BibtekConfig(final UserMap userMap) {
         setUserMap(userMap);
         packages("bibtek.restapi");
-        register(GsonMessageBodyHandler.class);
+        register(GsonProvider.class);
         register(new AbstractBinder() {
             @Override
             protected void configure() {
@@ -37,12 +44,17 @@ public final class BibtekConfig extends ResourceConfig {
     }
 
     private static UserMap createDefaultUserMap() {
-        UserMap userMap = new UserMap();
-        final int danteBigBoyAge = 800;
+
+        final UserMap userMap = new UserMap();
+
         final Library library = new Library();
-        User user1 = new User("dante", danteBigBoyAge, library);
+
+        final int danteBigBoyAge = 800;
+        final User dummyUser = new User("dante", danteBigBoyAge, library);
 
         final int dummyBookYear = 1953;
+        final int dummyBookYear2 = 1948;
+
         library.addBookEntry(
                 new BookEntry(
                         new Book(
@@ -55,8 +67,43 @@ public final class BibtekConfig extends ResourceConfig {
                         BookReadingState.READING
                 )
         );
+        library.addBookEntry(
+                new BookEntry(
+                        new Book(
+                                "1984",
+                                "George Orwell",
+                                dummyBookYear2
+                        ),
+                        LocalDate.now(),
+                        BookReadingState.COMPLETED
+                )
+        );
 
-        userMap.putUser(user1);
+        try {
+            library.addBookEntry(
+                    new BookEntry(
+                            new BooksAPIHandler().fetchBook("9780241242643"),
+                            LocalDate.now(),
+                            BookReadingState.ABANDONED
+                    )
+            );
+        } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            library.addBookEntry(
+                    new BookEntry(
+                            new BooksAPIHandler().fetchBook("9783944283111"),
+                            LocalDate.now(),
+                            BookReadingState.NOT_STARTED
+                    )
+            );
+        } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
+        }
+
+        userMap.putUser(dummyUser);
         return userMap;
 
     }

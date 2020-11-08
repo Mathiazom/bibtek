@@ -21,7 +21,7 @@ import jakarta.ws.rs.ext.MessageBodyWriter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public final class GsonMessageBodyHandler implements MessageBodyWriter<Object>,
+public final class GsonProvider implements MessageBodyWriter<Object>,
         MessageBodyReader<Object> {
 
     private Gson gson;
@@ -51,23 +51,12 @@ public final class GsonMessageBodyHandler implements MessageBodyWriter<Object>,
     @Override
     public Object readFrom(final Class<Object> type, final Type genericType,
                            final Annotation[] annotations, final MediaType mediaType,
-                           final MultivaluedMap<String, String> httpHeaders, final InputStream entityStream) {
-        InputStreamReader streamReader = new InputStreamReader(entityStream, StandardCharsets.UTF_8);
-        try {
-            Type jsonType;
-            if (type.equals(genericType)) {
-                jsonType = type;
-            } else {
-                jsonType = genericType;
-            }
-            return getGson().fromJson(streamReader, jsonType);
-        } finally {
-            try {
-                streamReader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                           final MultivaluedMap<String, String> httpHeaders, final InputStream entityStream) throws IOException {
+
+        try (InputStreamReader streamReader = new InputStreamReader(entityStream, StandardCharsets.UTF_8)) {
+            return getGson().fromJson(streamReader, genericType);
         }
+
     }
 
     @Override
@@ -88,15 +77,11 @@ public final class GsonMessageBodyHandler implements MessageBodyWriter<Object>,
                         final MultivaluedMap<String, Object> httpHeaders,
                         final OutputStream entityStream) throws IOException,
             WebApplicationException {
+
         try (OutputStreamWriter writer = new OutputStreamWriter(entityStream, StandardCharsets.UTF_8)) {
-            Type jsonType;
-            if (type.equals(genericType)) {
-                jsonType = type;
-            } else {
-                jsonType = genericType;
-            }
-            getGson().toJson(object, jsonType, writer);
+            getGson().toJson(object, genericType, writer);
         }
+
     }
 }
 

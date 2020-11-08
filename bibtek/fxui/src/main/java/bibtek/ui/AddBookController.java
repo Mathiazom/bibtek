@@ -127,7 +127,7 @@ public final class AddBookController extends SceneChangerController {
         this.getUser().getLibrary().addBookEntry(bookEntry);
         try {
             StorageHandler storageHandler = new StorageHandler();
-            storageHandler.updateUser(this.getUser());
+            storageHandler.notifyUserChanged(user);
         } catch (IOException e) {
             errorLabel.setText("Was not able to update the user library");
             errorLabel.setTextFill(Color.RED);

@@ -2,18 +2,22 @@ package bibtek.json;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.io.Writer;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 
-import bibtek.core.Book;
-import bibtek.core.BookEntry;
-import bibtek.core.BookReadingState;
-import bibtek.core.Library;
 import bibtek.core.User;
+import bibtek.core.UserMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -22,7 +26,7 @@ import com.google.gson.reflect.TypeToken;
 /**
  * Class responsible for reading and writing user to locally stored json files.
  */
-public final class StorageHandler {
+public final class StorageHandler implements UserMapHandler {
     /**
      * The path where the library.json file should be stored by default.
      */
@@ -33,12 +37,29 @@ public final class StorageHandler {
      */
     private Path storagePath;
 
+
+    private URI endPointBaseUri;
+
+    private Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
+            .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+            .setPrettyPrinting().create();
+
+    private UserMap userMap;
+
+
     /**
      * @param path the file path where the json data will be stored
      */
     public StorageHandler(final String path) throws IOException {
 
         setStoragePath(path);
+
+        try {
+            endPointBaseUri = new URI("http://localhost:8080/bibtek/users");
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -74,51 +95,27 @@ public final class StorageHandler {
 
     }
 
-    /**
-     * Stores the given user in the backend.
-     *
-     * @param user the user you want to store
-     * @throws IOException if the StorageHandler fails to store the user
-     */
-    public void storeUserInRemote(final User user) throws IOException {
-        // Temporary code
-    }
+    private UserMap getUserMap() {
 
-    /**
-     * Stores the given user in the local user.json file.
-     *
-     * @param user
-     * @throws IOException
-     */
-    public void storeUserLocally(final User user) throws IOException {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateSerializer());
-        gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateDeserializer());
-        final Gson gson = gsonBuilder.setPrettyPrinting().create();
-        final Writer writer = Files.newBufferedWriter(storagePath);
-        gson.toJson(user, writer);
-        writer.close();
-    }
+        if (userMap == null) {
 
-    /**
-     * Updates the user attributes locally and in the server.
-     *
-     * @param user the user you want to update to
-     * @throws IOException
-     */
-    public void updateUser(final User user) throws IOException {
-        String localName;
-        try {
-            localName = getLocalUser().getUserName();
-        } catch (Exception e) {
-            localName = "";
+            final HttpRequest request = HttpRequest.newBuilder(endPointBaseUri)
+                    .header("Accept", "application/json")
+                    .GET()
+                    .build();
+
+            try {
+                final HttpResponse<String> response = HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
+                final String responseString = response.body();
+                this.userMap = gson.fromJson(responseString, new TypeToken<UserMap>() {
+                }.getType());
+            } catch (InterruptedException | IOException e) {
+                throw new RuntimeException(e);
+            }
+
         }
-        if (localName.equals("") || user.getUserName().equals(localName)) {
-            storeUserLocally(user);
-            // Also code to update this user in the back end
-        } else {
-            throw new IOException("Cannot update user with that username");
-        }
+
+        return userMap;
 
     }
 
@@ -129,10 +126,6 @@ public final class StorageHandler {
      * @throws IOException if the StorageHandler fails to read the JSON file
      */
     public User getLocalUser() throws IOException {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateSerializer());
-        gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateDeserializer());
-        final Gson gson = gsonBuilder.setPrettyPrinting().create();
         final Reader reader = Files.newBufferedReader(storagePath);
         final User user = gson.fromJson(reader, new TypeToken<User>() {
         }.getType());
@@ -141,85 +134,93 @@ public final class StorageHandler {
 
     }
 
-    /**
-     * Fetches user by username from the backend.
-     *
-     * @param userName
-     * @return the user with that username from the backend
-     * @throws IOExeption if it does not find a user with that username
-     */
-    public User fetchUserFromRemote(final String userName) throws IOException {
-        // This is temporary code
-        if (!userName.equals("sigmund")) {
-            throw new IOException("Could not find user with given username");
-        }
-
-        final Library library = new Library();
-        final int dummyBookYear = 1953;
-        final int dummyBookYear2 = 1948;
-
-        library.addBookEntry(
-                new BookEntry(
-                    new Book(
-                            "Fahrenheit 451",
-                            "Ray Bradbury",
-                            dummyBookYear,
-                            "https://s2982.pcdn.co/wp-content/uploads/2017/09/fahrenheit-451-flamingo-edition.jpg"
-                    ),
-                        LocalDate.now(),
-                        BookReadingState.READING
-                )
-        );
-        library.addBookEntry(
-                new BookEntry(
-                        new Book(
-                                "1984",
-                                "George Orwell",
-                                dummyBookYear2
-                        ),
-                        LocalDate.now(),
-                        BookReadingState.COMPLETED
-                )
-        );
-
-        try {
-            library.addBookEntry(
-                    new BookEntry(
-                            new BooksAPIHandler().fetchBook("9780241242643"),
-                            LocalDate.now(),
-                            BookReadingState.ABANDONED
-                    )
-            );
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            library.addBookEntry(
-                    new BookEntry(
-                            new BooksAPIHandler().fetchBook("9783944283111"),
-                            LocalDate.now(),
-                            BookReadingState.NOT_STARTED
-                    )
-            );
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        final int dummyAge = 14;
-
-        final User sigmund = new User("sigmund", dummyAge);
-        sigmund.setLibrary(library);
-
-        return sigmund;
+    @Override
+    public boolean hasUser(final String username) {
+        return getUserMap().hasUser(username);
     }
 
-    /**
-     * @return all the user names from the backend.
-     */
-    public List<String> fetchAllUserNamesFromRemote() {
-        // This is temporary code
-        return List.of("sigmund");
+    @Override
+    public Collection<String> getUsernames() {
+        final Collection<String> usernames = new ArrayList<>();
+        getUserMap().forEach(user -> usernames.add(user.getUserName()));
+        return usernames;
     }
 
+
+    private URI uriForUser(final String username) {
+
+        return endPointBaseUri.resolve(URLEncoder.encode(username, StandardCharsets.UTF_8));
+
+    }
+
+    @Override
+    public User getUser(final String username) {
+        User user = getUserMap().getUser(username);
+
+        if (user == null) {
+
+            final HttpRequest request = HttpRequest.newBuilder()
+                    .header("Accept", "application/json")
+                    .GET()
+                    .build();
+
+            try {
+                final HttpResponse<String> response = HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
+                final String responseString = response.body();
+                user = gson.fromJson(responseString, new TypeToken<User>() {
+                }.getType());
+                getUserMap().putUser(user);
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+
+        return user;
+    }
+
+    @Override
+    public void putUser(final User user) {
+
+        try {
+            final String json = gson.toJson(user);
+            final HttpRequest request = HttpRequest.newBuilder(uriForUser(user.getUserName()))
+                    .header("Accept", "application/json")
+                    .header("Content-Type", "application/json")
+                    .PUT(HttpRequest.BodyPublishers.ofString(json))
+                    .build();
+            final HttpResponse<String> response = HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
+            final String responseString = response.body();
+            final Boolean added = gson.fromJson(responseString, Boolean.class);
+            if (added != null) {
+                userMap.putUser(user);
+            }
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Override
+    public void removeUser(final String username) {
+        try {
+            final HttpRequest request = HttpRequest.newBuilder(uriForUser(username))
+                    .header("Accept", "application/json")
+                    .DELETE()
+                    .build();
+            final HttpResponse<String> response = HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
+            final String responseString = response.body();
+            final Boolean removed = gson.fromJson(responseString, Boolean.class);
+            if (removed != null) {
+                userMap.removeUser(userMap.getUser(username));
+            }
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void notifyUserChanged(final User user) {
+        putUser(user);
+    }
 }
