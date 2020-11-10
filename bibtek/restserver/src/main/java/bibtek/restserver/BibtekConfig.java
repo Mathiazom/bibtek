@@ -7,6 +7,7 @@ import bibtek.core.Library;
 import bibtek.core.User;
 import bibtek.core.UserMap;
 import bibtek.json.BooksAPIHandler;
+import bibtek.restapi.UserMapService;
 import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 
@@ -20,7 +21,8 @@ public final class BibtekConfig extends ResourceConfig {
 
     public BibtekConfig(final UserMap userMap) {
         setUserMap(userMap);
-        packages("bibtek.restapi");
+        register(DebugMapper.class);
+        register(UserMapService.class);
         register(GsonProvider.class);
         register(new AbstractBinder() {
             @Override

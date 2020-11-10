@@ -21,6 +21,10 @@ import bibtek.core.UserMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+
 import com.google.gson.reflect.TypeToken;
 
 /**
@@ -56,7 +60,7 @@ public final class StorageHandler implements UserMapHandler {
         setStoragePath(path);
 
         try {
-            endPointBaseUri = new URI("http://localhost:8080/bibtek/users");
+            endPointBaseUri = new URI("http://localhost:8080/bibtek/users/");
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
@@ -159,20 +163,19 @@ public final class StorageHandler implements UserMapHandler {
 
         if (user == null) {
 
-            final HttpRequest request = HttpRequest.newBuilder()
-                    .header("Accept", "application/json")
-                    .GET()
-                    .build();
+            final Client client = Client.create();
 
-            try {
-                final HttpResponse<String> response = HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
-                final String responseString = response.body();
-                user = gson.fromJson(responseString, new TypeToken<User>() {
-                }.getType());
-                getUserMap().putUser(user);
-            } catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            final WebResource webResource = client
+                    .resource(uriForUser(username));
+
+            ClientResponse response = webResource.accept("application/json")
+                    .get(ClientResponse.class);
+
+            final String responseString = response.getEntity(String.class);
+
+            user = gson.fromJson(responseString, new TypeToken<User>() {
+            }.getType());
+            getUserMap().putUser(user);
 
         }
 
@@ -182,41 +185,45 @@ public final class StorageHandler implements UserMapHandler {
     @Override
     public void putUser(final User user) {
 
-        try {
-            final String json = gson.toJson(user);
-            final HttpRequest request = HttpRequest.newBuilder(uriForUser(user.getUserName()))
-                    .header("Accept", "application/json")
-                    .header("Content-Type", "application/json")
-                    .PUT(HttpRequest.BodyPublishers.ofString(json))
-                    .build();
-            final HttpResponse<String> response = HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
-            final String responseString = response.body();
-            final Boolean added = gson.fromJson(responseString, Boolean.class);
-            if (added != null) {
-                userMap.putUser(user);
-            }
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+        final Client client = Client.create();
+
+        final WebResource webResource = client
+                .resource(uriForUser(user.getUserName()));
+
+        final String input = gson.toJson(user);
+
+        final ClientResponse response = webResource.type("application/json")
+                .put(ClientResponse.class, input);
+
+        final String responseString = response.getEntity(String.class);
+
+        System.out.println(responseString);
+
+        final Boolean added = gson.fromJson(responseString, Boolean.class);
+        if (added != null) {
+            getUserMap().putUser(user);
         }
 
     }
 
     @Override
     public void removeUser(final String username) {
-        try {
-            final HttpRequest request = HttpRequest.newBuilder(uriForUser(username))
-                    .header("Accept", "application/json")
-                    .DELETE()
-                    .build();
-            final HttpResponse<String> response = HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
-            final String responseString = response.body();
-            final Boolean removed = gson.fromJson(responseString, Boolean.class);
-            if (removed != null) {
-                userMap.removeUser(userMap.getUser(username));
-            }
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+
+        final Client client = Client.create();
+
+        final WebResource webResource = client
+                .resource(uriForUser(username));
+
+        ClientResponse response = webResource.accept("application/json")
+                .delete(ClientResponse.class);
+
+        final String responseString = response.getEntity(String.class);
+
+        final Boolean removed = gson.fromJson(responseString, Boolean.class);
+        if (removed != null) {
+            getUserMap().removeUser(getUserMap().getUser(username));
         }
+
     }
 
     @Override
