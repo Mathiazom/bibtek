@@ -3,17 +3,13 @@ package bibtek.ui;
 import bibtek.core.Book;
 import bibtek.core.BookEntry;
 import bibtek.core.BookReadingState;
-import bibtek.core.User;
 import bibtek.json.BooksAPIHandler;
 import bibtek.json.ISBNUtils;
 import bibtek.json.StorageHandler;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -26,7 +22,7 @@ import javafx.util.StringConverter;
 
 import java.io.IOException;
 
-public final class AddBookController {
+public final class AddBookController extends SceneChangerController {
 
     @FXML
     VBox addBookISBNContainer;
@@ -61,8 +57,6 @@ public final class AddBookController {
     @FXML
     ComboBox<BookReadingState> addBookReadingStatusCombo;
 
-    private User user;
-
     @FXML
     private void initialize() {
 
@@ -70,7 +64,8 @@ public final class AddBookController {
 
         setUpCustomDatePicker();
 
-        addBookISBNField.textProperty().addListener((observable, oldValue, newValue) -> errorLabelISBN.setManaged(false));
+        addBookISBNField.textProperty()
+                .addListener((observable, oldValue, newValue) -> errorLabelISBN.setManaged(false));
 
     }
 
@@ -124,16 +119,15 @@ public final class AddBookController {
 
         final BookEntry bookEntry = new BookEntry(
                 new Book(addBookTitleField.getText(), addBookAuthorField.getText(),
-                        Integer.parseInt(addBookYearPublishedField.getText()),
-                        addBookImagePathField.getText()),
+                        Integer.parseInt(addBookYearPublishedField.getText()), addBookImagePathField.getText()),
                 addBookDatePicker.getValue(), addBookReadingStatusCombo.getValue()
 
         );
 
-        user.getLibrary().addBookEntry(bookEntry);
+        this.getUser().getLibrary().addBookEntry(bookEntry);
         try {
             StorageHandler storageHandler = new StorageHandler();
-            storageHandler.updateUser(user);
+            storageHandler.updateUser(this.getUser());
         } catch (IOException e) {
             errorLabel.setText("Was not able to update the user library");
             errorLabel.setTextFill(Color.RED);
@@ -191,43 +185,9 @@ public final class AddBookController {
 
     @FXML
     private void handleShowLibrary() {
+        Stage stage = (Stage) addBookAuthorField.getScene().getWindow();
+        this.changeSceneAndUpdateUser(stage, "/bibtek/ui/Library.fxml");
 
-        final LibraryController controller;
-
-        final Stage stage = (Stage) addBookTitleField.getScene().getWindow();
-
-        final Parent root;
-        try {
-            final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/Library.fxml"));
-            root = fxmlLoader.load();
-            final Scene scene = new Scene(root);
-            stage.setScene(scene);
-            // stage.show();
-            controller = fxmlLoader.getController();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-        controller.update(user);
-
-    }
-
-    /**
-     * Updating the user of this controller.
-     *
-     * @param u
-     */
-    public void update(final User u) {
-        this.user = u;
-    }
-
-    /**
-     * Get method for user.
-     *
-     * @return the user.
-     */
-    public User getUser() {
-        return this.user;
     }
 
 }

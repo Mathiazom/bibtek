@@ -18,7 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class CreateUserController implements Initializable {
+public class CreateUserController extends SceneChangerController implements Initializable {
 
     @FXML
     Button createUserButton;
@@ -60,19 +60,8 @@ public class CreateUserController implements Initializable {
      */
     @FXML
     public void showTerms() {
-
         final Stage stage = new Stage();
-
-        final Parent root;
-        try {
-            root = FXMLLoader.load(getClass().getResource("/bibtek/ui/Terms.fxml"));
-            final Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        this.changeScene(stage, "/bibtek/ui/Terms.fxml");
     }
 
     /**

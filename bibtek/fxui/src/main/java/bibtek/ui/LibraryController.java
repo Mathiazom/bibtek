@@ -3,18 +3,14 @@ package bibtek.ui;
 import bibtek.core.BookEntry;
 import bibtek.core.User;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public final class LibraryController {
+public final class LibraryController extends SceneChangerController {
 
     @FXML
     ListView<BookItemView> libraryList;
@@ -22,42 +18,28 @@ public final class LibraryController {
     @FXML
     Button addBookButton;
 
-    private User user;
-
     @FXML
     private void handleAddBook() {
-        AddBookController controller;
         final Stage stage = (Stage) addBookButton.getScene().getWindow();
-        final Parent root;
-        try {
-            final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/AddBook.fxml"));
-            root = fxmlLoader.load();
-            final Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-            controller = fxmlLoader.getController();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-        controller.update(user);
+        this.changeSceneAndUpdateUser(stage, "/bibtek/ui/AddBook.fxml");
 
     }
 
     /**
-     * Updates who the user is, and displays the updated library.
+     * Updates who the user is, and displays the updated library. Overrides the
+     * standard SceneChangerControllers update(User) method.
      *
      * @param u the updated user
      */
+    @Override
     public void update(final User u) {
-        this.user = u;
-        final Set<BookEntry> bookEntrySet = user.getLibrary().getBookEntries();
+        super.update(u);
+        final Set<BookEntry> bookEntrySet = this.getUser().getLibrary().getBookEntries();
 
         // Display book entries in list view
         libraryList.getItems().setAll(
                 // Convert list of book entries to list of strings
-                bookEntrySet.stream().map(BookItemView::new).collect(Collectors.toList())
-        );
+                bookEntrySet.stream().map(BookItemView::new).collect(Collectors.toList()));
     }
 
 }

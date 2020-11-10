@@ -5,20 +5,16 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import bibtek.core.User;
 import bibtek.json.StorageHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class LoginPageController implements Initializable {
+public class LoginPageController extends SceneChangerController implements Initializable {
     @FXML
     Button logInButton;
 
@@ -32,8 +28,6 @@ public class LoginPageController implements Initializable {
     Label errorLabel;
 
     private StorageHandler storageHandler;
-
-    private User user;
 
     /**
      * Initializes the scene.
@@ -60,7 +54,6 @@ public class LoginPageController implements Initializable {
     @FXML
     public void logIn() {
         List<String> usernames = storageHandler.fetchAllUserNamesFromRemote();
-        LibraryController controller;
         String name = userNameInput.getText();
         if (!usernames.contains(name)) {
             errorLabel.setText("No user with given username");
@@ -68,27 +61,14 @@ public class LoginPageController implements Initializable {
             return;
         }
         try {
-            user = storageHandler.fetchUserFromRemote(name);
+            this.update(storageHandler.fetchUserFromRemote(name));
         } catch (IOException e1) {
             errorLabel.setText("There was an error retreiving user data, try again later");
             errorLabel.setTextFill(Color.RED);
             return;
         }
         final Stage stage = (Stage) logInButton.getScene().getWindow();
-        final Parent root;
-        try {
-            final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/Library.fxml"));
-            root = fxmlLoader.load();
-            final Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-            controller = fxmlLoader.getController();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-        controller.update(user);
-
+        this.changeSceneAndUpdateUser(stage, "/bibtek/ui/Library.fxml");
     }
 
     /**
@@ -97,15 +77,7 @@ public class LoginPageController implements Initializable {
     @FXML
     public void createNewUser() {
         final Stage stage = (Stage) createNewUserLabel.getScene().getWindow();
-        final Parent root;
-        try {
-            root = FXMLLoader.load(getClass().getResource("/bibtek/ui/CreateUser.fxml"));
-            final Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.changeScene(stage, "/bibtek/ui/CreateUser.fxml");
 
     }
 }
