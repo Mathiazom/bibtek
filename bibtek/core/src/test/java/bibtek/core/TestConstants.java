@@ -63,4 +63,13 @@ public final class TestConstants {
      * BookEntry4.
      */
     public static final BookEntry BOOK_ENTRY4 = new BookEntry(BOOK4, SOME_DATE, BookReadingState.ABANDONED);
+    /**
+     * User age 20.
+     */
+    public static final int AGE20 = 20;
+    /**
+     * User age 21.
+     */
+    public static final int AGE21 = 21;
+
 }
