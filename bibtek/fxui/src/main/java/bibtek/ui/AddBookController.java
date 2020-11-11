@@ -186,7 +186,13 @@ public final class AddBookController extends SceneChangerController {
     @FXML
     private void handleShowLibrary() {
         Stage stage = (Stage) addBookAuthorField.getScene().getWindow();
-        this.changeSceneAndUpdateUser(stage, "/bibtek/ui/Library.fxml");
+        try {
+            this.changeSceneAndUpdateUser(stage, "/bibtek/ui/Library.fxml");
+        } catch (IOException e) {
+            errorLabel.setTextFill(Color.RED);
+            errorLabel.setText("There was an error when showing your library");
+            e.printStackTrace();
+        }
 
     }
 

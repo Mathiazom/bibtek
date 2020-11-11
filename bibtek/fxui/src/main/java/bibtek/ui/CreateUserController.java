@@ -61,7 +61,13 @@ public class CreateUserController extends SceneChangerController implements Init
     @FXML
     public void showTerms() {
         final Stage stage = new Stage();
-        this.changeScene(stage, "/bibtek/ui/Terms.fxml");
+        try {
+            this.changeScene(stage, "/bibtek/ui/Terms.fxml");
+        } catch (IOException e) {
+            errorLabel.setTextFill(Color.RED);
+            errorLabel.setText("There was an error showing the terms and conditions");
+            e.printStackTrace();
+        }
     }
 
     /**

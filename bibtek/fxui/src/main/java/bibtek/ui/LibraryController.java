@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,7 +22,11 @@ public final class LibraryController extends SceneChangerController {
     @FXML
     private void handleAddBook() {
         final Stage stage = (Stage) addBookButton.getScene().getWindow();
-        this.changeSceneAndUpdateUser(stage, "/bibtek/ui/AddBook.fxml");
+        try {
+            this.changeSceneAndUpdateUser(stage, "/bibtek/ui/AddBook.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 

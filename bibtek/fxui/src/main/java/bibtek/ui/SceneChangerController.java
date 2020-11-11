@@ -25,28 +25,10 @@ public abstract class SceneChangerController {
      *
      * @param stage
      * @param fxmlFilePath
+     * @return the controller of the new scene.
+     * @throws IOException
      */
-    public void changeScene(final Stage stage, final String fxmlFilePath) {
-        final Parent root;
-        try {
-            final FXMLLoader fxmlLoader = new FXMLLoader(SceneChangerController.class.getResource(fxmlFilePath));
-            root = fxmlLoader.load();
-            final Scene scene = new Scene(root);
-            stage.setScene(scene);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-
-    }
-
-    /**
-     * Changes the scene and updates the user field.
-     *
-     * @param stage
-     * @param fxmlFilePath
-     */
-    public void changeSceneAndUpdateUser(final Stage stage, final String fxmlFilePath) {
+    public SceneChangerController changeScene(final Stage stage, final String fxmlFilePath) throws IOException {
         final SceneChangerController controller;
         final Parent root;
         try {
@@ -57,10 +39,21 @@ public abstract class SceneChangerController {
             controller = fxmlLoader.getController();
         } catch (IOException e) {
             e.printStackTrace();
-            return;
+            throw new IOException("There was an error setting the new scene");
         }
-        controller.update(user);
+        return controller;
 
+    }
+
+    /**
+     * Changes the scene and updates the user field.
+     *
+     * @param stage
+     * @param fxmlFilePath
+     * @throws IOException
+     */
+    public void changeSceneAndUpdateUser(final Stage stage, final String fxmlFilePath) throws IOException {
+        this.changeScene(stage, fxmlFilePath).update(user);
     }
 
     /**

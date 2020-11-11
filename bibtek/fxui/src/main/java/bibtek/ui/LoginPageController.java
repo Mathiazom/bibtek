@@ -68,7 +68,13 @@ public class LoginPageController extends SceneChangerController implements Initi
             return;
         }
         final Stage stage = (Stage) logInButton.getScene().getWindow();
-        this.changeSceneAndUpdateUser(stage, "/bibtek/ui/Library.fxml");
+        try {
+            this.changeSceneAndUpdateUser(stage, "/bibtek/ui/Library.fxml");
+        } catch (IOException e) {
+            errorLabel.setTextFill(Color.RED);
+            errorLabel.setText("There was an error when showing your library");
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -77,7 +83,13 @@ public class LoginPageController extends SceneChangerController implements Initi
     @FXML
     public void createNewUser() {
         final Stage stage = (Stage) createNewUserLabel.getScene().getWindow();
-        this.changeScene(stage, "/bibtek/ui/CreateUser.fxml");
+        try {
+            this.changeScene(stage, "/bibtek/ui/CreateUser.fxml");
+        } catch (IOException e) {
+            errorLabel.setTextFill(Color.RED);
+            errorLabel.setText("There was an error when showing the create user page");
+            e.printStackTrace();
+        }
 
     }
 }
