@@ -38,11 +38,7 @@ public class LoginPageController extends SceneChangerController implements Initi
     public void initialize(final URL location, final ResourceBundle resources) {
 
         createNewUserLabel.setOnMouseClicked((agent) -> this.createNewUser());
-        try {
-            storageHandler = new StorageHandler("target/user.json");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        storageHandler = new StorageHandler();
 
     }
 

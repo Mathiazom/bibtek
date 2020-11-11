@@ -100,9 +100,6 @@ public class CreateUserController extends SceneChangerController implements Init
             User user = new User(userName1, age);
             StorageHandler storageHandler = new StorageHandler();
             storageHandler.putUser(user);
-        } catch (IOException e) {
-            errorLabel.setText(e.getMessage());
-            errorLabel.setTextFill(Color.RED);
         } catch (Exception e) {
             errorLabel.setText("An error occurred");
             errorLabel.setTextFill(Color.RED);

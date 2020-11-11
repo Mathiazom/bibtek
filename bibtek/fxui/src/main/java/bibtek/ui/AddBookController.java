@@ -16,7 +16,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.skin.DatePickerSkin;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
@@ -124,14 +123,10 @@ public final class AddBookController extends SceneChangerController {
 
         );
 
-        this.getUser().getLibrary().addBookEntry(bookEntry);
-        try {
-            StorageHandler storageHandler = new StorageHandler();
-            storageHandler.notifyUserChanged(user);
-        } catch (IOException e) {
-            errorLabel.setText("Was not able to update the user library");
-            errorLabel.setTextFill(Color.RED);
-        }
+        user.getLibrary().addBookEntry(bookEntry);
+
+        final StorageHandler storageHandler = new StorageHandler();
+        storageHandler.notifyUserChanged(user);
 
         handleShowLibrary();
 

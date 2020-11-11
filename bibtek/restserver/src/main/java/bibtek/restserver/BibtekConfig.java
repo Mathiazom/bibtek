@@ -21,7 +21,6 @@ public final class BibtekConfig extends ResourceConfig {
 
     public BibtekConfig(final UserMap userMap) {
         setUserMap(userMap);
-        register(DebugMapper.class);
         register(UserMapService.class);
         register(GsonProvider.class);
         register(new AbstractBinder() {
