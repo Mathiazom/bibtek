@@ -6,7 +6,6 @@ module bibtek.core {
 	exports bibtek.core;
 	exports bibtek.json;
 
-	requires java.net.http;
     requires jersey.client;
 
     opens bibtek.core to com.google.gson;

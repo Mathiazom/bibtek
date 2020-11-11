@@ -9,13 +9,9 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -44,19 +40,18 @@ public final class RemoteStorageHandler implements UserMapHandler {
 
         if (userMap == null) {
 
-            final HttpRequest request = HttpRequest.newBuilder(endPointBaseUri)
-                    .header("Accept", "application/json")
-                    .GET()
-                    .build();
+            final Client client = Client.create();
 
-            try {
-                final HttpResponse<String> response = HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
-                final String responseString = response.body();
-                this.userMap = gson.fromJson(responseString, new TypeToken<UserMap>() {
-                }.getType());
-            } catch (InterruptedException | IOException e) {
-                throw new RuntimeException(e);
-            }
+            final WebResource webResource = client
+                    .resource(endPointBaseUri);
+
+            final ClientResponse response = webResource.accept("application/json")
+                    .get(ClientResponse.class);
+
+            final String responseString = response.getEntity(String.class);
+
+            this.userMap = gson.fromJson(responseString, new TypeToken<UserMap>() {
+            }.getType());
 
         }
 
@@ -94,7 +89,7 @@ public final class RemoteStorageHandler implements UserMapHandler {
             final WebResource webResource = client
                     .resource(uriForUser(username));
 
-            ClientResponse response = webResource.accept("application/json")
+            final ClientResponse response = webResource.accept("application/json")
                     .get(ClientResponse.class);
 
             if (response.getClientResponseStatus() == ClientResponse.Status.OK) {

@@ -5,12 +5,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 
-import java.io.IOException;
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
@@ -26,21 +25,20 @@ public final class BooksAPIHandler {
      *
      * @param isbn Unique book identification
      * @return Book loaded with the retrieved API data, or null if isbn gave no results
-     * @throws IOException          if the fetch request could not be created validly
-     * @throws InterruptedException if the fetch operation is interrupted
      */
-    public Book fetchBook(final String isbn) throws IOException, InterruptedException {
+    public Book fetchBook(final String isbn) {
 
-        final HttpRequest fetchRequest = HttpRequest.newBuilder(URI.create(getFetchURIForISBN(isbn)))
-                .GET()
-                .header("accept", "application/json")
-                .build();
+        final Client client = Client.create();
 
-        final HttpClient client = HttpClient.newHttpClient();
+        final WebResource webResource = client
+                .resource(URI.create(getFetchURIForISBN(isbn)));
 
-        final HttpResponse<String> fetchResponse = client.send(fetchRequest, HttpResponse.BodyHandlers.ofString());
+        final ClientResponse response = webResource.accept("application/json")
+                .get(ClientResponse.class);
 
-        final JsonObject responseObject = JsonParser.parseString(fetchResponse.body()).getAsJsonObject();
+        final String responseString = response.getEntity(String.class);
+
+        final JsonObject responseObject = JsonParser.parseString(responseString).getAsJsonObject();
 
         // Make sure there is at least one search result
         if (responseObject.get("totalItems").getAsInt() == 0 || responseObject.get("items") == null) {

@@ -11,16 +11,12 @@ import bibtek.restapi.UserMapService;
 import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 
-import java.io.IOException;
 import java.time.LocalDate;
 
 public final class BibtekConfig extends ResourceConfig {
 
-    private UserMap userMap;
-
 
     public BibtekConfig(final UserMap userMap) {
-        setUserMap(userMap);
         register(UserMapService.class);
         register(GsonProvider.class);
         register(new AbstractBinder() {
@@ -31,17 +27,8 @@ public final class BibtekConfig extends ResourceConfig {
         });
     }
 
-
     public BibtekConfig() {
         this(createDefaultUserMap());
-    }
-
-    public UserMap getUserMap() {
-        return userMap;
-    }
-
-    public void setUserMap(final UserMap userMap) {
-        this.userMap = userMap;
     }
 
     private static UserMap createDefaultUserMap() {
@@ -80,29 +67,21 @@ public final class BibtekConfig extends ResourceConfig {
                 )
         );
 
-        try {
-            library.addBookEntry(
-                    new BookEntry(
-                            new BooksAPIHandler().fetchBook("9780241242643"),
-                            LocalDate.now(),
-                            BookReadingState.ABANDONED
-                    )
-            );
-        } catch (InterruptedException | IOException e) {
-            e.printStackTrace();
-        }
+        library.addBookEntry(
+                new BookEntry(
+                        new BooksAPIHandler().fetchBook("9780241242643"),
+                        LocalDate.now(),
+                        BookReadingState.ABANDONED
+                )
+        );
 
-        try {
-            library.addBookEntry(
-                    new BookEntry(
-                            new BooksAPIHandler().fetchBook("9783944283111"),
-                            LocalDate.now(),
-                            BookReadingState.NOT_STARTED
-                    )
-            );
-        } catch (InterruptedException | IOException e) {
-            e.printStackTrace();
-        }
+        library.addBookEntry(
+                new BookEntry(
+                        new BooksAPIHandler().fetchBook("9783944283111"),
+                        LocalDate.now(),
+                        BookReadingState.NOT_STARTED
+                )
+        );
 
         userMap.putUser(dummyUser);
         return userMap;

@@ -153,17 +153,13 @@ public final class AddBookController extends SceneChangerController {
             return;
         }
 
-        try {
-            final Book bookFromISBN = new BooksAPIHandler().fetchBook(isbn);
-            if (bookFromISBN == null) {
-                errorLabelISBN.setText("No results for that ISBN :(");
-                errorLabelISBN.setManaged(true);
-                return;
-            }
-            loadBookInput(bookFromISBN);
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+        final Book bookFromISBN = new BooksAPIHandler().fetchBook(isbn);
+        if (bookFromISBN == null) {
+            errorLabelISBN.setText("No results for that ISBN :(");
+            errorLabelISBN.setManaged(true);
+            return;
         }
+        loadBookInput(bookFromISBN);
 
     }
 
