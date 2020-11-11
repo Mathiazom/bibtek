@@ -48,54 +48,9 @@ public abstract class BaseBookController extends SceneChangerController {
     @FXML
     protected void initialize() {
 
-        setUpReadingStateDropDown();
+        FxUtils.setUpReadingStateDropDown(addBookReadingStatusCombo);
 
-        setUpCustomDatePicker();
-
-    }
-
-    private void setUpReadingStateDropDown() {
-
-        addBookReadingStatusCombo.setConverter(new StringConverter<>() {
-            @Override
-            public String toString(final BookReadingState readingState) {
-                return readingState.toString();
-            }
-
-            @Override
-            public BookReadingState fromString(final String s) {
-                return BookReadingState.fromString(s);
-            }
-        });
-        addBookReadingStatusCombo.setItems(FXCollections.observableArrayList(BookReadingState.values()));
-        addBookReadingStatusCombo.getSelectionModel().selectFirst();
-
-    }
-
-    private void setUpCustomDatePicker() {
-
-        final DatePickerSkin datePickerSkin = new DatePickerSkin(addBookDatePicker);
-
-        addBookDatePickerField.focusedProperty().addListener((observableValue, a, focused) -> {
-            if (focused) {
-                showDatePicker();
-                datePickerSkin.getDisplayNode().requestFocus();
-            }
-        });
-
-        final TextField addBookDatePickerOutput = ((TextField) datePickerSkin.getDisplayNode());
-        addBookDatePickerField.textProperty().bind(addBookDatePickerOutput.textProperty());
-
-    }
-
-    private void showDatePicker() {
-
-        final DatePickerSkin datePickerSkin = new DatePickerSkin(addBookDatePicker);
-
-        datePickerSkin.show();
-        final Node datePickerNode = datePickerSkin.getPopupContent();
-        final Bounds dateFieldBounds = addBookDatePickerField.getLayoutBounds();
-        datePickerNode.relocate(dateFieldBounds.getMinX(), dateFieldBounds.getMaxY());
+        FxUtils.setUpCustomDatePicker(addBookDatePicker, addBookDatePickerField);
 
     }
 

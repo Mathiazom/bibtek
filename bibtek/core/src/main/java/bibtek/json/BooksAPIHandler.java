@@ -69,7 +69,7 @@ public final class BooksAPIHandler {
 
         String bookImgPath = "";
         try {
-            bookImgPath = bookInfo.get("imageLinks").getAsJsonObject().get("smallThumbnail").getAsString();
+            bookImgPath = bookInfo.get("imageLinks").getAsJsonObject().get("thumbnail").getAsString();
         } catch (NullPointerException ignored) {
             // No thumbnail available for this book
         }

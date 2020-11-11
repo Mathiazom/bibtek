@@ -1,0 +1,57 @@
+.mainPane{
+    -fx-background-color: white;
+}
+
+ScrollPane Region{
+    -fx-padding: 0 0 0 0;
+}
+
+ScrollPane{
+    -fx-fit-to-width: true;
+}
+
+#infoContainerWrap{
+    -fx-background-color: white;
+}
+
+#infoContainer{
+    -fx-padding: 20 30 30 30;
+}
+
+#infoContainer DigitsField, #addBookReadingStatusCombo{
+
+    -fx-padding: 10 15 10 15;
+    -fx-background-color: white;
+    -fx-text-fill: #212121;
+    -fx-font-size: 18;
+    -fx-background-radius: 5px;
+
+}
+
+#infoContainer DigitsField, #addBookReadingStatusCombo {
+
+    -fx-border-width: 2px;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 5px;
+
+}
+
+.bookEntryInfo{
+
+    -fx-padding: 10 20 10 30;
+
+}
+
+#bookEntryTitle{
+    -fx-font-size: 38px;
+    -fx-font-weight: bold;
+}
+
+#bookEntryAuthor{
+    -fx-font-size: 22px;
+    -fx-padding: 20 0 0 0;
+}
+
+#bookEntryYearPublished{
+    -fx-font-size: 22px;
+}

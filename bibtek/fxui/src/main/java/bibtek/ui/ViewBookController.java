@@ -4,11 +4,13 @@ import java.io.IOException;
 
 import bibtek.core.Book;
 import bibtek.core.BookEntry;
+import bibtek.core.BookReadingState;
 import bibtek.core.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -29,6 +31,16 @@ public final class ViewBookController {
 
     @FXML
     private ImageView bookEntryImage;
+
+    /*@FXML
+    DatePicker addBookDatePicker;
+
+    @FXML
+    TextField addBookDatePickerField;*/
+
+    @FXML
+    ComboBox<BookReadingState> addBookReadingStatusCombo;
+
 
     private User user;
 
@@ -57,6 +69,25 @@ public final class ViewBookController {
             bookImage = new Image(BOOK_IMAGE_PLACEHOLDER_LOCATION);
         }
         bookEntryImage.setImage(bookImage);
+
+        /*FxUtils.setUpCustomDatePicker(addBookDatePicker, addBookDatePickerField);
+
+        addBookDatePicker.setValue(bookEntry.getDateAcquired());*/
+
+        FxUtils.setUpReadingStateDropDown(addBookReadingStatusCombo);
+
+        addBookReadingStatusCombo.getSelectionModel().select(bookEntry.getReadingState());
+
+        addBookReadingStatusCombo.getSelectionModel().selectedItemProperty().addListener((o, a, newState) -> {
+
+            bookEntry.setReadingState(newState);
+
+            System.out.println(a + " -> " + newState);
+
+            final Stage stage = (Stage) addBookReadingStatusCombo.getScene().getWindow();
+            Toast.makeText(stage, "Reading state successfully changed to '" + newState + "'");
+
+        });
 
     }
 

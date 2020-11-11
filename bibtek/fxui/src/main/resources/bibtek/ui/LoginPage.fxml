@@ -1,33 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bibtek.ui.LoginPageController">
-   <children>
-      <TextField fx:id="userNameInput" layoutX="126.0" layoutY="297.0" promptText="User name" />
-      <Label alignment="CENTER" layoutX="119.0" prefHeight="89.0" prefWidth="162.0" text="Bibtek" textAlignment="CENTER">
+   <VBox alignment="CENTER" fillWidth="false" layoutX="119.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+         AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <padding>
+         <Insets bottom="20.0" top="20.0"/>
+      </padding>
+      <Label alignment="CENTER" text="Bibtek" textAlignment="CENTER">
          <font>
-            <Font name="System Bold" size="40.0" />
+            <Font name="System Bold" size="40.0"/>
          </font>
       </Label>
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="126.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@icon.png" />
-         </image>
+      <ImageView fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+         <Image url="@bibtek_round.png"/>
+         <VBox.margin>
+            <Insets bottom="20.0" top="20.0"/>
+         </VBox.margin>
       </ImageView>
-      <Label alignment="CENTER" layoutX="135.0" layoutY="242.0" prefHeight="43.0" prefWidth="131.0" text="Log in" textAlignment="CENTER">
-         <font>
-            <Font size="26.0" />
-         </font>
+      <VBox alignment="TOP_CENTER">
+         <Label alignment="CENTER" text="Login" textAlignment="CENTER">
+            <font>
+               <Font size="26.0"/>
+            </font>
+         </Label>
+         <TextField fx:id="userNameInput" promptText="Username">
+            <VBox.margin>
+               <Insets bottom="10.0" top="10.0"/>
+            </VBox.margin>
+         </TextField>
+         <Button fx:id="logInButton" mnemonicParsing="false" onAction="#logIn" text="Login"/>
+         <Label fx:id="errorLabel" alignment="CENTER" text=" "/>
+      </VBox>
+      <Label fx:id="createNewUserLabel" text="Create new user" textFill="#0062ff" underline="true">
+         <VBox.margin>
+            <Insets top="20.0"/>
+         </VBox.margin>
       </Label>
-      <Button fx:id="logInButton" layoutX="167.0" layoutY="355.0" mnemonicParsing="false" onAction="#logIn" text="Log in" />
-      <Label fx:id="createNewUserLabel" layoutX="149.0" layoutY="410.0" text="Create new user" textFill="#0062ff" underline="true" />
-      <Label fx:id="errorLabel" alignment="CENTER" layoutX="122.0" layoutY="329.0" prefHeight="18.0" prefWidth="156.0" text=" " />
-   </children>
+   </VBox>
 </AnchorPane>

@@ -19,13 +19,13 @@ ScrollPane{
 }
 
 #inputContainer{
-    -fx-padding: 20 30 30 30;
+    -fx-padding: 20 30;
     -fx-max-width: 500;
 }
 
 #inputContainer TextField, #inputContainer DigitsField, #addBookISBNField, #addBookReadingStatusCombo{
 
-    -fx-padding: 10 15 10 15;
+    -fx-padding: 10 15;
     -fx-background-color: white;
     -fx-text-fill: #212121;
     -fx-font-size: 18;
@@ -95,8 +95,6 @@ ScrollPane{
 
 .inputIcon{
     -fx-padding: 5px 10px 5px 10px;
-    /*-fx-background-color: #ddd;
-    -fx-background-radius: 5px 0 0 5px;*/
 }
 
 .inputIcon FontIcon {

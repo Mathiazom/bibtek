@@ -9,29 +9,40 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bibtek.ui.CreateUserController">
-   <children>
-      <TextField fx:id="userNameInput" layoutX="126.0" layoutY="278.0" promptText="User name" />
-      <TextField fx:id="userNameConfirmInput" layoutX="126.0" layoutY="313.0" promptText="Confirm user name" />
-      <Label alignment="CENTER" layoutX="119.0" prefHeight="89.0" prefWidth="162.0" text="Bibtek" textAlignment="CENTER">
+   <VBox alignment="CENTER" fillWidth="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+         AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <padding>
+         <Insets bottom="20.0" top="20.0"/>
+      </padding>
+      <Label alignment="CENTER" text="Bibtek" textAlignment="CENTER">
          <font>
-            <Font name="System Bold" size="40.0" />
+            <Font name="System Bold" size="40.0"/>
          </font>
       </Label>
-      <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="129.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@icon.png" />
-         </image>
+      <ImageView fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+         <Image url="@bibtek_round.png"/>
+         <VBox.margin>
+            <Insets bottom="20.0" top="20.0"/>
+         </VBox.margin>
       </ImageView>
-      <Label alignment="CENTER" layoutX="134.0" layoutY="229.0" prefHeight="43.0" prefWidth="131.0" text="Create user" textAlignment="CENTER">
+      <Label alignment="CENTER" text="Create user" textAlignment="CENTER">
          <font>
             <Font size="26.0" />
          </font>
       </Label>
-      <Button fx:id="createUserButton" layoutX="161.0" layoutY="453.0" mnemonicParsing="false" onAction="#createUser" text="Create user" />
-      <TextField fx:id="ageInput" layoutX="126.0" layoutY="347.0" promptText="Age" />
-      <CheckBox fx:id="confirmCheckbox" layoutX="110.0" layoutY="384.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="76.0" text="I agree to" />
-      <Label fx:id="termsLabel" layoutX="186.0" layoutY="384.0" prefHeight="17.0" prefWidth="139.0" text="terms and conditions" textFill="#0062ff" underline="true" />
-      <Label fx:id="errorLabel" alignment="CENTER" layoutX="116.0" layoutY="405.0" prefHeight="38.0" prefWidth="160.0" />
-   </children>
+      <TextField fx:id="userNameInput" promptText="User name" />
+      <TextField fx:id="userNameConfirmInput" promptText="Confirm user name" />
+      <TextField fx:id="ageInput" promptText="Age" />
+      <CheckBox fx:id="confirmCheckbox" text="I agree to">
+         <VBox.margin>
+            <Insets bottom="10.0" top="10.0"/>
+         </VBox.margin>
+      </CheckBox>
+      <Label fx:id="termsLabel" text="terms and conditions" textFill="#0062ff" underline="true" />
+      <Label fx:id="errorLabel" alignment="CENTER" />
+      <Button fx:id="createUserButton" mnemonicParsing="false" onAction="#createUser" text="Create user" />
+   </VBox>
 </AnchorPane>
