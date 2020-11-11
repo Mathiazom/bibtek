@@ -3,6 +3,7 @@ package bibtek.ui;
 import bibtek.core.Book;
 import bibtek.core.BookEntry;
 import bibtek.core.BookReadingState;
+import bibtek.core.User;
 import bibtek.json.BooksAPIHandler;
 import bibtek.json.ISBNUtils;
 import bibtek.json.StorageHandler;
@@ -16,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.skin.DatePickerSkin;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
@@ -123,6 +125,7 @@ public final class AddBookController extends SceneChangerController {
 
         );
 
+        final User user = getUser();
         user.getLibrary().addBookEntry(bookEntry);
 
         final StorageHandler storageHandler = new StorageHandler();
@@ -180,8 +183,8 @@ public final class AddBookController extends SceneChangerController {
 
     @FXML
     private void handleShowLibrary() {
-        Stage stage = (Stage) addBookAuthorField.getScene().getWindow();
         try {
+            final Stage stage = (Stage) addBookAuthorField.getScene().getWindow();
             this.changeSceneAndUpdateUser(stage, "/bibtek/ui/Library.fxml");
         } catch (IOException e) {
             errorLabel.setTextFill(Color.RED);

@@ -56,12 +56,10 @@ public class LoginPageController extends SceneChangerController implements Initi
             return;
         }
 
-        user = storageHandler.getUser(username);
+        update(storageHandler.getUser(username));
 
-        final Stage stage = (Stage) logInButton.getScene().getWindow();
-        final Parent root;
-        LibraryController controller;
         try {
+            final Stage stage = (Stage) logInButton.getScene().getWindow();
             this.changeSceneAndUpdateUser(stage, "/bibtek/ui/Library.fxml");
         } catch (IOException e) {
             errorLabel.setTextFill(Color.RED);
