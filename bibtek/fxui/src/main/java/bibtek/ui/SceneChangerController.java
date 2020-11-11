@@ -37,6 +37,7 @@ public abstract class SceneChangerController {
             final Scene scene = new Scene(root);
             stage.setScene(scene);
             controller = fxmlLoader.getController();
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
             throw new IOException("There was an error setting the new scene");
