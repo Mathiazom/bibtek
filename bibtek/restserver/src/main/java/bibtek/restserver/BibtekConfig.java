@@ -15,7 +15,10 @@ import java.time.LocalDate;
 
 public final class BibtekConfig extends ResourceConfig {
 
-
+    /**
+     * Setup server configs.
+     * @param userMap map of Users to start server with
+     */
     public BibtekConfig(final UserMap userMap) {
         register(UserMapService.class);
         register(GsonProvider.class);
@@ -27,10 +30,20 @@ public final class BibtekConfig extends ResourceConfig {
         });
     }
 
+    /**
+     * Setup server with default data source.
+     */
     public BibtekConfig() {
         this(createDefaultUserMap());
     }
 
+
+    /**
+     *
+     * Populate user map with dummy user and book entries.
+     *
+     * @return UserMap with dummy user
+     */
     private static UserMap createDefaultUserMap() {
 
         final UserMap userMap = new UserMap();

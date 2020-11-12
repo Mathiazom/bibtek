@@ -9,6 +9,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
+import javax.ws.rs.core.MediaType;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -21,7 +22,7 @@ public final class RemoteStorageHandler implements UserMapHandler {
 
     private URI endPointBaseUri;
 
-    private Gson gson = new GsonBuilder()
+    private final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
             .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
             .setPrettyPrinting().create();
@@ -36,7 +37,8 @@ public final class RemoteStorageHandler implements UserMapHandler {
     }
 
 
-    private UserMap getUserMap() {
+    @Override
+    public UserMap getUserMap() {
 
         if (userMap == null) {
 
@@ -45,7 +47,7 @@ public final class RemoteStorageHandler implements UserMapHandler {
             final WebResource webResource = client
                     .resource(endPointBaseUri);
 
-            final ClientResponse response = webResource.accept("application/json")
+            final ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON)
                     .get(ClientResponse.class);
 
             final String responseString = response.getEntity(String.class);
@@ -89,7 +91,7 @@ public final class RemoteStorageHandler implements UserMapHandler {
             final WebResource webResource = client
                     .resource(uriForUser(username));
 
-            final ClientResponse response = webResource.accept("application/json")
+            final ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON)
                     .get(ClientResponse.class);
 
             if (response.getClientResponseStatus() == ClientResponse.Status.OK) {
@@ -118,7 +120,7 @@ public final class RemoteStorageHandler implements UserMapHandler {
 
         final String input = gson.toJson(user);
 
-        final ClientResponse response = webResource.type("application/json")
+        final ClientResponse response = webResource.type(MediaType.APPLICATION_JSON)
                 .put(ClientResponse.class, input);
 
         final String responseString = response.getEntity(String.class);
@@ -140,7 +142,7 @@ public final class RemoteStorageHandler implements UserMapHandler {
         final WebResource webResource = client
                 .resource(uriForUser(username));
 
-        final ClientResponse response = webResource.accept("application/json")
+        final ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON)
                 .delete(ClientResponse.class);
 
         final String responseString = response.getEntity(String.class);

@@ -21,18 +21,28 @@ public final class UserMapService {
     @Inject
     private UserMap userMap;
 
+    /**
+     * Gives access to the map of all users currently in storage.
+     * @return userMap
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public UserMap getUserMap() {
         return userMap;
     }
 
+    /**
+     * Redirect request on specific user to UserResource.
+     *
+     * @param username for the associated User
+     * @return UserResource for further request handling
+     */
     @Path("/{username}")
     public UserResource getUser(@PathParam("username") final String username) {
 
         final User user = getUserMap().getUser(username);
 
-        return new UserResource(userMap, username, user);
+        return new UserResource(userMap, user);
 
     }
 

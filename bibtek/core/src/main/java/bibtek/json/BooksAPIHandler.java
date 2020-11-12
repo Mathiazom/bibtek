@@ -9,6 +9,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
+import javax.ws.rs.core.MediaType;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -33,7 +34,7 @@ public final class BooksAPIHandler {
         final WebResource webResource = client
                 .resource(URI.create(getFetchURIForISBN(isbn)));
 
-        final ClientResponse response = webResource.accept("application/json")
+        final ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON)
                 .get(ClientResponse.class);
 
         final String responseString = response.getEntity(String.class);

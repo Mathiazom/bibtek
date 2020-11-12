@@ -107,7 +107,7 @@
       <property name="scope" value="public"/>
     </module>
     <module name="JavadocStyle"/>
-    <!--<module name="MissingJavadocMethod"/>-->
+    <module name="MissingJavadocMethod"/>
 
     <!-- Checks for Naming Conventions.                  -->
     <!-- See https://checkstyle.org/config_naming.html -->

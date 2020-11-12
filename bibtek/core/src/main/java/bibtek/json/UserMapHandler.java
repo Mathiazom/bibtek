@@ -1,13 +1,12 @@
 package bibtek.json;
 
 import bibtek.core.User;
+import bibtek.core.UserMap;
 
 import java.util.Collection;
 
 /**
- *
- * Interface defining the standard for UserMap access.
- *
+ * Standard for UserMap access.
  */
 public interface UserMapHandler {
 
@@ -25,6 +24,13 @@ public interface UserMapHandler {
      * @return the usernames of the Users in UserMap.
      */
     Collection<String> getUsernames();
+
+    /**
+     * Gets all the Users currently stored.
+     *
+     * @return the UserMap with stored Users
+     */
+    UserMap getUserMap();
 
     /**
      * Gets the User with the given username.

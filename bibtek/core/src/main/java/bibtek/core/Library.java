@@ -16,7 +16,7 @@ public final class Library {
      *
      */
     public Library() {
-        bookEntries = new HashSet<BookEntry>();
+        bookEntries = new HashSet<>();
 
     }
 

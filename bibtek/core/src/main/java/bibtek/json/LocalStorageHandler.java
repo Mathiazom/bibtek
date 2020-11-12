@@ -19,10 +19,10 @@ import java.util.Collection;
 /**
  * Class responsible for reading and writing users to stored json files.
  */
-public final class DirectStorageHandler implements UserMapHandler {
+public final class LocalStorageHandler implements UserMapHandler {
 
     /**
-     * The path where the library.json file should be stored by default.
+     * The path where the users file should be stored by default.
      */
     private static final String DEFAULT_STORAGE_PATH = "target/users.json";
 
@@ -31,7 +31,7 @@ public final class DirectStorageHandler implements UserMapHandler {
      */
     private Path storagePath;
 
-    private Gson gson = new GsonBuilder()
+    private final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
             .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
             .setPrettyPrinting().create();
@@ -42,7 +42,7 @@ public final class DirectStorageHandler implements UserMapHandler {
     /**
      * @param path the file path where the json data will be stored
      */
-    public DirectStorageHandler(final String path) throws IOException {
+    public LocalStorageHandler(final String path) throws IOException {
 
         setStoragePath(path);
 
@@ -54,8 +54,8 @@ public final class DirectStorageHandler implements UserMapHandler {
      *
      * @throws IOException
      */
-    public DirectStorageHandler() throws IOException {
-        this(DirectStorageHandler.DEFAULT_STORAGE_PATH);
+    public LocalStorageHandler() throws IOException {
+        this(LocalStorageHandler.DEFAULT_STORAGE_PATH);
     }
 
     /**
@@ -80,7 +80,8 @@ public final class DirectStorageHandler implements UserMapHandler {
 
     }
 
-    private UserMap getUserMap() {
+    @Override
+    public UserMap getUserMap() {
 
         if (userMap == null) {
 

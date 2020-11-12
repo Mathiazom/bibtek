@@ -2,17 +2,11 @@ package bibtek.json;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.io.IOException;
-
-import bibtek.core.User;
-
-import org.junit.jupiter.api.Test;
-
 public class StorageHandlerTest {
     /**
      * Set the storage handler.
      */
-    private DirectStorageHandler sh;
+    private LocalStorageHandler sh;
 
     /*
      * The storgaHandler should be emtied before each test.

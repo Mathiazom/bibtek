@@ -1,6 +1,7 @@
 package bibtek.json;
 
 import bibtek.core.User;
+import bibtek.core.UserMap;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -14,19 +15,23 @@ public final class StorageHandler implements UserMapHandler {
 
     private UserMapHandler userMapHandler;
 
-
+    /**
+     * Init with appropriate user map handler.
+     */
     public StorageHandler() {
 
+        // Attempt to use remote handler
         try {
             userMapHandler = new RemoteStorageHandler();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
 
+        // If remote fails, try local storage
         if (userMapHandler == null) {
 
             try {
-                userMapHandler = new DirectStorageHandler();
+                userMapHandler = new LocalStorageHandler();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -44,6 +49,11 @@ public final class StorageHandler implements UserMapHandler {
     @Override
     public Collection<String> getUsernames() {
         return userMapHandler.getUsernames();
+    }
+
+    @Override
+    public UserMap getUserMap() {
+        return userMapHandler.getUserMap();
     }
 
     @Override

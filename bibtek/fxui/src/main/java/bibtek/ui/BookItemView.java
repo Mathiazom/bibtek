@@ -11,6 +11,11 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
+/**
+ *
+ * Card-like view representing a BookEntry in a list view.
+ *
+ */
 public class BookItemView extends VBox {
 
     private static final String BOOK_IMAGE_PLACEHOLDER_LOCATION = "/bibtek/ui/book-cover-placeholder-orange.jpg";
@@ -27,6 +32,9 @@ public class BookItemView extends VBox {
     @FXML
     private ImageView bookEntryImage;
 
+    /**
+     * @param bookEntry to be represented by this view
+     */
     public BookItemView(final BookEntry bookEntry) {
 
         final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(

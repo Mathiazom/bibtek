@@ -29,6 +29,13 @@ public final class Book {
         this.imgPath = imgPath;
     }
 
+    /**
+     * Book without cover image.
+     *
+     * @param title         the book title
+     * @param author        the book author
+     * @param yearPublished the year the book was published
+     */
     public Book(final String title, final String author, final int yearPublished) {
         this(title, author, yearPublished, "");
     }
@@ -41,7 +48,7 @@ public final class Book {
     }
 
     /**
-     * @return the book authur
+     * @return the book author
      */
     public String getAuthor() {
         return author;
@@ -76,6 +83,9 @@ public final class Book {
         return this.toString().hashCode();
     }
 
+    /**
+     * @return the book's cover image, or null if not set.
+     */
     public String getImgPath() {
         return imgPath;
     }

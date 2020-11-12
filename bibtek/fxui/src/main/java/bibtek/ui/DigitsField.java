@@ -7,13 +7,12 @@ import javafx.scene.control.TextField;
  */
 public class DigitsField extends TextField {
 
+    /**
+     * Init with text property listener to continuously sanitize input.
+     */
     public DigitsField() {
 
-        textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                setText(newValue.replaceAll("[^\\d]", ""));
-            }
-        });
+        textProperty().addListener((observable, oldValue, newValue) -> setText(newValue.replaceAll("[^\\d]", "")));
 
     }
 

@@ -30,6 +30,11 @@ public enum BookReadingState {
         return this.s;
     }
 
+    /**
+     * Convert string to a valid BookReadingState.
+     * @param s string representing a reading state
+     * @return BookReadingState, or null if invalid string
+     */
     public static BookReadingState fromString(final String s) {
 
         for (BookReadingState readingState : values()) {
