@@ -15,6 +15,7 @@
     <properties>
         <slf4jVersion>1.7.25</slf4jVersion>
         <jerseyVersion>2.28</jerseyVersion>
+        <skipIntegrationTests>false</skipIntegrationTests>
     </properties>
 
     <dependencies>
@@ -145,6 +146,7 @@
                             <systemPropertyVariables>
                                 <bibtek.port>${jetty.port}</bibtek.port>
                             </systemPropertyVariables>
+                            <skip>${skipIntegrationTests}</skip>
                         </configuration>
                     </execution>
                 </executions>
