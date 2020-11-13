@@ -166,6 +166,8 @@
         <module>restapi</module>
         <module>restserver</module>
         <module>aggregator</module>
+        <module>integrationtests</module>
+
 
     </modules>
 
