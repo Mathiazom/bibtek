@@ -68,10 +68,6 @@ public final class ViewBookController extends SceneChangerController {
         }
         bookEntryImage.setImage(bookImage);
 
-        /*FxUtils.setUpCustomDatePicker(addBookDatePicker, addBookDatePickerField);
-
-        addBookDatePicker.setValue(bookEntry.getDateAcquired());*/
-
         FxUtil.setUpReadingStateDropDown(addBookReadingStatusCombo);
 
         addBookReadingStatusCombo.getSelectionModel().select(bookEntry.getReadingState());
