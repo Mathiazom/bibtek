@@ -69,7 +69,7 @@
         <dependency>
             <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-materialdesign-pack</artifactId>
-            <version>11.3.5</version>
+            <version>11.5.0</version>
         </dependency>
 
     </dependencies>
