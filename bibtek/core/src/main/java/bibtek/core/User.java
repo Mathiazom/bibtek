@@ -104,4 +104,27 @@ public class User {
         return sb.toString();
     }
 
+    /**
+     * Equals method for User.
+     */
+    @Override
+    public boolean equals(final Object obj) {
+        if (!this.getClass().equals(obj.getClass())) {
+            return false;
+        }
+        if (obj == null) {
+            return false;
+        }
+        User u = (User) obj;
+        return this.userName.equals(u.getUserName()) && this.age == u.getAge() && this.library.equals(u.getLibrary());
+    }
+
+    /**
+     * hashCode method.
+     */
+    @Override
+    public int hashCode() {
+        return this.toString().hashCode();
+    }
+
 }

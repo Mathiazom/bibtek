@@ -83,4 +83,23 @@ public final class Library {
 
     }
 
+    /**
+     * Equals method for Library.
+     */
+    @Override
+    public boolean equals(final Object obj) {
+        if (!obj.getClass().equals(this.getClass())) {
+            return false;
+        }
+        if (obj == null) {
+            return false;
+        }
+        return this.bookEntries.equals(((Library) obj).getBookEntries());
+    }
+
+    @Override
+    public int hashCode() {
+        return this.toString().hashCode();
+    }
+
 }

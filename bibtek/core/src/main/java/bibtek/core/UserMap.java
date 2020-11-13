@@ -13,7 +13,6 @@ public final class UserMap implements Iterable<User> {
 
     private final Map<String, User> users = new LinkedHashMap<>();
 
-
     /**
      * Checks if this UserMap already has a User with the provided username.
      *
@@ -34,7 +33,6 @@ public final class UserMap implements Iterable<User> {
         users.remove(user.getUserName());
     }
 
-
     /**
      * Gets the User with the provided username.
      *
@@ -44,7 +42,6 @@ public final class UserMap implements Iterable<User> {
     public User getUser(final String username) {
         return users.get(username);
     }
-
 
     /**
      * Replaces an existing User with the same username, or adds it.
@@ -56,11 +53,33 @@ public final class UserMap implements Iterable<User> {
         return users.put(user.getUserName(), user);
     }
 
-
     @Override
     public Iterator<User> iterator() {
         return users.values().iterator();
     }
 
+    /**
+     * Equals method of UserMap.
+     */
+    @Override
+    public boolean equals(final Object obj) {
+        if (!this.getClass().equals(obj.getClass())) {
+            return false;
+        }
+        if (obj == null) {
+            return false;
+        }
+        for (User user : this) {
+            if (!((UserMap) obj).hasUser(user.getUserName())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.toString().hashCode();
+    }
 
 }
