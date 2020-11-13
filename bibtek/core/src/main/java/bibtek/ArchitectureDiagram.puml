@@ -1,0 +1,63 @@
+@startuml ArchitectureDiagram
+
+title Architecture diagram of bibtek
+
+
+component core {
+package bibtek.core
+package bibtek.json
+}
+
+component fxui {
+package bibtek.ui
+}
+
+component gson{
+}
+
+component jersey {
+}
+
+component grizzly2 {
+}
+
+component restserver {
+package bibtek.restserver
+}
+
+component javafx {
+component fxml {
+}
+}
+
+component restapi {
+package bibtek.restapi
+}
+
+component javafx {
+component fxml {
+}
+}
+
+component jaxrs {
+}
+bibtek.json ..> gson
+
+bibtek.ui ..> bibtek.core
+bibtek.ui ..> bibtek.json
+
+fxui ..> javafx
+fxui ..> fxml
+
+bibtek.restapi ..> bibtek.core
+bibtek.restapi ..> bibtek.json
+
+restapi ..> jaxrs
+
+bibtek.restserver ..> bibtek.core
+bibtek.restserver ..> bibtek.restapi
+
+restserver ..> jersey
+restserver ..> grizzly2
+
+@enduml
