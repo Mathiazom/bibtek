@@ -88,10 +88,10 @@ public final class Library {
      */
     @Override
     public boolean equals(final Object obj) {
-        if (!obj.getClass().equals(this.getClass())) {
+        if (obj == null) {
             return false;
         }
-        if (obj == null) {
+        if (!obj.getClass().equals(this.getClass())) {
             return false;
         }
         return this.bookEntries.equals(((Library) obj).getBookEntries());

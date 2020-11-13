@@ -63,10 +63,10 @@ public final class UserMap implements Iterable<User> {
      */
     @Override
     public boolean equals(final Object obj) {
-        if (!this.getClass().equals(obj.getClass())) {
+        if (obj == null) {
             return false;
         }
-        if (obj == null) {
+        if (!this.getClass().equals(obj.getClass())) {
             return false;
         }
         for (User user : this) {
