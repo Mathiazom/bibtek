@@ -82,10 +82,8 @@ public final class ViewBookController {
 
             bookEntry.setReadingState(newState);
 
-            System.out.println(a + " -> " + newState);
-
             final Stage stage = (Stage) addBookReadingStatusCombo.getScene().getWindow();
-            ToastUtil.makeText(stage, Toast.ToastState.INFO, "Reading state changed to '" + newState + "'");
+            ToastUtil.makeText(stage, Toast.ToastState.SUCCESS, "Reading state changed to '" + newState + "'");
 
         });
 

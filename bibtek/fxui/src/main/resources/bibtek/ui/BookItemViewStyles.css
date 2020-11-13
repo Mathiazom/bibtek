@@ -1,18 +1,17 @@
 #bookItemView{
     -fx-max-width: 650;
-    -fx-background-color: #eee;
+    -fx-background-color: transparent;
     -fx-padding: 20 0 10 0;
 }
 
 .bookItemCard {
     -fx-background-color: white;
-    -fx-border-radius: 4;
-    -fx-background-radius: 4;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
 }
 
 .bookItemCard:hover{
     -fx-cursor: hand;
-    -fx-background-color: #f4f4f4;
 }
 
 .bookItemCard Label {

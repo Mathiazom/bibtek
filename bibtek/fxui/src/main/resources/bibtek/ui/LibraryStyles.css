@@ -1,5 +1,5 @@
 #libraryList{
-    -fx-background-color: #eee;
+    -fx-background-color: #eceff1;
 }
 
 #libraryList ScrollBar {
@@ -12,6 +12,6 @@
 
 .list-cell {
     -fx-alignment: TOP_CENTER;
-    -fx-background-color: #eee;
+    -fx-background-color: transparent;
     -fx-padding: 0 20 0 20;
 }
