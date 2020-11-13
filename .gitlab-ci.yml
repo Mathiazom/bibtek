@@ -29,7 +29,7 @@ cache:
     - "mvn $MAVEN_CLI_OPTS verify"
 
     # print code coverage report
-    - cat target/site/jacoco/index.html
+    - cat aggregator/target/site/jacoco-aggregate/index.html
 
 # Run mvn verify in CI
 mvn verify:
