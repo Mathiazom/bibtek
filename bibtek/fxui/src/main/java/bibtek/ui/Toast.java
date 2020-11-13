@@ -53,7 +53,12 @@ public class Toast extends AnchorPane {
     @FXML
     FontIcon toastIcon;
 
-    Toast(final String message, final ToastState icon) {
+    /**
+     * Display simple message.
+     * @param message text to display
+     * @param icon to display along with text
+     */
+    public Toast(final String message, final ToastState icon) {
 
         final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/Toast.fxml"));
         fxmlLoader.setRoot(this);

@@ -7,6 +7,8 @@ import bibtek.core.BookEntry;
 import bibtek.core.BookReadingState;
 import bibtek.core.User;
 import bibtek.json.StorageHandler;
+import bibtek.ui.utils.FxUtil;
+import bibtek.ui.utils.ToastUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -70,7 +72,7 @@ public final class ViewBookController extends SceneChangerController {
 
         addBookDatePicker.setValue(bookEntry.getDateAcquired());*/
 
-        FxUtils.setUpReadingStateDropDown(addBookReadingStatusCombo);
+        FxUtil.setUpReadingStateDropDown(addBookReadingStatusCombo);
 
         addBookReadingStatusCombo.getSelectionModel().select(bookEntry.getReadingState());
 

@@ -2,6 +2,7 @@ package bibtek.ui;
 
 import bibtek.core.Book;
 import bibtek.core.BookReadingState;
+import bibtek.ui.utils.FxUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -42,9 +43,9 @@ public abstract class BaseBookController extends SceneChangerController {
     @FXML
     protected void initialize() {
 
-        FxUtils.setUpReadingStateDropDown(addBookReadingStatusCombo);
+        FxUtil.setUpReadingStateDropDown(addBookReadingStatusCombo);
 
-        FxUtils.setUpCustomDatePicker(addBookDatePicker, addBookDatePickerField);
+        FxUtil.setUpCustomDatePicker(addBookDatePicker, addBookDatePickerField);
 
     }
 

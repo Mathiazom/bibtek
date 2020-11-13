@@ -1,5 +1,6 @@
-package bibtek.ui;
+package bibtek.ui.utils;
 
+import bibtek.ui.Toast;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;

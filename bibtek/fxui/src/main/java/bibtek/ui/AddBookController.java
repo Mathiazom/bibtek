@@ -8,6 +8,7 @@ import bibtek.core.User;
 import bibtek.json.BooksAPIHandler;
 import bibtek.json.ISBNUtils;
 import bibtek.json.StorageHandler;
+import bibtek.ui.utils.ToastUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;

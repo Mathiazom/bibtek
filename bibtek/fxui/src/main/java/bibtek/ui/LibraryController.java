@@ -2,6 +2,7 @@ package bibtek.ui;
 
 import bibtek.core.BookEntry;
 import bibtek.core.User;
+import bibtek.ui.utils.ToastUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;

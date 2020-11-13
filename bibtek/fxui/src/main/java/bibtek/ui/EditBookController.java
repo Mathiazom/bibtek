@@ -8,6 +8,7 @@ import bibtek.core.BookEntry;
 import bibtek.core.BookReadingState;
 import bibtek.core.User;
 import bibtek.json.StorageHandler;
+import bibtek.ui.utils.ToastUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;

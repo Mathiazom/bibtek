@@ -1,4 +1,4 @@
-package bibtek.ui;
+package bibtek.ui.utils;
 
 import bibtek.core.BookReadingState;
 import javafx.collections.FXCollections;
@@ -10,9 +10,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.skin.DatePickerSkin;
 import javafx.util.StringConverter;
 
-public final class FxUtils {
+public final class FxUtil {
 
-    private FxUtils() {
+    private FxUtil() {
     }
 
     /**
