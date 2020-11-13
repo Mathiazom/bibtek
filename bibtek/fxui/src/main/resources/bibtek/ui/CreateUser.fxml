@@ -33,8 +33,8 @@
             <Font size="26.0" />
          </font>
       </Label>
-      <TextField fx:id="userNameInput" promptText="User name" />
-      <TextField fx:id="userNameConfirmInput" promptText="Confirm user name" />
+      <TextField fx:id="userNameInput" promptText="Username" />
+      <TextField fx:id="userNameConfirmInput" promptText="Confirm username" />
       <TextField fx:id="ageInput" promptText="Age" />
       <CheckBox fx:id="confirmCheckbox" text="I agree to">
          <VBox.margin>

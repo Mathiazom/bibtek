@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<?import javafx.scene.control.Label?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<?import java.net.URL?>
+<fx:root prefHeight="52.0" prefWidth="467.0" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+
+    <HBox alignment="TOP_CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <HBox fx:id="toastBox" alignment="CENTER">
+            <Label id="toastIconLabel">
+                <graphic>
+                    <FontIcon fx:id="toastIcon" iconLiteral="mdi-information-outline"/>
+                </graphic>
+            </Label>
+            <Label fx:id="toastText" text="This is a toast to the brave!"/>
+        </HBox>
+    </HBox>
+
+    <stylesheets>
+        <URL value="@ToastStyles.css"/>
+        <URL value="@BaseStyles.css"/>
+    </stylesheets>
+
+</fx:root>

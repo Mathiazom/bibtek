@@ -1,0 +1,19 @@
+#toastBox {
+    -fx-background-color: #212121;
+    -fx-background-radius: 8px;
+    -fx-padding: 8px 15px 8px 15px;
+}
+
+#toastIconLabel{
+    -fx-padding: 0 10px 0 0;
+}
+
+#toastIcon {
+    -fx-icon-size: 20px;
+    -fx-icon-color: #fff;
+}
+
+#toastText{
+    -fx-font-size: 12px;
+    -fx-text-fill: #fff;
+}

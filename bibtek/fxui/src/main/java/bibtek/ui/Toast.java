@@ -1,70 +1,75 @@
 package bibtek.ui;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
-import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.util.Duration;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import org.kordamp.ikonli.javafx.FontIcon;
 
-public final class Toast {
+import java.io.IOException;
 
-    private Toast() {
+public class Toast extends AnchorPane {
+
+
+    public enum ToastState {
+
+        /**
+         * General information.
+         */
+        INFO("mdi-information-outline", "#78909c"),
+
+        /**
+         * Successful event has occurred.
+         */
+        SUCCESS("mdi-check", "#66bb6a"),
+
+        /**
+         * Something is incorrect (e.g. user input)
+         */
+        INCORRECT("mdi-close", "#ef5350"),
+
+        /**
+         * Error has occurred.
+         */
+        ERROR("mdi-alert-outline", "#ef5350");
+
+        private final String iconLiteral;
+        private final String boxColor;
+
+        ToastState(final String iconLiteral, final String boxColor) {
+            this.iconLiteral = iconLiteral;
+            this.boxColor = boxColor;
+        }
+
     }
 
-    public static void makeText(final Stage ownerStage, final String toastMsg) {
+    @FXML
+    HBox toastBox;
 
-        final int toastMsgTime = 3500; //3.5 seconds
-        final int fadeInTime = 500; //0.5 seconds
-        final int fadeOutTime = 500; //0.5 seconds
+    @FXML
+    Label toastText;
 
-        makeText(ownerStage, toastMsg, toastMsgTime, fadeInTime, fadeOutTime);
+    @FXML
+    FontIcon toastIcon;
+
+    Toast(final String message, final ToastState icon) {
+
+        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/Toast.fxml"));
+        fxmlLoader.setRoot(this);
+        fxmlLoader.setController(this);
+
+        try {
+            fxmlLoader.load();
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+
+        toastText.setText(message);
+        toastIcon.setIconLiteral(icon.iconLiteral);
+        toastBox.setStyle("-fx-background-color: " + icon.boxColor);
+
 
     }
 
-    public static void makeText(final Stage ownerStage, final String toastMsg, final int toastMsgTime, final int fadeInTime, final int fadeOutTime) {
-
-        final Stage toastStage = new Stage();
-        toastStage.initOwner(ownerStage);
-        toastStage.setResizable(false);
-        toastStage.initStyle(StageStyle.TRANSPARENT);
-
-        final Text text = new Text(toastMsg);
-        text.setFont(Font.font("Verdana", 40));
-        text.setFill(Color.RED);
-
-        final StackPane root = new StackPane(text);
-        root.setStyle("-fx-background-radius: 20; -fx-background-color: rgba(0, 0, 0, 0.2); -fx-padding: 50px;");
-        root.setOpacity(0);
-
-        final Scene scene = new Scene(root);
-        scene.setFill(Color.TRANSPARENT);
-        toastStage.setScene(scene);
-        toastStage.show();
-
-        final Timeline fadeInTimeline = new Timeline();
-        final KeyFrame fadeInKey1 = new KeyFrame(Duration.millis(fadeInTime), new KeyValue(toastStage.getScene().getRoot().opacityProperty(), 1));
-        fadeInTimeline.getKeyFrames().add(fadeInKey1);
-        fadeInTimeline.setOnFinished((ae) ->
-        {
-            new Thread(() -> {
-                try {
-                    Thread.sleep(toastMsgTime);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                final Timeline fadeOutTimeline = new Timeline();
-                final KeyFrame fadeOutKey1 = new KeyFrame(Duration.millis(fadeOutTime), new KeyValue(toastStage.getScene().getRoot().opacityProperty(), 0));
-                fadeOutTimeline.getKeyFrames().add(fadeOutKey1);
-                fadeOutTimeline.setOnFinished((aeb) -> toastStage.close());
-                fadeOutTimeline.play();
-            }).start();
-        });
-        fadeInTimeline.play();
-    }
 }

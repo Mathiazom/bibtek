@@ -43,7 +43,7 @@ public class LoginPageController extends SceneChangerController implements Initi
     }
 
     /**
-     * Checks if there is a user of written user name and logs them in. Then sends
+     * Checks if there is a user of written username and logs them in. Then sends
      * the user to the library page.
      */
     @FXML
@@ -51,8 +51,7 @@ public class LoginPageController extends SceneChangerController implements Initi
 
         final String username = userNameInput.getText();
         if (!storageHandler.hasUser(username)) {
-            errorLabel.setText("No user with given username");
-            errorLabel.setTextFill(Color.RED);
+            ToastUtil.makeText(stage, Toast.ToastState.INFO, "No user with given username");
             return;
         }
 
@@ -62,8 +61,7 @@ public class LoginPageController extends SceneChangerController implements Initi
             final Stage stage = (Stage) logInButton.getScene().getWindow();
             this.changeSceneAndUpdateUser(stage, "/bibtek/ui/Library.fxml");
         } catch (IOException e) {
-            errorLabel.setTextFill(Color.RED);
-            errorLabel.setText("There was an error when showing your library");
+            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing your library");
             e.printStackTrace();
         }
     }
@@ -73,12 +71,12 @@ public class LoginPageController extends SceneChangerController implements Initi
      */
     @FXML
     public void createNewUser() {
+
         final Stage stage = (Stage) createNewUserLabel.getScene().getWindow();
         try {
             this.changeScene(stage, "/bibtek/ui/CreateUser.fxml");
         } catch (IOException e) {
-            errorLabel.setTextFill(Color.RED);
-            errorLabel.setText("There was an error when showing the create user page");
+            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing the create user page");
             e.printStackTrace();
         }
 

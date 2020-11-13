@@ -15,7 +15,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class CreateUserController extends SceneChangerController implements Initializable {
@@ -75,24 +74,24 @@ public class CreateUserController extends SceneChangerController implements Init
      */
     @FXML
     public void createUser() {
+
+        final Stage stage = (Stage) createUserButton.getScene().getWindow();
+
         String userName1 = userNameInput.getText();
         String userName2 = userNameConfirmInput.getText();
         if (!userName1.equals(userName2)) {
-            errorLabel.setText("User names don't match");
-            errorLabel.setTextFill(Color.RED);
+            ToastUtil.makeText(stage, Toast.ToastState.INCORRECT, "Usernames don't match");
             return;
         }
         final int age = Integer.parseInt(ageInput.getText());
 
         if (age < User.MINIMAL_AGE) {
-            errorLabel.setText("You must be at least 13 \nto create an account");
-            errorLabel.setTextFill(Color.RED);
+            ToastUtil.makeText(stage, Toast.ToastState.INCORRECT, "You must be at least 13 \nto create an account");
             return;
         }
 
         if (!confirmCheckbox.isSelected()) {
-            errorLabel.setText("You must consent to the terms \nto create an account");
-            errorLabel.setTextFill(Color.RED);
+            ToastUtil.makeText(stage, Toast.ToastState.INCORRECT, "You must consent to the terms \nto create an account");
             return;
         }
 
@@ -101,13 +100,12 @@ public class CreateUserController extends SceneChangerController implements Init
             StorageHandler storageHandler = new StorageHandler();
             storageHandler.putUser(user);
         } catch (Exception e) {
-            errorLabel.setText("An error occurred");
-            errorLabel.setTextFill(Color.RED);
+            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "An error occurred");
             e.printStackTrace();
         }
+
         // Insert code for feedback that the user was created.
 
-        final Stage stage = (Stage) createUserButton.getScene().getWindow();
         final Parent root;
         try {
             root = FXMLLoader.load(getClass().getResource("/bibtek/ui/LoginPage.fxml"));
