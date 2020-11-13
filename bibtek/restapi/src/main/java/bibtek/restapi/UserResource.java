@@ -67,6 +67,7 @@ public final class UserResource {
         if (!hasValidUser()) {
             return false;
         }
+        System.out.println("Putting " + user);
         this.userMap.putUser(user);
         return true;
     }

@@ -3,7 +3,6 @@ package bibtek.ui;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.beans.Observable;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
@@ -24,15 +23,30 @@ public final class ToastUtil {
     private ToastUtil() {
     }
 
-    public static void makeText(final Stage ownerStage, final Toast.ToastState icon, final String toastMsg) {
+    /**
+     * Utility method to display simple toast message.
+     * @param ownerStage where toast should be hosted
+     * @param state to specify toast color and icon
+     * @param toastMsg to display inside toast
+     */
+    public static void makeText(final Stage ownerStage, final Toast.ToastState state, final String toastMsg) {
 
-        makeText(ownerStage, icon, toastMsg, DEFAULT_MSG_TIME, DEFAULT_FADE_IN_TIME, DEFAULT_FADE_OUT_TIME);
+        makeText(ownerStage, state, toastMsg, DEFAULT_MSG_TIME, DEFAULT_FADE_IN_TIME, DEFAULT_FADE_OUT_TIME);
 
     }
 
-    public static void makeText(final Stage ownerStage, final Toast.ToastState icon, final String toastMsg, final int toastMsgTime, final int fadeInTime, final int fadeOutTime) {
+    /**
+     * Utility method to display simple toast message.
+     * @param ownerStage where toast should be hosted
+     * @param state to specify toast color and icon
+     * @param toastMsg to display inside toast
+     * @param toastMsgTime total time toast should be visible
+     * @param fadeInTime total time used to transition in toast
+     * @param fadeOutTime total time used to transition out toast
+     */
+    public static void makeText(final Stage ownerStage, final Toast.ToastState state, final String toastMsg, final int toastMsgTime, final int fadeInTime, final int fadeOutTime) {
 
-        final Toast toast = new Toast(toastMsg, icon);
+        final Toast toast = new Toast(toastMsg, state);
 
         final Pane parentPane = (Pane) ownerStage.getScene().getRoot();
 

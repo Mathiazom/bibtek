@@ -10,7 +10,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class LoginPageController extends SceneChangerController implements Initializable {
@@ -49,6 +48,8 @@ public class LoginPageController extends SceneChangerController implements Initi
     @FXML
     public void logIn() {
 
+        final Stage stage = (Stage) logInButton.getScene().getWindow();
+
         final String username = userNameInput.getText();
         if (!storageHandler.hasUser(username)) {
             ToastUtil.makeText(stage, Toast.ToastState.INFO, "No user with given username");
@@ -58,7 +59,6 @@ public class LoginPageController extends SceneChangerController implements Initi
         update(storageHandler.getUser(username));
 
         try {
-            final Stage stage = (Stage) logInButton.getScene().getWindow();
             this.changeSceneAndUpdateUser(stage, "/bibtek/ui/Library.fxml");
         } catch (IOException e) {
             ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing your library");

@@ -15,6 +15,10 @@ public final class FxUtils {
     private FxUtils() {
     }
 
+    /**
+     * Helper method to initialize dropdown of BookReadingStates.
+     * @param dropDown to be initialized
+     */
     public static void setUpReadingStateDropDown(final ComboBox<BookReadingState> dropDown) {
 
         dropDown.setConverter(new StringConverter<>() {
@@ -33,6 +37,11 @@ public final class FxUtils {
 
     }
 
+    /**
+     * Helper method to setup date picker with custom date field (for added CSS support).
+     * @param datePicker actually picking dates
+     * @param dateField displaying picked date
+     */
     public static void setUpCustomDatePicker(final DatePicker datePicker, final TextField dateField) {
 
         final DatePickerSkin datePickerSkin = new DatePickerSkin(datePicker);

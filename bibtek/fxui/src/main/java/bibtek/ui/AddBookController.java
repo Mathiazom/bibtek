@@ -11,7 +11,6 @@ import bibtek.json.StorageHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public final class AddBookController extends BaseBookController {
@@ -87,12 +86,11 @@ public final class AddBookController extends BaseBookController {
 
     @FXML
     private void handleShowLibrary() {
+        final Stage stage = (Stage) addBookAuthorField.getScene().getWindow();
         try {
-            final Stage stage = (Stage) addBookAuthorField.getScene().getWindow();
             this.changeSceneAndUpdateUser(stage, "/bibtek/ui/Library.fxml");
         } catch (IOException e) {
-            errorLabel.setTextFill(Color.RED);
-            errorLabel.setText("There was an error when showing your library");
+            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing your library");
             e.printStackTrace();
         }
 

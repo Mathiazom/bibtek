@@ -9,9 +9,6 @@ import bibtek.core.BookReadingState;
 import bibtek.core.User;
 import bibtek.json.StorageHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -19,7 +16,6 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public final class EditBookController extends BaseBookController {
@@ -39,6 +35,9 @@ public final class EditBookController extends BaseBookController {
 
     }
 
+    /**
+     * Save changes made in editor.
+     */
     @FXML
     public void handleConfirmEditBook() {
 
@@ -49,18 +48,16 @@ public final class EditBookController extends BaseBookController {
         bookEntry.setDateAcquired(addBookDatePicker.getValue());
         bookEntry.setReadingState(addBookReadingStatusCombo.getValue());
 
-        try {
-            StorageHandler storageHandler = new StorageHandler();
-            storageHandler.updateUser(getUser());
-        } catch (IOException e) {
-            errorLabel.setText("Was not able to update the user library");
-            errorLabel.setTextFill(Color.RED);
-        }
+        final StorageHandler storageHandler = new StorageHandler();
+        storageHandler.putUser(getUser());
 
         handleShowBookView();
 
     }
 
+    /**
+     * Handle request to delete book by first asking for confirmation.
+     */
     @FXML
     public void handleDeleteBook() {
 
@@ -76,46 +73,41 @@ public final class EditBookController extends BaseBookController {
         deleteButton.setDefaultButton(true);
 
         final Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() != deleteButtonType) {
+        if (result.isEmpty() || result.get() != deleteButtonType) {
             return;
         }
 
         User user = getUser();
         user.getLibrary().removeBookEntry(bookEntry);
-        try {
-            StorageHandler storageHandler = new StorageHandler();
-            storageHandler.updateUser(getUser());
-        } catch (IOException e) {
-            errorLabel.setText("Was not able to update the user library");
-            errorLabel.setTextFill(Color.RED);
-        }
+        StorageHandler storageHandler = new StorageHandler();
+        storageHandler.putUser(getUser());
 
         handleShowLibrary();
 
     }
 
+    /**
+     * Show page for single book.
+     */
     @FXML
     public void handleShowBookView() {
 
-        ViewBookController controller;
-
-        final Stage stage = (Stage) addBookTitleField.getScene().getWindow();
-        final Parent root;
+        final Stage stage = (Stage) addBookDatePicker.getScene().getWindow();
         try {
-            final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/ViewBook.fxml"));
-            root = fxmlLoader.load();
-            final Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-            controller = fxmlLoader.getController();
+            final ViewBookController editBookController = (ViewBookController) changeScene(stage, "/bibtek/ui/ViewBook.fxml");
+            editBookController.update(bookEntry, getUser());
         } catch (IOException e) {
+            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing book page");
             e.printStackTrace();
-            return;
         }
-        controller.update(bookEntry, getUser());
 
     }
 
+    /**
+     * Pass the current User and BookEntry to be edited.
+     * @param b to be edited
+     * @param user owner of book
+     */
     public void update(final BookEntry b, final User user) {
 
         super.update(user);
@@ -138,23 +130,13 @@ public final class EditBookController extends BaseBookController {
 
     private void handleShowLibrary() {
 
-        final LibraryController controller;
-
-        final Stage stage = (Stage) addBookTitleField.getScene().getWindow();
-
-        final Parent root;
+        final Stage stage = (Stage) addBookDatePicker.getScene().getWindow();
         try {
-            final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/Library.fxml"));
-            root = fxmlLoader.load();
-            final Scene scene = new Scene(root);
-            stage.setScene(scene);
-            // stage.show();
-            controller = fxmlLoader.getController();
+            this.changeSceneAndUpdateUser(stage, "/bibtek/ui/Library.fxml");
         } catch (IOException e) {
+            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing your library");
             e.printStackTrace();
-            return;
         }
-        controller.update(getUser());
 
     }
 }

@@ -7,10 +7,7 @@ import java.util.ResourceBundle;
 import bibtek.core.User;
 import bibtek.json.StorageHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -63,8 +60,7 @@ public class CreateUserController extends SceneChangerController implements Init
         try {
             this.changeScene(stage, "/bibtek/ui/Terms.fxml");
         } catch (IOException e) {
-            errorLabel.setTextFill(Color.RED);
-            errorLabel.setText("There was an error showing the terms and conditions");
+            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error showing the terms and conditions");
             e.printStackTrace();
         }
     }
@@ -106,13 +102,10 @@ public class CreateUserController extends SceneChangerController implements Init
 
         // Insert code for feedback that the user was created.
 
-        final Parent root;
         try {
-            root = FXMLLoader.load(getClass().getResource("/bibtek/ui/LoginPage.fxml"));
-            final Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            this.changeSceneAndUpdateUser(stage, "/bibtek/ui/LoginPage.fxml");
         } catch (IOException e) {
+            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing login page");
             e.printStackTrace();
         }
 

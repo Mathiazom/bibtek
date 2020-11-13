@@ -6,17 +6,15 @@ import bibtek.core.Book;
 import bibtek.core.BookEntry;
 import bibtek.core.BookReadingState;
 import bibtek.core.User;
+import bibtek.json.StorageHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-public final class ViewBookController {
+public final class ViewBookController extends SceneChangerController {
 
     private static final String BOOK_IMAGE_PLACEHOLDER_LOCATION = "/bibtek/ui/book-cover-placeholder-orange.jpg";
 
@@ -32,24 +30,22 @@ public final class ViewBookController {
     @FXML
     private ImageView bookEntryImage;
 
-    /*@FXML
-    DatePicker addBookDatePicker;
-
-    @FXML
-    TextField addBookDatePickerField;*/
-
     @FXML
     ComboBox<BookReadingState> addBookReadingStatusCombo;
 
-
-    private User user;
-
     private BookEntry bookEntry;
 
+    /**
+     * Pass the current User and BookEntry to be viewed.
+     *
+     * @param b    to be viewed
+     * @param user owner of book
+     */
     @FXML
-    public void update(final BookEntry b, final User u) {
+    public void update(final BookEntry b, final User user) {
 
-        this.user = u;
+        super.update(user);
+
         this.bookEntry = b;
 
         final Book book = bookEntry.getBook();
@@ -82,6 +78,9 @@ public final class ViewBookController {
 
             bookEntry.setReadingState(newState);
 
+            final StorageHandler storageHandler = new StorageHandler();
+            storageHandler.putUser(getUser());
+
             final Stage stage = (Stage) addBookReadingStatusCombo.getScene().getWindow();
             ToastUtil.makeText(stage, Toast.ToastState.SUCCESS, "Reading state changed to '" + newState + "'");
 
@@ -92,46 +91,28 @@ public final class ViewBookController {
     @FXML
     private void handleEditBook() {
 
-        final EditBookController controller;
 
         final Stage stage = (Stage) bookEntryTitle.getScene().getWindow();
-
-        final Parent root;
         try {
-            final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/EditBook.fxml"));
-            root = fxmlLoader.load();
-            final Scene scene = new Scene(root);
-            stage.setScene(scene);
-            // stage.show();
-            controller = fxmlLoader.getController();
+            final EditBookController editBookController = (EditBookController) changeScene(stage, "/bibtek/ui/EditBook.fxml");
+            editBookController.update(bookEntry, getUser());
         } catch (IOException e) {
+            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing edit book page");
             e.printStackTrace();
-            return;
         }
-        controller.update(bookEntry, user);
 
     }
 
     @FXML
     private void handleShowLibrary() {
 
-        final LibraryController controller;
-
         final Stage stage = (Stage) bookEntryTitle.getScene().getWindow();
-
-        final Parent root;
         try {
-            final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/Library.fxml"));
-            root = fxmlLoader.load();
-            final Scene scene = new Scene(root);
-            stage.setScene(scene);
-            // stage.show();
-            controller = fxmlLoader.getController();
+            this.changeSceneAndUpdateUser(stage, "/bibtek/ui/Library.fxml");
         } catch (IOException e) {
+            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing your library");
             e.printStackTrace();
-            return;
         }
-        controller.update(user);
 
     }
 

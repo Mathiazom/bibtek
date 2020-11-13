@@ -14,7 +14,6 @@ public final class BookEntry {
     private BookReadingState readingState;
 
     /**
-     *
      * @param book         the Book associated with the BookEntry
      * @param dateAcquired the date the book was acquired
      * @param readingState the reading status of the book
@@ -32,8 +31,13 @@ public final class BookEntry {
         return book;
     }
 
-    public void setBook(final Book b) {
-        this.book = b;
+    /**
+     * set the Book to be associated with the BookEntry.
+     *
+     * @param book
+     */
+    public void setBook(final Book book) {
+        this.book = book;
     }
 
     /**
@@ -43,8 +47,13 @@ public final class BookEntry {
         return dateAcquired;
     }
 
-    public void setDateAcquired(final LocalDate da) {
-        this.dateAcquired = da;
+    /**
+     * set the date the book was acquired.
+     *
+     * @param dateAcquired
+     */
+    public void setDateAcquired(final LocalDate dateAcquired) {
+        this.dateAcquired = dateAcquired;
     }
 
     /**
@@ -54,8 +63,13 @@ public final class BookEntry {
         return readingState;
     }
 
-    public void setReadingState(final BookReadingState state) {
-        this.readingState = state;
+    /**
+     * set the reading state.
+     *
+     * @param readingState
+     */
+    public void setReadingState(final BookReadingState readingState) {
+        this.readingState = readingState;
     }
 
     /**
