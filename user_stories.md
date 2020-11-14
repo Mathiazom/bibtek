@@ -23,8 +23,22 @@ As a user I would like to view each individual book by themself
 
 As a user I would like to view details about my book, like author, date of publishing, edition, description, length and ISBN number
 
-## View details about each book(us-6)
+## Personal profile with its own library available online(us-6)
 
-As a user I would like to have my own profile that has my library of books online such that I can have access to that library wherever I go. 
+As a user I would like to have my own profile that has my library of books online such that I can have access to that library wherever I go
 
+## Log in to library(us-7)
 
+As a user I want to log in to my library
+
+## Make a user(us-8)
+
+As a user I want to create a user
+
+# Add books to library(us-9)
+
+As a user I want to add books to my library, either with ISBN number or with manual details
+
+# Edit books in library (us-9)
+
+As a user I want to edit the books in my library
