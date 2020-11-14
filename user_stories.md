@@ -28,7 +28,7 @@ As a user I would like to view details about my book, like author, date of publi
 
 ## Personal profile with its own library available online (us-6)
 
-As a user I would like to have my own profile that has my library of books online such that I can have access to that library wherever I go
+As a user I would like to have my own profile, which has my library of books online, such that I can have access to that library wherever I go
 
 
 ## Log in to library (us-7)
