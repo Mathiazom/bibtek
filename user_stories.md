@@ -31,6 +31,7 @@ As a user I would like to have my own profile that has my library of books onlin
 
 As a user I want to log in to my library
 
+
 ## Make a user(us-8)
 
 As a user I want to create a user
@@ -42,3 +43,7 @@ As a user I want to add books to my library, either with ISBN number or with man
 # Edit books in library (us-9)
 
 As a user I want to edit the books in my library
+
+## Log out off bibtek (us-10)
+
+As a user I want to log out when I'm finished with my tasks
