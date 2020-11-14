@@ -46,11 +46,11 @@ As a user I want to create a user
 As a user I want to add books to my library, either with ISBN number or with manual details
 
 
-# Edit books in library (us-9)
+# Edit books in library (us-10)
 
 As a user I want to edit the books in my library
 
 
-## Log out off bibtek (us-10)
+## Log out off bibtek (us-11)
 
 As a user I want to log out when I'm finished with my tasks
