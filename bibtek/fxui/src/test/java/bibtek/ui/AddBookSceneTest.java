@@ -5,6 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.File;
 import java.time.LocalDate;
 
+import javafx.application.Platform;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
 import bibtek.core.Book;
@@ -21,6 +25,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import bibtek.core.Library;
 
+
 public class AddBookSceneTest extends ApplicationTest {
 
     private Parent parent;
@@ -29,7 +34,7 @@ public class AddBookSceneTest extends ApplicationTest {
     /**
      * Prepares the system.
      */
-    // @BeforeAll
+    @BeforeAll
     public static void headless() {
         if (Boolean.parseBoolean(System.getProperty("gitlab-ci", "false"))) {
             System.setProperty("prism.verbose", "true");
@@ -73,7 +78,7 @@ public class AddBookSceneTest extends ApplicationTest {
      * Testing that the TextFields works properly, and tests if it creates the
      * Library and stores the books correctly.
      */
-    // @Test
+    @Test
     public void createBookEntryTest() {
 
         // testing if the fields work correctly
@@ -123,7 +128,7 @@ public class AddBookSceneTest extends ApplicationTest {
      * Testing if the year published field does not register letters.
      */
 
-    // @Test
+    @Test
     public void yearPublishedFieldTest() {
         // testing if the year published field does not register letters
         final TextField addBookYearPublishedField = (TextField) parent.lookup("#addBookYearPublishedField");
@@ -133,11 +138,10 @@ public class AddBookSceneTest extends ApplicationTest {
 
     }
 
-    /*
+    /**
      * Close application after all tests.
      */
-    /*
-     * @AfterAll public static void closeApp() { Platform.exit(); }
-     */
+    @AfterAll
+    public static void closeApp() { Platform.exit(); }
 
 }
