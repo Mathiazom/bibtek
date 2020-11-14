@@ -41,12 +41,12 @@ As a user I want to log in to my library
 As a user I want to create a user
 
 
-# Add books to library (us-9)
+## Search for books to add to library (us-9)
 
-As a user I want to add books to my library, either with ISBN number or with manual details
+As a user I want to search for books, either with ISBN number or with manual details
 
 
-# Edit books in library (us-10)
+## Edit books in library (us-10)
 
 As a user I want to edit the books in my library
 
