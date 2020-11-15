@@ -27,7 +27,7 @@ public class CreateUserController extends SceneChangerController implements Init
     TextField userNameConfirmInput;
 
     @FXML
-    TextField ageInput;
+    DigitsField ageInput;
 
     @FXML
     CheckBox confirmCheckbox;
@@ -80,7 +80,13 @@ public class CreateUserController extends SceneChangerController implements Init
             ToastUtil.makeText(stage, Toast.ToastState.INCORRECT, "Usernames don't match");
             return;
         }
-        final int age = Integer.parseInt(ageInput.getText());
+        final int age;
+        try {
+            age = Integer.parseInt(ageInput.getText());
+        } catch (NumberFormatException e){
+            ToastUtil.makeText(stage, Toast.ToastState.INCORRECT, "You must enter a valid age");
+            return;
+        }
 
         if (age < User.MINIMAL_AGE) {
             ToastUtil.makeText(stage, Toast.ToastState.INCORRECT, "You must be at least 13 \nto create an account");

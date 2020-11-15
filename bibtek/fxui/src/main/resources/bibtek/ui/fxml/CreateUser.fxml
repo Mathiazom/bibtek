@@ -11,6 +11,7 @@
 
 <?import javafx.scene.layout.VBox?>
 <?import javafx.geometry.Insets?>
+<?import bibtek.ui.DigitsField?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bibtek.ui.CreateUserController">
    <VBox alignment="CENTER" fillWidth="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -35,7 +36,7 @@
       </Label>
       <TextField fx:id="userNameInput" promptText="Username" />
       <TextField fx:id="userNameConfirmInput" promptText="Confirm username" />
-      <TextField fx:id="ageInput" promptText="Age" />
+      <DigitsField fx:id="ageInput" promptText="Age" />
       <CheckBox fx:id="confirmCheckbox" text="I agree to">
          <VBox.margin>
             <Insets bottom="10.0" top="10.0"/>
