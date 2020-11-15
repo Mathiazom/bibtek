@@ -8,6 +8,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.control.skin.DatePickerSkin;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.util.StringConverter;
 
 public final class FxUtil {
@@ -17,6 +19,7 @@ public final class FxUtil {
 
     /**
      * Helper method to initialize dropdown of BookReadingStates.
+     *
      * @param dropDown to be initialized
      */
     public static void setUpReadingStateDropDown(final ComboBox<BookReadingState> dropDown) {
@@ -39,8 +42,9 @@ public final class FxUtil {
 
     /**
      * Helper method to setup date picker with custom date field (for added CSS support).
+     *
      * @param datePicker actually picking dates
-     * @param dateField displaying picked date
+     * @param dateField  displaying picked date
      */
     public static void setUpCustomDatePicker(final DatePicker datePicker, final TextField dateField) {
 
@@ -54,6 +58,14 @@ public final class FxUtil {
                 datePickerNode.relocate(dateFieldBounds.getMinX(), dateFieldBounds.getMaxY());
 
                 datePickerSkin.getDisplayNode().requestFocus();
+            }
+        });
+
+        datePickerSkin.getPopupContent().addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+            // Press ESC to hide datepicker
+            if (event.getCode() == KeyCode.ESCAPE) {
+                datePickerSkin.hide();
+                event.consume();
             }
         });
 

@@ -4,7 +4,6 @@ import bibtek.core.BookReadingState;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
-import javafx.geometry.VerticalDirection;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -27,7 +26,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AddBookTest extends ApplicationTest {
 
-    private static final int WRITE_ROBOT_WAIT_MILLIS = 1;
+    /**
+     * Sleep time between each typed character
+     */
+    private static final int WRITE_ROBOT_PAUSE_MILLIS = 1;
+
+    /**
+     * Sleep time between operations to simulate user behaviour
+     */
+    private static final int ROBOT_PAUSE_MS = 300;
 
     private Parent parent;
     private AddBookController controller;
@@ -94,16 +101,16 @@ public class AddBookTest extends ApplicationTest {
         final ScrollPane scrollPane = (ScrollPane) parent.lookup("ScrollPane");
 
         final TextField addBookTitleField = (TextField) parent.lookup("#addBookTitleField");
-        clickOn(addBookTitleField).write("Finnegans Wake", WRITE_ROBOT_WAIT_MILLIS);
+        clickOn(addBookTitleField).write("Finnegans Wake", WRITE_ROBOT_PAUSE_MILLIS);
 
         assertEquals("Finnegans Wake", addBookTitleField.getText(), "Book Title should be \"Finnegans Wake\" ");
 
         final TextField addBookAuthorField = (TextField) parent.lookup("#addBookAuthorField");
-        clickOn(addBookAuthorField).write("James Joyce", WRITE_ROBOT_WAIT_MILLIS);
+        clickOn(addBookAuthorField).write("James Joyce", WRITE_ROBOT_PAUSE_MILLIS);
         assertEquals("James Joyce", addBookAuthorField.getText(), "Book Author should be \"James Joyce\" ");
 
         final DigitsField addBookYearPublishedField = (DigitsField) parent.lookup("#addBookYearPublishedField");
-        clickOn(addBookYearPublishedField).write("1939", WRITE_ROBOT_WAIT_MILLIS);
+        clickOn(addBookYearPublishedField).write("1939", WRITE_ROBOT_PAUSE_MILLIS);
         assertEquals(1939, addBookYearPublishedField.getInputAsInt(), "Book Year should be " + 1939);
 
         final TextField addBookImagePathField = (TextField) parent.lookup("#addBookImagePathField");
@@ -117,19 +124,19 @@ public class AddBookTest extends ApplicationTest {
         addBookDatePicker.setValue(startDate);
         final TextField addBookDatePickerField = (TextField) parent.lookup("#addBookDatePickerField");
         clickOn(addBookDatePickerField)
-                .sleep(500)
-                .type(KeyCode.DOWN).sleep(500) // 21.08.2020 -> 28.08.2020
-                .type(KeyCode.RIGHT).sleep(500) // 28.08.2020 -> 29.08.2020
-                .type(KeyCode.RIGHT).sleep(500) // 29.08.2020 -> 30.08.2020
-                .type(KeyCode.ENTER); // Pick date
-        clickOn(addBookTitleField); // Change focus to hide datepicker
+                .sleep(ROBOT_PAUSE_MS)
+                .type(KeyCode.DOWN).sleep(ROBOT_PAUSE_MS) // 21.08.2020 -> 28.08.2020
+                .type(KeyCode.RIGHT).sleep(ROBOT_PAUSE_MS) // 28.08.2020 -> 29.08.2020
+                .type(KeyCode.RIGHT).sleep(ROBOT_PAUSE_MS) // 29.08.2020 -> 30.08.2020
+                .type(KeyCode.ENTER).sleep(ROBOT_PAUSE_MS) // Pick date
+                .type(KeyCode.ESCAPE); // Hide datepicker
         assertEquals(targetDate, addBookDatePicker.getValue(), "Book date acquired should be " + targetDate);
 
         final ComboBox<BookReadingState> addBookReadingStatusCombo = (ComboBox<BookReadingState>) parent.lookup("#addBookReadingStatusCombo");
         clickOn(addBookReadingStatusCombo)
-                .sleep(500)
+                .sleep(ROBOT_PAUSE_MS)
                 .press(KeyCode.DOWN)
-                .sleep(500)
+                .sleep(ROBOT_PAUSE_MS)
                 .press(KeyCode.ENTER); // Select second element
         assertEquals(BookReadingState.READING, addBookReadingStatusCombo.getValue(),
                 "BookReadingState should be READING");
@@ -161,14 +168,14 @@ public class AddBookTest extends ApplicationTest {
     @Test
     public void isbnFieldDisplayTest() {
 
-        clickOn("#isbnButton").sleep(500);
+        clickOn("#isbnButton").sleep(ROBOT_PAUSE_MS);
 
         // Make sure popup container is visible
         assertTrue(parent.lookup("#addBookISBNContainer").isManaged());
 
         // Make sure field is accessible and digits-only
         final DigitsField addBookISBNField = (DigitsField) parent.lookup("#addBookISBNField");
-        clickOn(addBookISBNField).write("9rty7807xz6539Q486kj6", WRITE_ROBOT_WAIT_MILLIS);
+        clickOn(addBookISBNField).write("9rty7807xz6539Q486kj6", WRITE_ROBOT_PAUSE_MILLIS);
         assertEquals("9780765394866", addBookISBNField.getText(), "ISBN input should be 9780765394866");
 
     }
@@ -196,7 +203,7 @@ public class AddBookTest extends ApplicationTest {
         final DatePicker addBookDatePicker = (DatePicker) parent.lookup("#addBookDatePicker");
         addBookDatePicker.setValue(timeStamp);
         final TextField addBookDatePickerField = (TextField) parent.lookup("#addBookDatePickerField");
-        assertEquals("30.09.2020", addBookDatePickerField.getText(), "Book date acquired displayed in text field should be 30.09.2020");
+        assertEquals(timeStamp.toString(), addBookDatePickerField.getText(), "Book date acquired displayed in text field should be 30.09.2020");
 
     }
 
