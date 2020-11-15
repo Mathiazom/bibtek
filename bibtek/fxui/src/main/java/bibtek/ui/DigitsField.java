@@ -16,4 +16,13 @@ public class DigitsField extends TextField {
 
     }
 
+    /**
+     * Retrieve field input as integer.
+     *
+     * @return integer input
+     */
+    public int getInputAsInt() {
+        return Integer.parseInt(getText());
+    }
+
 }
