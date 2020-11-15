@@ -13,7 +13,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
@@ -216,14 +215,6 @@ public class AddBookTest extends ApplicationTest {
         final ComboBox<BookReadingState> addBookReadingStatusCombo = (ComboBox<BookReadingState>) parent.lookup("#addBookReadingStatusCombo");
         assertEquals(List.of(BookReadingState.values()), List.of(addBookReadingStatusCombo.getItems().toArray()));
 
-    }
-
-    /**
-     * Close application after all tests.
-     */
-    @AfterAll
-    public static void closeApp() {
-        Platform.exit();
     }
 
 }
