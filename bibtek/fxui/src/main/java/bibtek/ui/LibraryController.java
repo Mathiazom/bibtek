@@ -21,6 +21,9 @@ public final class LibraryController extends SceneChangerController {
     Button addBookButton;
 
     @FXML
+    Button openSettingsButton;
+
+    @FXML
     private void handleAddBook() {
         final Stage stage = (Stage) addBookButton.getScene().getWindow();
         try {
@@ -67,4 +70,16 @@ public final class LibraryController extends SceneChangerController {
                 }).collect(Collectors.toList()));
     }
 
+    public void openSettings() {
+        final Stage stage = (Stage) openSettingsButton.getScene().getWindow();
+        try {
+            this.changeSceneAndUpdateUser(stage, "/bibtek/ui/Settings.fxml");
+        } catch (IOException e) {
+            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing Settings");
+            e.printStackTrace();
+
+        }
+    }
+
 }
+

@@ -24,7 +24,7 @@
                     <FontIcon iconLiteral="mdi-plus-circle"/>
                 </graphic>
             </Button>
-            <Button fx:id="menuButton" styleClass="grayButton"
+            <Button fx:id="openSettingsButton" styleClass="grayButton" mnemonicParsing="false" onAction="#openSettings"
                     AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="0.0">
                 <graphic>
                     <FontIcon iconLiteral="mdi-account"/>
