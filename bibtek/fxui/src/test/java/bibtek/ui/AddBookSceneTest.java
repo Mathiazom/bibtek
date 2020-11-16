@@ -51,7 +51,7 @@ public class AddBookSceneTest extends ApplicationTest {
      */
     @Override
     public void start(final Stage stage) throws Exception {
-        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/AddBook.fxml"));
+        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/fxml/AddBook.fxml"));
         parent = fxmlLoader.load();
         this.controller = fxmlLoader.getController();
         stage.setScene(new Scene(parent));
@@ -92,13 +92,16 @@ public class AddBookSceneTest extends ApplicationTest {
         clickOn(addBookTitleField).write("Finnegans Wake");
         clickOn(addBookAuthorField).write("James Joyce");
         clickOn(addBookYearPublishedField).write("1939");
-        addBookImagePathField.setText("http://books.google.com/books/content?id=FNMS7qOqRwEC&printsec=frontcover&img=1&zoom=1&source=gbs_api");
+        addBookImagePathField.setText(
+                "http://books.google.com/books/content?id=FNMS7qOqRwEC&printsec=frontcover&img=1&zoom=1&source=gbs_api");
         addBookDatePicker.setValue(timeStamp);
         addBookReadingStatusCombo.setValue(BookReadingState.NOT_STARTED);
         assertEquals("Finnegans Wake", addBookTitleField.getText(), "Book Title should be \"Finnegans Wake\" ");
         assertEquals("James Joyce", addBookAuthorField.getText(), "Book Author should be \"James Joyce\" ");
         assertEquals("1939", addBookYearPublishedField.getText(), "Book Year should be \"1939\" ");
-        assertEquals("http://books.google.com/books/content?id=FNMS7qOqRwEC&printsec=frontcover&img=1&zoom=1&source=gbs_api", addBookImagePathField.getText(),
+        assertEquals(
+                "http://books.google.com/books/content?id=FNMS7qOqRwEC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+                addBookImagePathField.getText(),
                 "Book Cover image path should be \"http://books.google.com/books/content?id=FNMS7qOqRwEC&printsec=frontcover&img=1&zoom=1&source=gbs_api\"");
         assertEquals(timeStamp, addBookDatePicker.getValue(), "Book Date Acquired should be " + timeStamp);
         assertEquals(BookReadingState.NOT_STARTED, addBookReadingStatusCombo.getValue(),
@@ -109,8 +112,7 @@ public class AddBookSceneTest extends ApplicationTest {
         Library lib = controller.getUser().getLibrary();
         String expected = (new BookEntry(
                 new Book(addBookTitleField.getText(), addBookAuthorField.getText(),
-                        Integer.parseInt(addBookYearPublishedField.getText()),addBookImagePathField.getText()
-                ),
+                        Integer.parseInt(addBookYearPublishedField.getText()), addBookImagePathField.getText()),
                 addBookDatePicker.getValue(), addBookReadingStatusCombo.getValue())).toString();
         String actual = lib.getBookEntries().stream().map(a -> a.toString()).reduce("", (a, b) -> a + b);
         assertEquals(expected, actual, "Expected book entries was not equal to the actual book entries");

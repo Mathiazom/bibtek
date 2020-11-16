@@ -18,7 +18,7 @@ public class LoginIT extends ApplicationTest {
   @Override
   public final void start(final Stage stage) throws Exception {
 
-    final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/LoginPage.fxml"));
+    final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/fxml/LoginPage.fxml"));
     final Parent parent = fxmlLoader.load();
     this.controller = fxmlLoader.getController();
     stage.setScene(new Scene(parent));

@@ -13,12 +13,12 @@ public final class App extends Application {
 
     primaryStage.setTitle("Bibtek");
     try {
-      primaryStage.getIcons().add(new Image("/bibtek/ui/icon.png"));
+      primaryStage.getIcons().add(new Image("/bibtek/ui/images/icon.png"));
     } catch (Exception e) {
       // Don't add this icon.
     }
 
-    final Scene libraryScene = new Scene(FXMLLoader.load(getClass().getResource("/bibtek/ui/LoginPage.fxml")));
+    final Scene libraryScene = new Scene(FXMLLoader.load(getClass().getResource("/bibtek/ui/fxml/LoginPage.fxml")));
     primaryStage.setScene(libraryScene);
 
     primaryStage.show();

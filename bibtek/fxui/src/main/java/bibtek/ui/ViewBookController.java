@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 
 public final class ViewBookController extends SceneChangerController {
 
-    private static final String BOOK_IMAGE_PLACEHOLDER_LOCATION = "/bibtek/ui/book-cover-placeholder-orange.jpg";
+    private static final String BOOK_IMAGE_PLACEHOLDER_LOCATION = "/bibtek/ui/images/book-cover-placeholder-orange.jpg";
 
     @FXML
     private Label bookEntryTitle;
@@ -89,10 +89,10 @@ public final class ViewBookController extends SceneChangerController {
     @FXML
     private void handleEditBook() {
 
-
         final Stage stage = (Stage) bookEntryTitle.getScene().getWindow();
         try {
-            final EditBookController editBookController = (EditBookController) changeScene(stage, "/bibtek/ui/EditBook.fxml");
+            final EditBookController editBookController = (EditBookController) changeScene(stage,
+                    "/bibtek/ui/fxml/EditBook.fxml");
             editBookController.update(bookEntry, getUser());
         } catch (IOException e) {
             ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing edit book page");
@@ -106,7 +106,7 @@ public final class ViewBookController extends SceneChangerController {
 
         final Stage stage = (Stage) bookEntryTitle.getScene().getWindow();
         try {
-            this.changeSceneAndUpdateUser(stage, "/bibtek/ui/Library.fxml");
+            this.changeSceneAndUpdateUser(stage, "/bibtek/ui/fxml/Library.fxml");
         } catch (IOException e) {
             ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing your library");
             e.printStackTrace();

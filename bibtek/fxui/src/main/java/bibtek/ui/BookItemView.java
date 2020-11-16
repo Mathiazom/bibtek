@@ -18,7 +18,7 @@ import javafx.scene.layout.VBox;
  */
 public class BookItemView extends VBox {
 
-    private static final String BOOK_IMAGE_PLACEHOLDER_LOCATION = "/bibtek/ui/book-cover-placeholder-orange.jpg";
+    private static final String BOOK_IMAGE_PLACEHOLDER_LOCATION = "/bibtek/ui/images/book-cover-placeholder-orange.jpg";
 
     @FXML
     private Label bookEntryTitle;
@@ -37,7 +37,7 @@ public class BookItemView extends VBox {
      */
     public BookItemView(final BookEntry bookEntry) {
 
-        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/BookItemView.fxml"));
+        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/fxml/BookItemView.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 

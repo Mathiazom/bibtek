@@ -60,7 +60,7 @@ public class LoginPageController extends SceneChangerController implements Initi
         update(storageHandler.getUser(username));
 
         try {
-            this.changeSceneAndUpdateUser(stage, "/bibtek/ui/Library.fxml");
+            this.changeSceneAndUpdateUser(stage, "/bibtek/ui/fxml/Library.fxml");
         } catch (IOException e) {
             ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing your library");
             e.printStackTrace();
@@ -75,7 +75,7 @@ public class LoginPageController extends SceneChangerController implements Initi
 
         final Stage stage = (Stage) createNewUserLabel.getScene().getWindow();
         try {
-            this.changeScene(stage, "/bibtek/ui/CreateUser.fxml");
+            this.changeScene(stage, "/bibtek/ui/fxml/CreateUser.fxml");
         } catch (IOException e) {
             ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing the create user page");
             e.printStackTrace();

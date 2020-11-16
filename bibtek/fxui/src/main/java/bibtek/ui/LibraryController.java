@@ -24,7 +24,7 @@ public final class LibraryController extends SceneChangerController {
     private void handleAddBook() {
         final Stage stage = (Stage) addBookButton.getScene().getWindow();
         try {
-            this.changeSceneAndUpdateUser(stage, "/bibtek/ui/AddBook.fxml");
+            this.changeSceneAndUpdateUser(stage, "/bibtek/ui/fxml/AddBook.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -35,7 +35,8 @@ public final class LibraryController extends SceneChangerController {
 
         final Stage stage = (Stage) addBookButton.getScene().getWindow();
         try {
-            final ViewBookController editBookController = (ViewBookController) changeScene(stage, "/bibtek/ui/ViewBook.fxml");
+            final ViewBookController editBookController = (ViewBookController) changeScene(stage,
+                    "/bibtek/ui/fxml/ViewBook.fxml");
             editBookController.update(bookEntry, getUser());
         } catch (IOException e) {
             ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing view book page");

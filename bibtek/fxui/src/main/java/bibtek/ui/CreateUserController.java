@@ -59,7 +59,7 @@ public class CreateUserController extends SceneChangerController implements Init
     public void showTerms() {
         final Stage stage = new Stage();
         try {
-            this.changeScene(stage, "/bibtek/ui/Terms.fxml");
+            this.changeScene(stage, "/bibtek/ui/fxml/Terms.fxml");
         } catch (IOException e) {
             ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error showing the terms and conditions");
             e.printStackTrace();
@@ -104,7 +104,7 @@ public class CreateUserController extends SceneChangerController implements Init
         // Insert code for feedback that the user was created.
 
         try {
-            this.changeSceneAndUpdateUser(stage, "/bibtek/ui/LoginPage.fxml");
+            this.changeSceneAndUpdateUser(stage, "/bibtek/ui/fxml/LoginPage.fxml");
         } catch (IOException e) {
             ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing login page");
             e.printStackTrace();

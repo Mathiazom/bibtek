@@ -36,7 +36,7 @@
         </VBox>
     </VBox>
     <stylesheets>
-        <URL value="@BaseStyles.css"/>
-        <URL value="@LibraryStyles.css"/>
+        <URL value="@../css/BaseStyles.css"/>
+        <URL value="@../css/LibraryStyles.css"/>
     </stylesheets>
 </AnchorPane>

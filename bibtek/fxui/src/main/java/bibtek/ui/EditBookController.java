@@ -95,7 +95,7 @@ public final class EditBookController extends BaseBookController {
 
         final Stage stage = (Stage) addBookDatePicker.getScene().getWindow();
         try {
-            final ViewBookController editBookController = (ViewBookController) changeScene(stage, "/bibtek/ui/ViewBook.fxml");
+            final ViewBookController editBookController = (ViewBookController) changeScene(stage, "/bibtek/ui/fxml/ViewBook.fxml");
             editBookController.update(bookEntry, getUser());
         } catch (IOException e) {
             ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing book page");
@@ -133,7 +133,7 @@ public final class EditBookController extends BaseBookController {
 
         final Stage stage = (Stage) addBookDatePicker.getScene().getWindow();
         try {
-            this.changeSceneAndUpdateUser(stage, "/bibtek/ui/Library.fxml");
+            this.changeSceneAndUpdateUser(stage, "/bibtek/ui/fxml/Library.fxml");
         } catch (IOException e) {
             ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing your library");
             e.printStackTrace();

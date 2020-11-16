@@ -21,8 +21,8 @@
     </HBox>
 
     <stylesheets>
-        <URL value="@ToastStyles.css"/>
-        <URL value="@BaseStyles.css"/>
+        <URL value="@../css/ToastStyles.css"/>
+        <URL value="@../css/BaseStyles.css"/>
     </stylesheets>
 
 </fx:root>

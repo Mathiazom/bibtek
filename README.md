@@ -1,4 +1,4 @@
-<img src="bibtek/fxui/src/main/resources/bibtek/ui/bibtek_round.png" width="150">
+<img src="bibtek/fxui/src/main/resources/bibtek/ui/images/bibtek_round.png" width="150">
 
 # Bibtek
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-magenta?logo=gitpod)](https://gitpod.idi.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2020/gr2021/gr2021)

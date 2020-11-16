@@ -17,7 +17,7 @@
       </Label>
       <ImageView fitHeight="71.0" fitWidth="55.0" layoutX="173.0" layoutY="72.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@icon.png" />
+            <Image url="@../images/icon.png" />
          </image>
       </ImageView>
       <Button fx:id="close" layoutX="140.0" layoutY="452.0" mnemonicParsing="false" onAction="#close" prefHeight="25.0" prefWidth="120.0" text="Close and agree" />

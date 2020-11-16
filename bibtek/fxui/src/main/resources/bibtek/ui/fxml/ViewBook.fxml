@@ -77,9 +77,9 @@
     </VBox>
 
     <stylesheets>
-        <URL value="@BaseStyles.css"/>
-        <URL value="@BaseBookStyles.css"/>
-        <URL value="@ViewBookStyles.css"/>
+        <URL value="@../css/BaseStyles.css"/>
+        <URL value="@../css/BaseBookStyles.css"/>
+        <URL value="@../css/ViewBookStyles.css"/>
     </stylesheets>
 
 </AnchorPane>

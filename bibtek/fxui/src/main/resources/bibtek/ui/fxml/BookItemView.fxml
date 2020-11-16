@@ -23,7 +23,7 @@
     </HBox>
 
     <stylesheets>
-        <URL value="@BookItemViewStyles.css" />
+        <URL value="@../css/BookItemViewStyles.css" />
     </stylesheets>
 
 </fx:root>

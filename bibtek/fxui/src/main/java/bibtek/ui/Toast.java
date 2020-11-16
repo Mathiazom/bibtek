@@ -60,7 +60,7 @@ public class Toast extends AnchorPane {
      */
     public Toast(final String message, final ToastState icon) {
 
-        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/Toast.fxml"));
+        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/fxml/Toast.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 

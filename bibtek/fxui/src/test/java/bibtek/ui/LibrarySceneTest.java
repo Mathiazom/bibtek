@@ -46,7 +46,7 @@ public class LibrarySceneTest extends ApplicationTest {
      */
     @Override
     public void start(final Stage stage) throws Exception {
-        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/Library.fxml"));
+        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/fxml/Library.fxml"));
         parent = fxmlLoader.load();
         this.controller = fxmlLoader.getController();
         stage.setScene(new Scene(parent));

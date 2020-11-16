@@ -89,7 +89,7 @@ public final class AddBookController extends BaseBookController {
     private void handleShowLibrary() {
         final Stage stage = (Stage) addBookAuthorField.getScene().getWindow();
         try {
-            this.changeSceneAndUpdateUser(stage, "/bibtek/ui/Library.fxml");
+            this.changeSceneAndUpdateUser(stage, "/bibtek/ui/fxml/Library.fxml");
         } catch (IOException e) {
             ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing your library");
             e.printStackTrace();
