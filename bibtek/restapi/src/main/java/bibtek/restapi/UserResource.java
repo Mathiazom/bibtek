@@ -1,6 +1,5 @@
 package bibtek.restapi;
 
-
 import bibtek.core.User;
 import bibtek.core.UserMap;
 import javax.ws.rs.Consumes;
@@ -19,8 +18,8 @@ public final class UserResource {
     private final User user;
 
     /**
-     * @param userMap  holding all users
-     * @param user     associated with request
+     * @param userMap holding all users
+     * @param user    associated with request
      */
     public UserResource(final UserMap userMap, final User user) {
 
@@ -82,6 +81,5 @@ public final class UserResource {
         userMap.removeUser(user);
         return true;
     }
-
 
 }

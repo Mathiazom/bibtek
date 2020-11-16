@@ -1,7 +1,6 @@
 package bibtek.restserver;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 import java.net.HttpURLConnection;
 
 import org.glassfish.jersey.server.ResourceConfig;
@@ -34,20 +33,12 @@ public class BibtekServiceTest extends JerseyTest {
      */
     private GsonProvider gsonProvider;
 
-    /*
-     * public BibtekServiceTest() throws Exception { super(this.clientConfig(new
-     * DefaultClientConfig(GsonProvider.class))
-     *
-     * service = new ServiceRequester(resource()); }
-     */
-
     /**
      * Configures the test.
      */
     @Override
     protected ResourceConfig configure() {
-        final BibtekConfig config = new BibtekConfig();
-        return config;
+        return new BibtekConfig();
     }
 
     /**
@@ -89,9 +80,6 @@ public class BibtekServiceTest extends JerseyTest {
         // Test if the response is like the expected response. he
         UserMap expectedUserMap = new UserMap();
         expectedUserMap.putUser(ServerUtil.DANTE_USER);
-        if (!expectedUserMap.iterator().hasNext()) {
-            fail("Returned empty UserMap");
-        }
         String responseString = response.readEntity(String.class);
         UserMap actualUserMap = gsonProvider.getGson().fromJson(responseString, new TypeToken<UserMap>() {
         }.getType());
@@ -138,7 +126,7 @@ public class BibtekServiceTest extends JerseyTest {
         // Test if it worked
         assertEquals(HttpURLConnection.HTTP_OK, response.getStatus());
 
-        // Test if the request actaully updates that user.
+        // Test if the request actually updates that user.
         User danteUpdated = ServerUtil.DANTE_USER_EDITED;
         String responseString = response.readEntity(String.class);
         User actualUser = gsonProvider.getGson().fromJson(responseString, new TypeToken<User>() {
@@ -148,11 +136,11 @@ public class BibtekServiceTest extends JerseyTest {
     }
 
     /**
-     * Test if doing a PUT request on a new user actaully saves a new user.
+     * Test if doing a PUT request on a new user actually saves a new user.
      */
     @Test
     public void putUserNewPUTTest() {
-        // Setup the entitiy to PUT
+        // Setup the entity to PUT
         Entity<String> userEntity = Entity
                 .entity(gsonProvider.getGson().toJson(ServerUtil.VERGIL_USER, new TypeToken<User>() {
                 }.getType()), MediaType.APPLICATION_JSON_TYPE);

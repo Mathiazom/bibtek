@@ -60,6 +60,21 @@
             <artifactId>jersey-container-grizzly2-http</artifactId>
         </dependency>
 
+
+        <!-- Support for testing with Jersey and Grizzly2 -->
+        <dependency>
+            <groupId>org.glassfish.jersey.test-framework</groupId>
+            <artifactId>jersey-test-framework-util</artifactId>
+            <version>${jersey.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- See https://eclipse-ee4j.github.io/jersey.github.io/documentation/latest/deployment.html for various server options -->
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-grizzly2-http</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.glassfish.jersey.test-framework.providers</groupId>
             <artifactId>jersey-test-framework-provider-grizzly2</artifactId>
