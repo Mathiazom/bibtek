@@ -22,13 +22,10 @@ public final class RemoteStorageHandler implements UserMapHandler {
 
     private URI endPointBaseUri;
 
-    private final Gson gson = new GsonBuilder()
-            .registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
-            .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
-            .setPrettyPrinting().create();
+    private final Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
+            .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer()).setPrettyPrinting().create();
 
     private UserMap userMap;
-
 
     RemoteStorageHandler() throws URISyntaxException {
 
@@ -36,6 +33,20 @@ public final class RemoteStorageHandler implements UserMapHandler {
 
     }
 
+    /**
+     * Checks if the rest server is responding.
+     *
+     * @return whether the remote server can be used
+     */
+    public boolean isAvailable() {
+        try {
+            this.getUserMap();
+            return true;
+        } catch (Exception e) {
+            System.out.println("Remote library not available, using local storage...");
+        }
+        return false;
+    }
 
     @Override
     public UserMap getUserMap() {
@@ -44,11 +55,9 @@ public final class RemoteStorageHandler implements UserMapHandler {
 
             final Client client = Client.create();
 
-            final WebResource webResource = client
-                    .resource(endPointBaseUri);
+            final WebResource webResource = client.resource(endPointBaseUri);
 
-            final ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON)
-                    .get(ClientResponse.class);
+            final ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
 
             final String responseString = response.getEntity(String.class);
 
@@ -88,11 +97,9 @@ public final class RemoteStorageHandler implements UserMapHandler {
 
             final Client client = Client.create();
 
-            final WebResource webResource = client
-                    .resource(uriForUser(username));
+            final WebResource webResource = client.resource(uriForUser(username));
 
-            final ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON)
-                    .get(ClientResponse.class);
+            final ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
 
             if (response.getClientResponseStatus() == ClientResponse.Status.OK) {
 
@@ -115,13 +122,11 @@ public final class RemoteStorageHandler implements UserMapHandler {
 
         final Client client = Client.create();
 
-        final WebResource webResource = client
-                .resource(uriForUser(user.getUserName()));
+        final WebResource webResource = client.resource(uriForUser(user.getUserName()));
 
         final String input = gson.toJson(user);
 
-        final ClientResponse response = webResource.type(MediaType.APPLICATION_JSON)
-                .put(ClientResponse.class, input);
+        final ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).put(ClientResponse.class, input);
 
         final String responseString = response.getEntity(String.class);
 
@@ -139,11 +144,9 @@ public final class RemoteStorageHandler implements UserMapHandler {
 
         final Client client = Client.create();
 
-        final WebResource webResource = client
-                .resource(uriForUser(username));
+        final WebResource webResource = client.resource(uriForUser(username));
 
-        final ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON)
-                .delete(ClientResponse.class);
+        final ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).delete(ClientResponse.class);
 
         final String responseString = response.getEntity(String.class);
 

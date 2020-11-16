@@ -31,13 +31,10 @@ public final class LocalStorageHandler implements UserMapHandler {
      */
     private Path storagePath;
 
-    private final Gson gson = new GsonBuilder()
-            .registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
-            .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
-            .setPrettyPrinting().create();
+    private final Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
+            .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer()).setPrettyPrinting().create();
 
     private UserMap userMap;
-
 
     /**
      * @param path the file path where the json data will be stored
@@ -119,6 +116,15 @@ public final class LocalStorageHandler implements UserMapHandler {
 
     }
 
+    /**
+     * Saves a usermap to local storage.
+     *
+     * @param userMap holding all users
+     */
+    public void putUserMap(final UserMap userMap) {
+        this.userMap = userMap;
+        putUserMap();
+    }
 
     @Override
     public boolean hasUser(final String username) {
