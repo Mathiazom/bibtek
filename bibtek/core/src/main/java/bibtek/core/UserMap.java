@@ -79,7 +79,12 @@ public final class UserMap implements Iterable<User> {
 
     @Override
     public int hashCode() {
-        return this.toString().hashCode();
+        return users.toString().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return this.users.toString();
     }
 
 }
