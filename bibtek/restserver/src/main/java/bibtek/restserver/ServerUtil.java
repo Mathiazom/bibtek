@@ -11,86 +11,87 @@ import bibtek.json.BooksAPIHandler;
 
 public final class ServerUtil {
 
-        private ServerUtil() {
+    private ServerUtil() {
 
-        }
+    }
 
-        private static User userDante() {
+    private static User userDante() {
 
-                final Library library = new Library();
+        final Library library = new Library();
 
-                final int danteBigBoyAge = 800;
+        final int danteBigBoyAge = 800;
 
-                final int dummyBookYear = 1953;
-                final int dummyBookYear2 = 1948;
+        final int dummyBookYear = 1953;
+        final int dummyBookYear2 = 1948;
 
-                library.addBookEntry(new BookEntry(new Book("Fahrenheit 451", "Ray Bradbury", dummyBookYear,
-                                "https://s2982.pcdn.co/wp-content/uploads/2017/09/fahrenheit-451-flamingo-edition.jpg"),
-                                LocalDate.now(), BookReadingState.READING));
-                library.addBookEntry(new BookEntry(new Book("1984", "George Orwell", dummyBookYear2), LocalDate.now(),
-                                BookReadingState.COMPLETED));
+        library.addBookEntry(new BookEntry(
+                new Book("Fahrenheit 451", "Ray Bradbury", dummyBookYear,
+                        "https://s2982.pcdn.co/wp-content/uploads/2017/09/fahrenheit-451-flamingo-edition.jpg"),
+                LocalDate.now(), BookReadingState.READING));
+        library.addBookEntry(new BookEntry(new Book("1984", "George Orwell", dummyBookYear2), LocalDate.now(),
+                BookReadingState.COMPLETED));
 
-                library.addBookEntry(new BookEntry(new BooksAPIHandler().fetchBook("9780241242643"), LocalDate.now(),
-                                BookReadingState.ABANDONED));
+        library.addBookEntry(new BookEntry(new BooksAPIHandler().fetchBook("9780241242643"), LocalDate.now(),
+                BookReadingState.ABANDONED));
 
-                library.addBookEntry(new BookEntry(new BooksAPIHandler().fetchBook("9783944283111"), LocalDate.now(),
-                                BookReadingState.NOT_STARTED));
-                final User dummyUser = new User("dante", danteBigBoyAge, library);
+        library.addBookEntry(new BookEntry(new BooksAPIHandler().fetchBook("9783944283111"), LocalDate.now(),
+                BookReadingState.NOT_STARTED));
+        final User dummyUser = new User("dante", danteBigBoyAge, library);
 
-                return dummyUser;
+        return dummyUser;
 
-        }
+    }
 
-        private static User userVergil() {
-                final Library library = new Library();
+    private static User userVergil() {
+        final Library library = new Library();
 
-                final int vergilBigBoyAge = 2090;
+        final int vergilBigBoyAge = 2090;
 
-                library.addBookEntry(new BookEntry(new BooksAPIHandler().fetchBook("9780192835840"), LocalDate.now(),
-                                BookReadingState.COMPLETED));
-                library.addBookEntry(new BookEntry(new BooksAPIHandler().fetchBook("9781686172717"), LocalDate.now(),
-                                BookReadingState.NOT_STARTED));
+        library.addBookEntry(new BookEntry(new BooksAPIHandler().fetchBook("9780192835840"), LocalDate.now(),
+                BookReadingState.COMPLETED));
+        library.addBookEntry(new BookEntry(new BooksAPIHandler().fetchBook("9781686172717"), LocalDate.now(),
+                BookReadingState.NOT_STARTED));
 
-                final User dummyUser = new User("vergil", vergilBigBoyAge, library);
+        final User dummyUser = new User("vergil", vergilBigBoyAge, library);
 
-                return dummyUser;
+        return dummyUser;
 
-        }
+    }
 
-        private static User userDanteEdited() {
-                final Library library = new Library();
+    private static User userDanteEdited() {
+        final Library library = new Library();
 
-                final int danteBigBoyAge = 821;
+        final int danteBigBoyAge = 821;
 
-                final int dummyBookYear2 = 1948;
+        final int dummyBookYear2 = 1948;
 
-                library.addBookEntry(new BookEntry(new Book("1984", "George Orwell", dummyBookYear2), LocalDate.now(),
-                                BookReadingState.COMPLETED));
+        library.addBookEntry(new BookEntry(new Book("1984", "George Orwell", dummyBookYear2), LocalDate.now(),
+                BookReadingState.COMPLETED));
 
-                library.addBookEntry(new BookEntry(new BooksAPIHandler().fetchBook("9780241242643"), LocalDate.now(),
-                                BookReadingState.ABANDONED));
+        library.addBookEntry(new BookEntry(new BooksAPIHandler().fetchBook("9780241242643"), LocalDate.now(),
+                BookReadingState.ABANDONED));
 
-                library.addBookEntry(new BookEntry(new BooksAPIHandler().fetchBook("9783944283111"), LocalDate.now(),
-                                BookReadingState.READING));
-                final User dummyUser = new User("dante", danteBigBoyAge, library);
+        library.addBookEntry(new BookEntry(new BooksAPIHandler().fetchBook("9783944283111"), LocalDate.now(),
+                BookReadingState.READING));
+        final User dummyUser = new User("dante", danteBigBoyAge, library);
 
-                return dummyUser;
+        return dummyUser;
 
-        }
+    }
 
-        /**
-         * The dummy user Vergil.
-         */
-        public static final User VERGIL_USER = userVergil();
+    /**
+     * The dummy user Vergil.
+     */
+    public static final User VERGIL_USER = userVergil();
 
-        /**
-         * The dummy user Dante.
-         */
-        public static final User DANTE_USER = userDante();
+    /**
+     * The dummy user Dante.
+     */
+    public static final User DANTE_USER = userDante();
 
-        /**
-         * Edited Dante user.
-         */
-        public static final User DANTE_USER_EDITED = userDanteEdited();
+    /**
+     * Edited Dante user.
+     */
+    public static final User DANTE_USER_EDITED = userDanteEdited();
 
 }

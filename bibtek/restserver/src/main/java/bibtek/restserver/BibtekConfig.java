@@ -42,7 +42,6 @@ public final class BibtekConfig extends ResourceConfig {
                 final UserMap userMap = new UserMap();
                 final User dummyUser = ServerUtil.DANTE_USER;
                 userMap.putUser(dummyUser);
-                System.out.println(dummyUser);
                 return userMap;
 
         }
