@@ -3,12 +3,12 @@ package bibtek.restapi;
 
 import bibtek.core.User;
 import bibtek.core.UserMap;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.DELETE;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.MediaType;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 /**
  * Handler of requests concerning a single User.
@@ -64,10 +64,6 @@ public final class UserResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public boolean putUser(final User user) {
-        if (!hasValidUser()) {
-            return false;
-        }
-        System.out.println("Putting " + user);
         this.userMap.putUser(user);
         return true;
     }
