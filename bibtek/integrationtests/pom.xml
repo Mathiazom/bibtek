@@ -16,6 +16,7 @@
     <properties>
         <slf4jVersion>1.7.25</slf4jVersion>
         <skipIntegrationTests>false</skipIntegrationTests>
+        <jetty.port>8080</jetty.port>
     </properties>
 
     <dependencies>
