@@ -61,7 +61,7 @@ public class BookItemView extends VBox {
         try {
             bookImage = new Image(bookEntry.getBook().getImgPath());
         } catch (IllegalArgumentException | NullPointerException e) {
-            bookImage = new Image(BOOK_IMAGE_PLACEHOLDER_LOCATION);
+            bookImage = new Image(getClass().getResource(BOOK_IMAGE_PLACEHOLDER_LOCATION).toString());
         }
         bookEntryImage.setImage(bookImage);
 
