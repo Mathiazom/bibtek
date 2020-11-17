@@ -36,7 +36,7 @@ public final class ServerUtil {
 
         library.addBookEntry(new BookEntry(new BooksAPIHandler().fetchBook("9783944283111"), LocalDate.now(),
                 BookReadingState.NOT_STARTED));
-        
+
         return new User("dante", danteBigBoyAge, library);
 
     }
@@ -72,9 +72,8 @@ public final class ServerUtil {
 
         library.addBookEntry(new BookEntry(new BooksAPIHandler().fetchBook("9783944283111"), LocalDate.now(),
                 BookReadingState.READING));
-        final User dummyUser = new User("dante", danteBigBoyAge, library);
 
-        return dummyUser;
+        return new User("dante", danteBigBoyAge, library);
 
     }
 
