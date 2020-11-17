@@ -33,69 +33,69 @@ public final class StorageHandler implements UserMapHandler {
 
     @Override
     public boolean hasUser(final String username) {
-        if (remoteStorageHandler.isAvailable()) {
+        try {
             return remoteStorageHandler.hasUser(username);
+        } catch (Exception e) {
+            return localStorageHandler.hasUser(username);
         }
-
-        return localStorageHandler.hasUser(username);
     }
 
     @Override
     public Collection<String> getUsernames() {
-        if (remoteStorageHandler.isAvailable()) {
+        try {
             return remoteStorageHandler.getUsernames();
+        } catch (Exception e) {
+            return localStorageHandler.getUsernames();
         }
-
-        return localStorageHandler.getUsernames();
     }
 
     @Override
     public UserMap getUserMap() {
-        if (remoteStorageHandler.isAvailable()) {
+        try {
 
             // Save remote usermap to local storage
             UserMap remoteUserMap = remoteStorageHandler.getUserMap();
             localStorageHandler.putUserMap(remoteUserMap);
 
             return remoteUserMap;
+        } catch (Exception e) {
+            return localStorageHandler.getUserMap();
         }
-
-        return localStorageHandler.getUserMap();
     }
 
     @Override
     public User getUser(final String username) {
-        if (remoteStorageHandler.isAvailable()) {
+        try {
             return remoteStorageHandler.getUser(username);
+        } catch (Exception e) {
+            return localStorageHandler.getUser(username);
         }
-
-        return localStorageHandler.getUser(username);
     }
 
     @Override
     public void putUser(final User user) {
-        if (remoteStorageHandler.isAvailable()) {
+        try {
             remoteStorageHandler.putUser(user);
+        } catch (Exception e) {
+            localStorageHandler.putUser(user);
         }
-
-        localStorageHandler.putUser(user);
     }
 
     @Override
     public void removeUser(final String username) {
-        if (remoteStorageHandler.isAvailable()) {
+        try {
             remoteStorageHandler.removeUser(username);
+        } catch (Exception e) {
+            localStorageHandler.removeUser(username);
         }
-
-        localStorageHandler.removeUser(username);
     }
 
     @Override
     public void notifyUserChanged(final User user) {
-        if (remoteStorageHandler.isAvailable()) {
+        try {
             remoteStorageHandler.notifyUserChanged(user);
+        } catch (Exception e) {
+            localStorageHandler.notifyUserChanged(user);
         }
-
-        localStorageHandler.notifyUserChanged(user);
     }
 }

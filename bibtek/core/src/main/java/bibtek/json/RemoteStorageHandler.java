@@ -33,21 +33,6 @@ public final class RemoteStorageHandler implements UserMapHandler {
 
     }
 
-    /**
-     * Checks if the rest server is responding.
-     *
-     * @return whether the remote server can be used
-     */
-    public boolean isAvailable() {
-        try {
-            this.getUserMap();
-            return true;
-        } catch (Exception e) {
-            System.out.println("Remote library not available, using local storage...");
-        }
-        return false;
-    }
-
     @Override
     public UserMap getUserMap() {
 
