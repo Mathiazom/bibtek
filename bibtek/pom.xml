@@ -80,7 +80,7 @@
                         </argLine>
 
                         <!-- Replace above with below for running non-headless (useful on Windows) -->
-                       <!-- <argLine>${argLine} &#45;&#45;add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</argLine>-->
+                        <!-- <argLine>${argLine} &#45;&#45;add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</argLine>-->
 
                         <skip>${fast}</skip>
                     </configuration>
