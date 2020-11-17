@@ -76,7 +76,7 @@ public final class LibraryController extends SceneChangerController {
     public void openSettings() {
         final Stage stage = (Stage) openSettingsButton.getScene().getWindow();
         try {
-            this.changeSceneAndUpdateUser(stage, "/bibtek/ui/Settings.fxml");
+            this.changeSceneAndUpdateUser(stage, "/bibtek/ui/fxml/Settings.fxml");
         } catch (IOException e) {
             ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing Settings");
             e.printStackTrace();
