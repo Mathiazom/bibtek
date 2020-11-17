@@ -70,6 +70,9 @@ public final class LibraryController extends SceneChangerController {
                 }).collect(Collectors.toList()));
     }
 
+    /**
+     * Opens the settings page by pressing the openSettingsButton.
+     */
     public void openSettings() {
         final Stage stage = (Stage) openSettingsButton.getScene().getWindow();
         try {

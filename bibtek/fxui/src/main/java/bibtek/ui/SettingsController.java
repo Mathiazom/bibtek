@@ -16,6 +16,9 @@ public class SettingsController extends SceneChangerController {
     @FXML
     Button logOffButton;
 
+    /**
+     * Exits settings by pressing corresponding button.
+     */
     public void exitSettings() {
         final Stage stage = (Stage) exitSettingsButton.getScene().getWindow();
         try {
@@ -27,6 +30,9 @@ public class SettingsController extends SceneChangerController {
         }
     }
 
+    /**
+     * Logs the user off and displays the login page.
+     */
     public void logOff() {
         final Stage stage = (Stage) logOffButton.getScene().getWindow();
         try {
