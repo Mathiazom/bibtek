@@ -9,6 +9,10 @@ import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
 
+/**
+ * Simple popup containing a short message, icon and fitting background color.
+ * Appears on top of all nodes.
+ */
 public class Toast extends AnchorPane {
 
 
@@ -55,10 +59,10 @@ public class Toast extends AnchorPane {
 
     /**
      * Display simple message.
-     * @param message text to display
-     * @param icon to display along with text
+     * @param message to display
+     * @param state deciding icon and color
      */
-    public Toast(final String message, final ToastState icon) {
+    public Toast(final String message, final ToastState state) {
 
         final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/fxml/Toast.fxml"));
         fxmlLoader.setRoot(this);
@@ -71,9 +75,8 @@ public class Toast extends AnchorPane {
         }
 
         toastText.setText(message);
-        toastIcon.setIconLiteral(icon.iconLiteral);
-        toastBox.setStyle("-fx-background-color: " + icon.boxColor);
-
+        toastIcon.setIconLiteral(state.iconLiteral);
+        toastBox.setStyle("-fx-background-color: " + state.boxColor);
 
     }
 
