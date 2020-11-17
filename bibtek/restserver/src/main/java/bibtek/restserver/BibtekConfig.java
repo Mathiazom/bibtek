@@ -4,7 +4,6 @@ import bibtek.core.User;
 import bibtek.core.UserMap;
 import bibtek.restapi.UserMapService;
 
-
 import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 
@@ -43,6 +42,7 @@ public final class BibtekConfig extends ResourceConfig {
                 final UserMap userMap = new UserMap();
                 final User dummyUser = ServerUtil.DANTE_USER;
                 userMap.putUser(dummyUser);
+                System.out.println(dummyUser);
                 return userMap;
 
         }
