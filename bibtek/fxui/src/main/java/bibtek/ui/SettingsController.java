@@ -22,7 +22,7 @@ public class SettingsController extends SceneChangerController {
     public void exitSettings() {
         final Stage stage = (Stage) exitSettingsButton.getScene().getWindow();
         try {
-            this.changeScene(stage, "/bibtek/ui/Library.fxml");
+            this.changeScene(stage, "/bibtek/ui/fxml/Library.fxml");
         } catch (IOException e) {
             ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error showing your library");
             e.printStackTrace();
