@@ -29,11 +29,11 @@ public final class LocalStorageHandler implements UserMapHandler {
     /**
      * The path of bibtek.
      */
-    public static final File BIBTEK_PATH = Paths.get("bibtek").toAbsolutePath().toFile();
+    public static final File BIBTEK_PATH = Paths.get("target").toAbsolutePath().toFile();
     /**
      * The path where the users file should be stored by default.
      */
-    private static final String DEFAULT_STORAGE_DIRECTRY = new File(BIBTEK_PATH, "/core/target/users").toString();
+    private static final String DEFAULT_STORAGE_DIRECTRY = new File(BIBTEK_PATH, "users").toString();
 
     /**
      * The file path where the json data will be stored.
@@ -99,6 +99,7 @@ public final class LocalStorageHandler implements UserMapHandler {
 
         // Loop through all files in directory
         for (File file : directoryListing) {
+            System.out.println(file.getAbsolutePath());
             try (Reader reader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
 
                 User user = gson.fromJson(reader, new TypeToken<User>() {
