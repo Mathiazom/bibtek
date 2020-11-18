@@ -13,12 +13,12 @@ import org.testfx.framework.junit5.ApplicationTest;
 
 public class LoginIT extends ApplicationTest {
 
-  private LoginPageController controller;
+  private LoginController controller;
 
   @Override
   public final void start(final Stage stage) throws Exception {
 
-    final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/fxml/LoginPage.fxml"));
+    final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/fxml/Login.fxml"));
     final Parent parent = fxmlLoader.load();
     this.controller = fxmlLoader.getController();
     stage.setScene(new Scene(parent));

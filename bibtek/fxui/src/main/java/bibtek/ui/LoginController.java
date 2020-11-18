@@ -53,7 +53,7 @@ public class LoginPageController extends SceneChangerController implements Initi
 
         final String username = userNameInput.getText();
         if (!storageHandler.hasUser(username)) {
-            ToastUtil.makeText(stage, Toast.ToastState.INFO, "No user with given username");
+            ToastUtil.makeToast(stage, Toast.ToastState.INFO, "No user with given username");
             return;
         }
 
@@ -62,7 +62,7 @@ public class LoginPageController extends SceneChangerController implements Initi
         try {
             this.changeSceneAndUpdateUser(stage, "/bibtek/ui/fxml/Library.fxml");
         } catch (IOException e) {
-            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing your library");
+            ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error when showing your library");
             e.printStackTrace();
         }
     }
@@ -77,7 +77,7 @@ public class LoginPageController extends SceneChangerController implements Initi
         try {
             this.changeScene(stage, "/bibtek/ui/fxml/CreateUser.fxml");
         } catch (IOException e) {
-            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing the create user page");
+            ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error when showing the create user page");
             e.printStackTrace();
         }
 

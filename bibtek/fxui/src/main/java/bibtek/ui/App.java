@@ -18,7 +18,7 @@ public final class App extends Application {
       // Don't add this icon.
     }
 
-    final Scene libraryScene = new Scene(FXMLLoader.load(getClass().getResource("/bibtek/ui/fxml/LoginPage.fxml")));
+    final Scene libraryScene = new Scene(FXMLLoader.load(getClass().getResource("/bibtek/ui/fxml/Login.fxml")));
     primaryStage.setScene(libraryScene);
 
     primaryStage.show();
