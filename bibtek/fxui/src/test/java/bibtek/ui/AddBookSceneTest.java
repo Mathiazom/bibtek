@@ -81,37 +81,37 @@ public class AddBookSceneTest extends ApplicationTest {
                 final int month9 = 9;
                 final int day30 = 30;
                 LocalDate timeStamp = LocalDate.of(year2020, month9, day30);
-                final TextField addBookTitleField = (TextField) parent.lookup("#addBookTitleField");
-                final TextField addBookAuthorField = (TextField) parent.lookup("#addBookAuthorField");
-                final TextField addBookYearPublishedField = (TextField) parent.lookup("#addBookYearPublishedField");
-                final TextField addBookImagePathField = (TextField) parent.lookup("#addBookImagePathField");
-                final DatePicker addBookDatePicker = (DatePicker) parent.lookup("#addBookDatePicker");
-                final ComboBox<BookReadingState> addBookReadingStatusCombo = (ComboBox<BookReadingState>) parent
-                                .lookup("#addBookReadingStatusCombo");
+                final TextField bookTitleInput = (TextField) parent.lookup("#bookTitleInput");
+                final TextField bookAuthorInput = (TextField) parent.lookup("#bookAuthorInput");
+                final TextField bookYearPublishedInput = (TextField) parent.lookup("#bookYearPublishedInput");
+                final TextField bookImagePathInput = (TextField) parent.lookup("#bookImagePathInput");
+                final DatePicker bookDatePicker = (DatePicker) parent.lookup("#bookDatePicker");
+                final ComboBox<BookReadingState> bookReadingStateCombo = (ComboBox<BookReadingState>) parent
+                                .lookup("#bookReadingStateCombo");
                 final Button addBookButton = (Button) parent.lookup("#confirmAddBookButton");
-                clickOn(addBookTitleField).write("Finnegans Wake");
-                clickOn(addBookAuthorField).write("James Joyce");
-                clickOn(addBookYearPublishedField).write("1939");
-                addBookImagePathField.setText(
+                clickOn(bookTitleInput).write("Finnegans Wake");
+                clickOn(bookAuthorInput).write("James Joyce");
+                clickOn(bookYearPublishedInput).write("1939");
+                bookImagePathInput.setText(
                                 "http://books.google.com/books/content?id=FNMS7qOqRwEC&printsec=frontcover&img=1&zoom=1&source=gbs_api");
-                addBookDatePicker.setValue(timeStamp);
-                addBookReadingStatusCombo.setValue(BookReadingState.NOT_STARTED);
-                assertEquals("Finnegans Wake", addBookTitleField.getText(), "Book Title should be \"Finnegans Wake\" ");
-                assertEquals("James Joyce", addBookAuthorField.getText(), "Book Author should be \"James Joyce\" ");
-                assertEquals("1939", addBookYearPublishedField.getText(), "Book Year should be \"1939\" ");
+                bookDatePicker.setValue(timeStamp);
+                bookReadingStateCombo.setValue(BookReadingState.NOT_STARTED);
+                assertEquals("Finnegans Wake", bookTitleInput.getText(), "Book Title should be \"Finnegans Wake\" ");
+                assertEquals("James Joyce", bookAuthorInput.getText(), "Book Author should be \"James Joyce\" ");
+                assertEquals("1939", bookYearPublishedInput.getText(), "Book Year should be \"1939\" ");
                 assertEquals("http://books.google.com/books/content?id=FNMS7qOqRwEC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-                                addBookImagePathField.getText(),
+                                bookImagePathInput.getText(),
                                 "Book Cover image path should be \"http://books.google.com/books/content?id=FNMS7qOqRwEC&printsec=frontcover&img=1&zoom=1&source=gbs_api\"");
-                assertEquals(timeStamp, addBookDatePicker.getValue(), "Book Date Acquired should be " + timeStamp);
-                assertEquals(BookReadingState.NOT_STARTED, addBookReadingStatusCombo.getValue(),
+                assertEquals(timeStamp, bookDatePicker.getValue(), "Book Date Acquired should be " + timeStamp);
+                assertEquals(BookReadingState.NOT_STARTED, bookReadingStateCombo.getValue(),
                                 "BookReadingState should be NOT_STARTED");
 
                 // testing if it creates a correct library object with that information
                 clickOn(addBookButton);
                 Library lib = controller.getUser().getLibrary();
-                String expected = (new BookEntry(new Book(addBookTitleField.getText(), addBookAuthorField.getText(),
-                                Integer.parseInt(addBookYearPublishedField.getText()), addBookImagePathField.getText()),
-                                addBookDatePicker.getValue(), addBookReadingStatusCombo.getValue())).toString();
+                String expected = (new BookEntry(new Book(bookTitleInput.getText(), bookAuthorInput.getText(),
+                                Integer.parseInt(bookYearPublishedInput.getText()), bookImagePathInput.getText()),
+                                bookDatePicker.getValue(), bookReadingStateCombo.getValue())).toString();
                 String actual = lib.getBookEntries().stream().map(a -> a.toString()).reduce("", (a, b) -> a + b);
                 assertEquals(expected, actual, "Expected book entries was not equal to the actual book entries");
 
@@ -124,9 +124,9 @@ public class AddBookSceneTest extends ApplicationTest {
         // @Test
         public void yearPublishedFieldTest() {
                 // testing if the year published field does not register letters
-                final TextField addBookYearPublishedField = (TextField) parent.lookup("#addBookYearPublishedField");
-                addBookYearPublishedField.setText("Hello123");
-                assertEquals("123", addBookYearPublishedField.getText(),
+                final TextField bookYearPublishedInput = (TextField) parent.lookup("#bookYearPublishedInput");
+                bookYearPublishedInput.setText("Hello123");
+                assertEquals("123", bookYearPublishedInput.getText(),
                                 "This is a numbers only field, letters are not allowed");
 
         }

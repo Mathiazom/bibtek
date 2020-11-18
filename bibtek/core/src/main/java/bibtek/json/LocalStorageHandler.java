@@ -99,7 +99,6 @@ public final class LocalStorageHandler implements UserMapHandler {
 
         // Loop through all files in directory
         for (File file : directoryListing) {
-            System.out.println(file.getAbsolutePath());
             try (Reader reader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
 
                 User user = gson.fromJson(reader, new TypeToken<User>() {

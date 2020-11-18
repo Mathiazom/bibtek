@@ -82,21 +82,21 @@ public class EditBookTest extends WireMockApplicationTest {
 
         final Book book = bookEntry.getBook();
 
-        final TextField addBookTitleField = (TextField) parent.lookup("#bookTitleInput");
-        assertEquals(book.getTitle(), addBookTitleField.getText(), "Book Title should be " + book.getTitle());
+        final TextField bookTitleInput = (TextField) parent.lookup("#bookTitleInput");
+        assertEquals(book.getTitle(), bookTitleInput.getText(), "Book Title should be " + book.getTitle());
 
-        final TextField addBookAuthorField = (TextField) parent.lookup("#bookAuthorInput");
-        assertEquals(book.getAuthor(), addBookAuthorField.getText(), "Book Author should be " + book.getAuthor());
+        final TextField bookAuthorInput = (TextField) parent.lookup("#bookAuthorInput");
+        assertEquals(book.getAuthor(), bookAuthorInput.getText(), "Book Author should be " + book.getAuthor());
 
-        final DigitsField addBookYearPublishedField = (DigitsField) parent.lookup("#bookYearPublishedInput");
-        assertEquals(book.getYearPublished(), addBookYearPublishedField.getInputAsInt(), "Book Year should be " + book.getYearPublished());
+        final DigitsField bookYearPublishedInput = (DigitsField) parent.lookup("#bookYearPublishedInput");
+        assertEquals(book.getYearPublished(), bookYearPublishedInput.getInputAsInt(), "Book Year should be " + book.getYearPublished());
 
         final TextField addBookImagePathInput = (TextField) parent.lookup("#bookImagePathInput");
         assertEquals(book.getImgPath(), addBookImagePathInput.getText(),
                 "Book Cover image path should be " + book.getImgPath());
 
-        final DatePicker addBookDatePicker = (DatePicker) parent.lookup("#bookDatePicker");
-        assertEquals(bookEntry.getDateAcquired(), addBookDatePicker.getValue(), "Book date acquired should be " + bookEntry.getDateAcquired());
+        final DatePicker bookDatePicker = (DatePicker) parent.lookup("#bookDatePicker");
+        assertEquals(bookEntry.getDateAcquired(), bookDatePicker.getValue(), "Book date acquired should be " + bookEntry.getDateAcquired());
 
         final ComboBox<BookReadingState> addBookReadingStateCombo = (ComboBox<BookReadingState>) parent.lookup("#bookReadingStateCombo");
         assertEquals(bookEntry.getReadingState(), addBookReadingStateCombo.getValue(),

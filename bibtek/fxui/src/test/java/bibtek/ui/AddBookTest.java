@@ -73,17 +73,17 @@ public class AddBookTest extends WireMockApplicationTest {
 
         final LocalDate startDate = LocalDate.of(2020, 9, 21);
         final LocalDate targetDate = LocalDate.of(2020, 9, 30);
-        final DatePicker addBookDatePicker = (DatePicker) parent.lookup("#bookDatePicker");
-        addBookDatePicker.setValue(startDate);
-        final TextField addBookDatePickerDisplay = (TextField) parent.lookup("#bookDatePickerDisplay");
-        clickOn(addBookDatePickerDisplay)
+        final DatePicker bookDatePicker = (DatePicker) parent.lookup("#bookDatePicker");
+        bookDatePicker.setValue(startDate);
+        final TextField bookDatePickerDisplay = (TextField) parent.lookup("#bookDatePickerDisplay");
+        clickOn(bookDatePickerDisplay)
                 .sleep(ROBOT_PAUSE_MS)
                 .type(KeyCode.DOWN).sleep(ROBOT_PAUSE_MS) // 21.08.2020 -> 28.08.2020
                 .type(KeyCode.RIGHT).sleep(ROBOT_PAUSE_MS) // 28.08.2020 -> 29.08.2020
                 .type(KeyCode.RIGHT).sleep(ROBOT_PAUSE_MS) // 29.08.2020 -> 30.08.2020
                 .type(KeyCode.ENTER).sleep(ROBOT_PAUSE_MS) // Pick date
                 .type(KeyCode.ESCAPE); // Hide datepicker
-        assertEquals(targetDate, addBookDatePicker.getValue(), "Book date acquired should be " + targetDate);
+        assertEquals(targetDate, bookDatePicker.getValue(), "Book date acquired should be " + targetDate);
 
         final ComboBox<BookReadingState> addBookReadingStateCombo = (ComboBox<BookReadingState>) parent.lookup("#bookReadingStateCombo");
         clickOn(addBookReadingStateCombo)
@@ -206,12 +206,12 @@ public class AddBookTest extends WireMockApplicationTest {
     public void datePickerDisplayInputTest() {
 
         final LocalDate timeStamp = LocalDate.of(2020, 9, 30);
-        final DatePicker addBookDatePicker = (DatePicker) parent.lookup("#bookDatePicker");
-        addBookDatePicker.setValue(timeStamp);
-        final TextField addBookDatePickerDisplay = (TextField) parent.lookup("#bookDatePickerDisplay");
+        final DatePicker bookDatePicker = (DatePicker) parent.lookup("#bookDatePicker");
+        bookDatePicker.setValue(timeStamp);
+        final TextField bookDatePickerDisplay = (TextField) parent.lookup("#bookDatePickerDisplay");
         assertEquals(
-                addBookDatePicker.getConverter().toString(timeStamp),
-                addBookDatePickerDisplay.getText(),
+                bookDatePicker.getConverter().toString(timeStamp),
+                bookDatePickerDisplay.getText(),
                 "Book date acquired displayed in text field should be 30.09.2020"
         );
 

@@ -45,8 +45,8 @@ public final class EditBookController extends BaseBookController {
         try {
             storageHandler.putUser(getUser());
         } catch (IOException e) {
-            final Stage stage = (Stage) addBookAuthorField.getScene().getWindow();
-            ToastUtil.makeText(stage, Toast.ToastState.ERROR,
+            final Stage stage = (Stage) bookAuthorInput.getScene().getWindow();
+            ToastUtil.makeToast(stage, Toast.ToastState.ERROR,
                     "There was an error updating your library, try again later.");
             e.printStackTrace();
             return;
@@ -87,8 +87,8 @@ public final class EditBookController extends BaseBookController {
         try {
             storageHandler.putUser(getUser());
         } catch (IOException e) {
-            final Stage stage = (Stage) addBookDatePicker.getScene().getWindow();
-            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error deleting the book, try again later.");
+            final Stage stage = (Stage) bookDatePicker.getScene().getWindow();
+            ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error deleting the book, try again later.");
             e.printStackTrace();
             return;
         }

@@ -46,7 +46,7 @@ public class LoginController extends SceneChangerController implements Initializ
         } catch (IOException e) {
             // If it fails, it is still fine, just notify the user
             final Stage stage = (Stage) logInButton.getScene().getWindow();
-            ToastUtil.makeText(stage, ToastState.INFO, "Was not able to retrieve server data");
+            ToastUtil.makeToast(stage, ToastState.INFO, "Was not able to retrieve server data");
 
         }
 
@@ -70,7 +70,7 @@ public class LoginController extends SceneChangerController implements Initializ
         try {
             update(storageHandler.getUser(username));
         } catch (IOException e1) {
-            ToastUtil.makeText(stage, Toast.ToastState.ERROR,
+            ToastUtil.makeToast(stage, Toast.ToastState.ERROR,
                     "There was an error updating your library, try again later.");
             e1.printStackTrace();
             return;

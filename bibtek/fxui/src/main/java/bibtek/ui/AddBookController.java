@@ -8,6 +8,7 @@ import bibtek.core.User;
 import bibtek.json.BooksAPIHandler;
 import bibtek.json.ISBNUtils;
 import bibtek.json.StorageHandler;
+import bibtek.ui.Toast.ToastState;
 import bibtek.ui.utils.ToastUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -28,12 +29,17 @@ public final class AddBookController extends BaseBookController {
     @FXML
     private void handleAddBook() {
 
-        final BookEntry bookEntry = new BookEntry(
-                new Book(bookTitleInput.getText(), bookAuthorInput.getText(),
-                        Integer.parseInt(bookYearPublishedInput.getText()), bookImagePathInput.getText()),
-                bookDatePicker.getValue(), bookReadingStateCombo.getValue()
-
-        );
+        final BookEntry bookEntry;
+        try {
+            bookEntry = new BookEntry(
+                    new Book(bookTitleInput.getText(), bookAuthorInput.getText(),
+                            Integer.parseInt(bookYearPublishedInput.getText()), bookImagePathInput.getText()),
+                    bookDatePicker.getValue(), bookReadingStateCombo.getValue());
+        } catch (Exception e) {
+            Stage stage = (Stage) addBookISBNInput.getScene().getWindow();
+            ToastUtil.makeToast(stage, ToastState.INCORRECT, "You must fill out all fields except \'Cover image\'");
+            return;
+        }
 
         final User user = getUser();
 
@@ -43,8 +49,8 @@ public final class AddBookController extends BaseBookController {
         try {
             storageHandler.notifyUserChanged(user);
         } catch (IOException e) {
-            final Stage stage = (Stage) addBookAuthorField.getScene().getWindow();
-            ToastUtil.makeText(stage, Toast.ToastState.ERROR,
+            final Stage stage = (Stage) addBookISBNContainer.getScene().getWindow();
+            ToastUtil.makeToast(stage, Toast.ToastState.ERROR,
                     "There was an error updating your library, try again later.");
             return;
 
