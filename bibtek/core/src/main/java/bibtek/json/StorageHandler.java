@@ -41,7 +41,7 @@ public final class StorageHandler implements UserMapHandler {
     }
 
     @Override
-    public Collection<String> getUsernames() {
+    public Collection<String> getUsernames() throws IOException {
         try {
             return remoteStorageHandler.getUsernames();
         } catch (Exception e) {
@@ -50,7 +50,7 @@ public final class StorageHandler implements UserMapHandler {
     }
 
     @Override
-    public UserMap getUserMap() {
+    public UserMap getUserMap() throws IOException {
         try {
 
             // Save remote usermap to local storage
@@ -64,7 +64,7 @@ public final class StorageHandler implements UserMapHandler {
     }
 
     @Override
-    public User getUser(final String username) {
+    public User getUser(final String username) throws IOException {
         try {
             return remoteStorageHandler.getUser(username);
         } catch (Exception e) {
@@ -73,7 +73,7 @@ public final class StorageHandler implements UserMapHandler {
     }
 
     @Override
-    public void putUser(final User user) {
+    public void putUser(final User user) throws IOException {
         try {
             remoteStorageHandler.putUser(user);
         } catch (Exception e) {
@@ -82,7 +82,7 @@ public final class StorageHandler implements UserMapHandler {
     }
 
     @Override
-    public void removeUser(final String username) {
+    public void removeUser(final String username) throws IOException {
         try {
             remoteStorageHandler.removeUser(username);
         } catch (Exception e) {
@@ -91,7 +91,7 @@ public final class StorageHandler implements UserMapHandler {
     }
 
     @Override
-    public void notifyUserChanged(final User user) {
+    public void notifyUserChanged(final User user) throws IOException {
         try {
             remoteStorageHandler.notifyUserChanged(user);
         } catch (Exception e) {

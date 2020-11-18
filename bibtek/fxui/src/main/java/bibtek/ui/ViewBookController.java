@@ -77,7 +77,15 @@ public final class ViewBookController extends SceneChangerController {
             bookEntry.setReadingState(newState);
 
             final StorageHandler storageHandler = new StorageHandler();
-            storageHandler.putUser(getUser());
+            try {
+                storageHandler.putUser(getUser());
+            } catch (IOException e) {
+                final Stage stage1 = (Stage) addBookReadingStatusCombo.getScene().getWindow();
+                ToastUtil.makeText(stage1, Toast.ToastState.ERROR,
+                        "There was an error updating the reading status, try again later.");
+                e.printStackTrace();
+                return;
+            }
 
             final Stage stage = (Stage) bookReadingStateCombo.getScene().getWindow();
             ToastUtil.makeToast(stage, Toast.ToastState.SUCCESS, "Reading state changed to '" + newState + "'");

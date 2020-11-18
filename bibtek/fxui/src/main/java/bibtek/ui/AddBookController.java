@@ -40,7 +40,15 @@ public final class AddBookController extends BaseBookController {
         user.getLibrary().addBookEntry(bookEntry);
 
         final StorageHandler storageHandler = new StorageHandler();
-        storageHandler.notifyUserChanged(user);
+        try {
+            storageHandler.notifyUserChanged(user);
+        } catch (IOException e) {
+            final Stage stage = (Stage) addBookAuthorField.getScene().getWindow();
+            ToastUtil.makeText(stage, Toast.ToastState.ERROR,
+                    "There was an error updating your library, try again later.");
+            return;
+
+        }
 
         handleShowLibrary();
 
@@ -82,6 +90,7 @@ public final class AddBookController extends BaseBookController {
         } catch (IOException e) {
             ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error when showing your library");
             e.printStackTrace();
+            return;
         }
 
     }

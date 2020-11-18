@@ -42,7 +42,15 @@ public final class EditBookController extends BaseBookController {
         bookEntry.setReadingState(bookReadingStateCombo.getValue());
 
         final StorageHandler storageHandler = new StorageHandler();
-        storageHandler.putUser(getUser());
+        try {
+            storageHandler.putUser(getUser());
+        } catch (IOException e) {
+            final Stage stage = (Stage) addBookAuthorField.getScene().getWindow();
+            ToastUtil.makeText(stage, Toast.ToastState.ERROR,
+                    "There was an error updating your library, try again later.");
+            e.printStackTrace();
+            return;
+        }
 
         handleShowBookView();
 
@@ -76,7 +84,14 @@ public final class EditBookController extends BaseBookController {
         User user = getUser();
         user.getLibrary().removeBookEntry(bookEntry);
         StorageHandler storageHandler = new StorageHandler();
-        storageHandler.putUser(getUser());
+        try {
+            storageHandler.putUser(getUser());
+        } catch (IOException e) {
+            final Stage stage = (Stage) addBookDatePicker.getScene().getWindow();
+            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error deleting the book, try again later.");
+            e.printStackTrace();
+            return;
+        }
 
         handleShowLibrary();
 
@@ -89,18 +104,21 @@ public final class EditBookController extends BaseBookController {
 
         final Stage stage = (Stage) bookDatePicker.getScene().getWindow();
         try {
-            final ViewBookController editBookController = (ViewBookController) changeScene(stage, "/bibtek/ui/fxml/ViewBook.fxml");
+            final ViewBookController editBookController = (ViewBookController) changeScene(stage,
+                    "/bibtek/ui/fxml/ViewBook.fxml");
             editBookController.update(bookEntry, getUser());
         } catch (IOException e) {
             ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error when showing book page");
             e.printStackTrace();
+            return;
         }
 
     }
 
     /**
      * Pass the current User and BookEntry to be edited.
-     * @param b to be edited
+     *
+     * @param b    to be edited
      * @param user owner of book
      */
     public void update(final BookEntry b, final User user) {
@@ -131,6 +149,7 @@ public final class EditBookController extends BaseBookController {
         } catch (IOException e) {
             ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error when showing your library");
             e.printStackTrace();
+            return;
         }
 
     }

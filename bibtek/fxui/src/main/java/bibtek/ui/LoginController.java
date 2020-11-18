@@ -57,13 +57,21 @@ public class LoginController extends SceneChangerController implements Initializ
             return;
         }
 
-        update(storageHandler.getUser(username));
+        try {
+            update(storageHandler.getUser(username));
+        } catch (IOException e1) {
+            ToastUtil.makeText(stage, Toast.ToastState.ERROR,
+                    "There was an error updating your library, try again later.");
+            e1.printStackTrace();
+            return;
+        }
 
         try {
             this.changeSceneAndUpdateUser(stage, "/bibtek/ui/fxml/Library.fxml");
         } catch (IOException e) {
             ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error when showing your library");
             e.printStackTrace();
+            return;
         }
     }
 
