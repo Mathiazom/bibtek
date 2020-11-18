@@ -1,17 +1,15 @@
 package bibtek.ui;
 
-import bibtek.core.BookReadingState;
-import javafx.application.Platform;
+import bibtek.core.*;
+import bibtek.json.BooksAPIHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Bounds;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -37,6 +35,7 @@ public class AddBookTest extends ApplicationTest {
 
     private Parent parent;
     private AddBookController controller;
+    private Stage stage;
 
     /**
      * Prepares the system.
@@ -63,31 +62,69 @@ public class AddBookTest extends ApplicationTest {
      */
     @Override
     public void start(final Stage stage) throws Exception {
+        this.stage = stage;
         final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/AddBook.fxml"));
         this.parent = fxmlLoader.load();
         this.controller = fxmlLoader.getController();
+        controller.update(dummyUser()); // Dummy user
         stage.setScene(new Scene(parent));
         stage.show();
 
     }
 
-    private static void ensureVisible(ScrollPane scrollPane, Node node) {
-        Bounds viewport = scrollPane.getViewportBounds();
-        double contentHeight = scrollPane.getContent().localToScene(scrollPane.getContent().getBoundsInLocal()).getHeight();
-        double nodeMinY = node.localToScene(node.getBoundsInLocal()).getMinY();
-        double nodeMaxY = node.localToScene(node.getBoundsInLocal()).getMaxY();
+    // TODO: Replace with dummy from rebase
+    private static User dummyUser() {
 
-        double vValueDelta = 0;
-        double vValueCurrent = scrollPane.getVvalue();
+        final Library library = new Library();
 
-        if (nodeMaxY < 0) {
-            // currently located above (remember, top left is (0,0))
-            vValueDelta = (nodeMinY - viewport.getHeight()) / contentHeight;
-        } else if (nodeMinY > viewport.getHeight()) {
-            // currently located below
-            vValueDelta = (nodeMinY + viewport.getHeight()) / contentHeight;
-        }
-        scrollPane.setVvalue(vValueCurrent + vValueDelta);
+        final int danteBigBoyAge = 800;
+        final User dummyUser = new User("dante", danteBigBoyAge, library);
+
+        final int dummyBookYear = 1953;
+        final int dummyBookYear2 = 1948;
+
+        library.addBookEntry(
+                new BookEntry(
+                        new Book(
+                                "Fahrenheit 451",
+                                "Ray Bradbury",
+                                dummyBookYear,
+                                "https://s2982.pcdn.co/wp-content/uploads/2017/09/fahrenheit-451-flamingo-edition.jpg"
+                        ),
+                        LocalDate.now(),
+                        BookReadingState.READING
+                )
+        );
+        library.addBookEntry(
+                new BookEntry(
+                        new Book(
+                                "1984",
+                                "George Orwell",
+                                dummyBookYear2
+                        ),
+                        LocalDate.now(),
+                        BookReadingState.COMPLETED
+                )
+        );
+
+        library.addBookEntry(
+                new BookEntry(
+                        new BooksAPIHandler().fetchBook("9780241242643"),
+                        LocalDate.now(),
+                        BookReadingState.ABANDONED
+                )
+        );
+
+        library.addBookEntry(
+                new BookEntry(
+                        new BooksAPIHandler().fetchBook("9780765394866"),
+                        LocalDate.now(),
+                        BookReadingState.NOT_STARTED
+                )
+        );
+
+        return dummyUser;
+
     }
 
     /**
@@ -97,32 +134,31 @@ public class AddBookTest extends ApplicationTest {
     @Test
     public void createBookEntryTest() {
 
-        final ScrollPane scrollPane = (ScrollPane) parent.lookup("ScrollPane");
+        final TextField addBookTitleInput = (TextField) parent.lookup("#bookTitleInput");
+        clickOn(addBookTitleInput).write("Finnegans Wake", WRITE_ROBOT_PAUSE_MILLIS);
 
-        final TextField addBookTitleField = (TextField) parent.lookup("#addBookTitleField");
-        clickOn(addBookTitleField).write("Finnegans Wake", WRITE_ROBOT_PAUSE_MILLIS);
+        assertEquals("Finnegans Wake", addBookTitleInput.getText(), "Book Title should be \"Finnegans Wake\" ");
 
-        assertEquals("Finnegans Wake", addBookTitleField.getText(), "Book Title should be \"Finnegans Wake\" ");
+        final TextField addBookAuthorInput = (TextField) parent.lookup("#bookAuthorInput");
+        clickOn(addBookAuthorInput).write("James Joyce", WRITE_ROBOT_PAUSE_MILLIS);
+        assertEquals("James Joyce", addBookAuthorInput.getText(), "Book Author should be \"James Joyce\" ");
 
-        final TextField addBookAuthorField = (TextField) parent.lookup("#addBookAuthorField");
-        clickOn(addBookAuthorField).write("James Joyce", WRITE_ROBOT_PAUSE_MILLIS);
-        assertEquals("James Joyce", addBookAuthorField.getText(), "Book Author should be \"James Joyce\" ");
+        final DigitsField addBookYearPublishedInput = (DigitsField) parent.lookup("#bookYearPublishedInput");
+        clickOn(addBookYearPublishedInput).write("1939", WRITE_ROBOT_PAUSE_MILLIS);
+        assertEquals(1939, addBookYearPublishedInput.getInputAsInt(), "Book Year should be " + 1939);
 
-        final DigitsField addBookYearPublishedField = (DigitsField) parent.lookup("#addBookYearPublishedField");
-        clickOn(addBookYearPublishedField).write("1939", WRITE_ROBOT_PAUSE_MILLIS);
-        assertEquals(1939, addBookYearPublishedField.getInputAsInt(), "Book Year should be " + 1939);
-
-        final TextField addBookImagePathField = (TextField) parent.lookup("#addBookImagePathField");
-        addBookImagePathField.setText("http://books.google.com/books/content?id=FNMS7qOqRwEC&printsec=frontcover&img=1&zoom=1&source=gbs_api");
-        assertEquals("http://books.google.com/books/content?id=FNMS7qOqRwEC&printsec=frontcover&img=1&zoom=1&source=gbs_api", addBookImagePathField.getText(),
+        final TextField addBookImagePathInput = (TextField) parent.lookup("#bookImagePathInput");
+        clickOn(addBookImagePathInput);
+        addBookImagePathInput.setText("http://books.google.com/books/content?id=FNMS7qOqRwEC&printsec=frontcover&img=1&zoom=1&source=gbs_api");
+        assertEquals("http://books.google.com/books/content?id=FNMS7qOqRwEC&printsec=frontcover&img=1&zoom=1&source=gbs_api", addBookImagePathInput.getText(),
                 "Book Cover image path should be \"http://books.google.com/books/content?id=FNMS7qOqRwEC&printsec=frontcover&img=1&zoom=1&source=gbs_api\"");
 
         final LocalDate startDate = LocalDate.of(2020, 9, 21);
         final LocalDate targetDate = LocalDate.of(2020, 9, 30);
-        final DatePicker addBookDatePicker = (DatePicker) parent.lookup("#addBookDatePicker");
+        final DatePicker addBookDatePicker = (DatePicker) parent.lookup("#bookDatePicker");
         addBookDatePicker.setValue(startDate);
-        final TextField addBookDatePickerField = (TextField) parent.lookup("#addBookDatePickerField");
-        clickOn(addBookDatePickerField)
+        final TextField addBookDatePickerDisplay = (TextField) parent.lookup("#bookDatePickerDisplay");
+        clickOn(addBookDatePickerDisplay)
                 .sleep(ROBOT_PAUSE_MS)
                 .type(KeyCode.DOWN).sleep(ROBOT_PAUSE_MS) // 21.08.2020 -> 28.08.2020
                 .type(KeyCode.RIGHT).sleep(ROBOT_PAUSE_MS) // 28.08.2020 -> 29.08.2020
@@ -131,51 +167,72 @@ public class AddBookTest extends ApplicationTest {
                 .type(KeyCode.ESCAPE); // Hide datepicker
         assertEquals(targetDate, addBookDatePicker.getValue(), "Book date acquired should be " + targetDate);
 
-        final ComboBox<BookReadingState> addBookReadingStatusCombo = (ComboBox<BookReadingState>) parent.lookup("#addBookReadingStatusCombo");
-        clickOn(addBookReadingStatusCombo)
+        final ComboBox<BookReadingState> addBookReadingStateCombo = (ComboBox<BookReadingState>) parent.lookup("#bookReadingStateCombo");
+        clickOn(addBookReadingStateCombo)
                 .sleep(ROBOT_PAUSE_MS)
                 .press(KeyCode.DOWN)
                 .sleep(ROBOT_PAUSE_MS)
                 .press(KeyCode.ENTER); // Select second element
-        assertEquals(BookReadingState.READING, addBookReadingStatusCombo.getValue(),
+        assertEquals(BookReadingState.READING, addBookReadingStateCombo.getValue(),
                 "BookReadingState should be READING");
-
-        // TODO: Following requires integration test
-        /*// Create book entry
-        clickOn(addBookButton);
-
-        // Testing if it has created a correct library object with the given input
-        final String expected = new BookEntry(
-                new Book(
-                        "Finnegans Wake",
-                        "James Joyce",
-                        1939,
-                        "http://books.google.com/books/content?id=FNMS7qOqRwEC&printsec=frontcover&img=1&zoom=1&source=gbs_api"
-                ),
-                LocalDate.of(2020, 9, 30),
-                BookReadingState.READING
-        ).toString();
-        final Library library = controller.getUser().getLibrary();
-        final String actual = library.getBookEntries().stream().map(BookEntry::toString).reduce("", (a, b) -> a + b);
-        assertEquals(expected, actual, "Expected book entries was not equal to the actual book entries");*/
 
     }
 
     /**
-     * Make sure ISBN field is accessible
+     * Make sure ISBN field is accessible and functional.
      */
     @Test
-    public void isbnFieldDisplayTest() {
+    public void validISBNSearchTest() {
 
         clickOn("#isbnButton").sleep(ROBOT_PAUSE_MS);
 
         // Make sure popup container is visible
         assertTrue(parent.lookup("#addBookISBNContainer").isManaged());
 
-        // Make sure field is accessible and digits-only
-        final DigitsField addBookISBNField = (DigitsField) parent.lookup("#addBookISBNField");
-        clickOn(addBookISBNField).write("9rty7807xz6539Q486kj6", WRITE_ROBOT_PAUSE_MILLIS);
-        assertEquals("9780765394866", addBookISBNField.getText(), "ISBN input should be 9780765394866");
+        // Make sure field is accessible and
+        final DigitsField addBookISBNInput = (DigitsField) parent.lookup("#addBookISBNInput");
+
+        // Make sure field is digits-only
+        clickOn(addBookISBNInput).write("9rty7807xz6539Q486kj6", WRITE_ROBOT_PAUSE_MILLIS);
+        assertEquals("9780765394866", addBookISBNInput.getText(), "ISBN input should be 9780765394866");
+
+        clickOn("#addBookISBNButton");
+
+        clickOn("#isbnButton");
+
+        // Make sure data is retrieved and loaded
+        assertEquals("Ender's Game", ((TextField) parent.lookup("#bookTitleInput")).getText(), "Book Title should be Ender's Game");
+        assertEquals("Orson Scott Card", ((TextField) parent.lookup("#bookAuthorInput")).getText(), "Book Author should be Orson Scott Card");
+        assertEquals(2017, ((DigitsField) parent.lookup("#bookYearPublishedInput")).getInputAsInt(), "Book Year should be " + 2017);
+        assertEquals(
+                "http://books.google.com/books/content?id=jaM7DwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+                ((TextField) parent.lookup("#bookImagePathInput")).getText(),
+                "Book Cover image path should be \"http://books.google.com/books/content?id=jaM7DwAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api\""
+        );
+
+    }
+
+    @Test
+    public void invalidISBNSearchTest() {
+
+        clickOn("#isbnButton").sleep(ROBOT_PAUSE_MS);
+
+        final DigitsField addBookISBNInput = (DigitsField) parent.lookup("#addBookISBNInput");
+        clickOn(addBookISBNInput).write("1513852", WRITE_ROBOT_PAUSE_MILLIS);
+        clickOn("#addBookISBNButton");
+        FxTestUtil.assertToast(Toast.ToastState.INCORRECT, "Looks like an invalid ISBN", parent);
+
+    }
+
+    @Test
+    public void noResultISBNSearchTest() {
+
+        clickOn("#isbnButton").sleep(ROBOT_PAUSE_MS);
+
+        final DigitsField addBookISBNInput = (DigitsField) parent.lookup("#addBookISBNInput");
+        clickOn(addBookISBNInput).write("1234567890", WRITE_ROBOT_PAUSE_MILLIS);
+        clickOn("#addBookISBNButton");
+        FxTestUtil.assertToast(Toast.ToastState.INFO, "No results for that ISBN :(", parent);
 
     }
 
@@ -183,37 +240,55 @@ public class AddBookTest extends ApplicationTest {
      * Testing if the year published field does not register letters.
      */
     @Test
-    public void yearPublishedFieldTest() {
+    public void yearPublishedInputTest() {
         // testing if the year published field does not register letters
-        final TextField addBookYearPublishedField = (TextField) parent.lookup("#addBookYearPublishedField");
-        addBookYearPublishedField.setText("Hello123World");
-        assertEquals("123", addBookYearPublishedField.getText(),
+        final TextField addBookYearPublishedInput = (TextField) parent.lookup("#bookYearPublishedInput");
+        addBookYearPublishedInput.setText("Hello123World");
+        assertEquals("123", addBookYearPublishedInput.getText(),
                 "This is a numbers only field, letters are not allowed");
 
     }
 
     /**
-     * Make sure date picker text field displays same date as in date picker
+     * Make sure date picker text field displays same date as in date picker.
      */
     @Test
-    public void datePickerDisplayFieldTest() {
+    public void datePickerDisplayInputTest() {
 
         final LocalDate timeStamp = LocalDate.of(2020, 9, 30);
-        final DatePicker addBookDatePicker = (DatePicker) parent.lookup("#addBookDatePicker");
+        final DatePicker addBookDatePicker = (DatePicker) parent.lookup("#bookDatePicker");
         addBookDatePicker.setValue(timeStamp);
-        final TextField addBookDatePickerField = (TextField) parent.lookup("#addBookDatePickerField");
-        assertEquals(timeStamp.toString(), addBookDatePickerField.getText(), "Book date acquired displayed in text field should be 30.09.2020");
+        final TextField addBookDatePickerDisplay = (TextField) parent.lookup("#bookDatePickerDisplay");
+        assertEquals(
+                addBookDatePicker.getConverter().toString(timeStamp),
+                addBookDatePickerDisplay.getText(),
+                "Book date acquired displayed in text field should be 30.09.2020"
+        );
 
     }
 
     /**
-     * Make sure all possible values are represented in dropdown
+     * Make sure all possible values are represented in dropdown.
      */
     @Test
     public void bookReadingStateDropdownTest() {
 
-        final ComboBox<BookReadingState> addBookReadingStatusCombo = (ComboBox<BookReadingState>) parent.lookup("#addBookReadingStatusCombo");
-        assertEquals(List.of(BookReadingState.values()), List.of(addBookReadingStatusCombo.getItems().toArray()));
+        final ComboBox<BookReadingState> addBookReadingStateCombo = (ComboBox<BookReadingState>) parent.lookup("#bookReadingStateCombo");
+        assertEquals(List.of(BookReadingState.values()), List.of(addBookReadingStateCombo.getItems().toArray()));
+
+    }
+
+    /**
+     * Make sure user can change their mind and go back to their library without adding a book.
+     */
+    @Test
+    public void backToLibraryTest() {
+
+        clickOn("#cancelButton");
+
+        final AnchorPane libraryRoot = (AnchorPane) stage.getScene().getRoot().lookup("#libraryRoot");
+        assertNotNull(libraryRoot);
+        assertTrue(libraryRoot.isVisible());
 
     }
 
