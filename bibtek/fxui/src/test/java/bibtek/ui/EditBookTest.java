@@ -56,7 +56,7 @@ public class EditBookTest extends ApplicationTest {
     @Override
     public void start(final Stage stage) throws Exception {
         this.stage = stage;
-        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/EditBook.fxml"));
+        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/fxml/EditBook.fxml"));
         parent = fxmlLoader.load();
         this.controller = fxmlLoader.getController();
         final User user = dummyUser();

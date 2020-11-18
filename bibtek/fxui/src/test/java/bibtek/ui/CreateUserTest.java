@@ -44,7 +44,7 @@ public class CreateUserTest extends ApplicationTest {
     @Override
     public void start(final Stage stage) throws Exception {
         this.stage = stage;
-        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/CreateUser.fxml"));
+        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/fxml/CreateUser.fxml"));
         this.parent = fxmlLoader.load();
         stage.setScene(new Scene(parent));
         stage.show();

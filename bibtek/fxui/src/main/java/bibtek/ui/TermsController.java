@@ -18,7 +18,7 @@ public class TermsController extends SceneChangerController {
     public void close() {
         final Stage stage = (Stage) close.getScene().getWindow();
         try {
-            this.changeScene(stage, "/bibtek/ui/CreateUser.fxml");
+            this.changeScene(stage, "/bibtek/ui/fxml/CreateUser.fxml");
         } catch (IOException e) {
             ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error showing the create user page");
             e.printStackTrace();

@@ -24,7 +24,7 @@ public class SettingsController extends SceneChangerController {
         try {
             this.changeSceneAndUpdateUser(stage, "/bibtek/ui/fxml/Library.fxml");
         } catch (IOException e) {
-            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error showing your library");
+            ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error showing your library");
             e.printStackTrace();
 
         }
@@ -38,7 +38,7 @@ public class SettingsController extends SceneChangerController {
         try {
             this.changeSceneAndUpdateUser(stage, "/bibtek/ui/fxml/LoginPage.fxml");
         } catch (IOException e) {
-            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error logging off");
+            ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error logging off");
             e.printStackTrace();
 
         }

@@ -63,7 +63,7 @@ public class AddBookTest extends ApplicationTest {
     @Override
     public void start(final Stage stage) throws Exception {
         this.stage = stage;
-        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/AddBook.fxml"));
+        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/fxml/AddBook.fxml"));
         this.parent = fxmlLoader.load();
         this.controller = fxmlLoader.getController();
         controller.update(dummyUser()); // Dummy user

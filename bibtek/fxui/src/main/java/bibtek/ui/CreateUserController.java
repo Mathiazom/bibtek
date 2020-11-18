@@ -66,7 +66,7 @@ public class CreateUserController extends SceneChangerController implements Init
     public void handleShowLogin() {
         final Stage stage = (Stage) createUserButton.getScene().getWindow();
         try {
-            this.changeScene(stage, "/bibtek/ui/Login.fxml");
+            this.changeScene(stage, "/bibtek/ui/fxml/Login.fxml");
         } catch (IOException e) {
             ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error showing the login page");
             e.printStackTrace();

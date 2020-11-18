@@ -4,8 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Class representing a users personal library storing book entries. Persists
- * data continuously in local storage by using a {@link StorageHandler}
+ * Class representing a users personal library storing book entries.
  */
 public final class Library {
 
