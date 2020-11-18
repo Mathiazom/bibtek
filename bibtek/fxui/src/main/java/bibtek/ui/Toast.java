@@ -57,10 +57,13 @@ public class Toast extends AnchorPane {
     @FXML
     FontIcon toastIcon;
 
+    private ToastState state;
+
     /**
      * Display simple message.
+     *
      * @param message to display
-     * @param state deciding icon and color
+     * @param state   deciding icon and color
      */
     public Toast(final String message, final ToastState state) {
 
@@ -74,10 +77,21 @@ public class Toast extends AnchorPane {
             throw new RuntimeException(exception);
         }
 
+        this.state = state;
+
         toastText.setText(message);
         toastIcon.setIconLiteral(state.iconLiteral);
         toastBox.setStyle("-fx-background-color: " + state.boxColor);
 
+    }
+
+    /**
+     * Get current {@link ToastState}.
+     *
+     * @return state
+     */
+    public ToastState getState() {
+        return state;
     }
 
 }
