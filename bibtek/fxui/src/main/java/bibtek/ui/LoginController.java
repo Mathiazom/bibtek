@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import bibtek.json.StorageHandler;
+import bibtek.ui.Toast.ToastState;
 import bibtek.ui.utils.ToastUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -39,6 +40,15 @@ public class LoginController extends SceneChangerController implements Initializ
 
         createNewUserLabel.setOnMouseClicked((agent) -> this.createNewUser());
         storageHandler = new StorageHandler();
+        try {
+            // Fetch server data
+            storageHandler.getUserMap();
+        } catch (IOException e) {
+            // If it fails, it is still fine, just notify the user
+            final Stage stage = (Stage) logInButton.getScene().getWindow();
+            ToastUtil.makeText(stage, ToastState.INFO, "Was not able to retrieve server data");
+
+        }
 
     }
 

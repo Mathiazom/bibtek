@@ -68,45 +68,6 @@ public class BibtekServiceTest extends JerseyTest {
     }
 
     /**
-     * Tests the GET method in UserMapService that should return the whole user map.
-     */
-    @Test
-    public void getUserMapGETTest() {
-        Response response = target(UserMapService.USER_MAP_SERVICE_PATH)
-                .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").get();
-        // Test if the response is ok.
-        assertEquals(HttpURLConnection.HTTP_OK, response.getStatus());
-
-        // Test if the response is like the expected response. he
-        UserMap expectedUserMap = new UserMap();
-        expectedUserMap.putUser(ServerUtil.DANTE_USER);
-        String responseString = response.readEntity(String.class);
-        UserMap actualUserMap = gsonProvider.getGson().fromJson(responseString, new TypeToken<UserMap>() {
-        }.getType());
-
-        assertEquals(expectedUserMap, actualUserMap, "The response from the GET getUserMap was not as expected");
-    }
-
-    /**
-     * Testing the GET request method in UserResource.
-     */
-    @Test
-    public void getUserGETTest() {
-        Response response = target(UserMapService.USER_MAP_SERVICE_PATH).path("dante")
-                .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").get();
-
-        // Test if the request if ok
-        assertEquals(HttpURLConnection.HTTP_OK, response.getStatus());
-
-        // Test if it returns expected value
-        User dante = ServerUtil.DANTE_USER;
-        String responseString = response.readEntity(String.class);
-        User actualUser = gsonProvider.getGson().fromJson(responseString, new TypeToken<User>() {
-        }.getType());
-        assertEquals(dante, actualUser, "The response from the GET getUser was not as expected");
-    }
-
-    /**
      * Testing the PUT request method in UserResource.
      */
     @Test
@@ -133,6 +94,63 @@ public class BibtekServiceTest extends JerseyTest {
         }.getType());
         assertEquals(danteUpdated, actualUser, "The response from the GET getUser was not as expected");
 
+    }
+
+    /**
+     * Tests the GET method in UserMapService that should return the whole user map.
+     */
+    @Test
+    public void getUserMapGETTest() {
+        // Put the user there to ensure it exists
+        // Setup the entity to PUT
+        Entity<String> userEntity = Entity
+                .entity(gsonProvider.getGson().toJson(ServerUtil.DANTE_USER, new TypeToken<User>() {
+                }.getType()), MediaType.APPLICATION_JSON_TYPE);
+        // Send the request (we know from the previous test that this works)
+        target(UserMapService.USER_MAP_SERVICE_PATH).path("dante")
+                .request(MediaType.APPLICATION_JSON_TYPE + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8")
+                .put(userEntity);
+        Response response = target(UserMapService.USER_MAP_SERVICE_PATH)
+                .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").get();
+        // Test if the response is ok.
+        assertEquals(HttpURLConnection.HTTP_OK, response.getStatus());
+
+        // Test if the response is like the expected response. he
+        UserMap expectedUserMap = new UserMap();
+        expectedUserMap.putUser(ServerUtil.DANTE_USER);
+        String responseString = response.readEntity(String.class);
+        UserMap actualUserMap = gsonProvider.getGson().fromJson(responseString, new TypeToken<UserMap>() {
+        }.getType());
+
+        assertEquals(expectedUserMap, actualUserMap, "The response from the GET getUserMap was not as expected");
+    }
+
+    /**
+     * Testing the GET request method in UserResource.
+     */
+    @Test
+    public void getUserGETTest() {
+        // Put the user there to ensure it exists
+        // Setup the entity to PUT
+        Entity<String> userEntity = Entity
+                .entity(gsonProvider.getGson().toJson(ServerUtil.DANTE_USER, new TypeToken<User>() {
+                }.getType()), MediaType.APPLICATION_JSON_TYPE);
+        // Send the request (we know from the previous test that this works)
+        target(UserMapService.USER_MAP_SERVICE_PATH).path("dante")
+                .request(MediaType.APPLICATION_JSON_TYPE + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8")
+                .put(userEntity);
+        Response response = target(UserMapService.USER_MAP_SERVICE_PATH).path("dante")
+                .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").get();
+
+        // Test if the request if ok
+        assertEquals(HttpURLConnection.HTTP_OK, response.getStatus());
+
+        // Test if it returns expected value
+        User dante = ServerUtil.DANTE_USER;
+        String responseString = response.readEntity(String.class);
+        User actualUser = gsonProvider.getGson().fromJson(responseString, new TypeToken<User>() {
+        }.getType());
+        assertEquals(dante, actualUser, "The response from the GET getUser was not as expected");
     }
 
     /**
@@ -169,6 +187,15 @@ public class BibtekServiceTest extends JerseyTest {
      */
     @Test
     public void removeUserDELETETest() {
+        // Put the user there to ensure it exists
+        // Setup the entity to PUT
+        Entity<String> userEntity = Entity
+                .entity(gsonProvider.getGson().toJson(ServerUtil.DANTE_USER, new TypeToken<User>() {
+                }.getType()), MediaType.APPLICATION_JSON_TYPE);
+        // Send the request (we know from the previous test that this works)
+        target(UserMapService.USER_MAP_SERVICE_PATH).path("dante")
+                .request(MediaType.APPLICATION_JSON_TYPE + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8")
+                .put(userEntity);
         // Send the DELETE request
         target(UserMapService.USER_MAP_SERVICE_PATH).path("dante")
                 .request(MediaType.APPLICATION_JSON_TYPE + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").delete();

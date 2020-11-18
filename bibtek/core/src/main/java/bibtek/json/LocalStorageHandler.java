@@ -29,11 +29,11 @@ public final class LocalStorageHandler implements UserMapHandler {
     /**
      * The path of bibtek.
      */
-    public static final File BIBTEK_PATH = Paths.get("target").toAbsolutePath().toFile();
+    private static final File TARGET_PATH = Paths.get("target").toAbsolutePath().toFile();
     /**
      * The path where the users file should be stored by default.
      */
-    private static final String DEFAULT_STORAGE_DIRECTRY = new File(BIBTEK_PATH, "users").toString();
+    private static final String DEFAULT_STORAGE_DIRECTRY = new File(TARGET_PATH, "users").toString();
 
     /**
      * The file path where the json data will be stored.

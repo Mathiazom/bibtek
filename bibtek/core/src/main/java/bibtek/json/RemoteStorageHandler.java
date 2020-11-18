@@ -10,6 +10,8 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
 import javax.ws.rs.core.MediaType;
+
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -27,9 +29,13 @@ public final class RemoteStorageHandler implements UserMapHandler {
 
     private UserMap userMap;
 
-    RemoteStorageHandler() throws URISyntaxException {
+    private LocalStorageHandler localStorageHandler;
+
+    RemoteStorageHandler() throws URISyntaxException, IOException {
 
         endPointBaseUri = new URI("http://localhost:8080/bibtek/users/");
+        // A LocalStorageHandler with its base in the parents target/remoteUsers folder.
+        localStorageHandler = new LocalStorageHandler("../target/remoteUsers");
 
     }
 
@@ -49,6 +55,13 @@ public final class RemoteStorageHandler implements UserMapHandler {
             this.userMap = gson.fromJson(responseString, new TypeToken<UserMap>() {
             }.getType());
 
+        }
+        try {
+            // Retrieves the userMap from server and puts it in the serverStorage.
+            localStorageHandler.putUserMap(userMap);
+        } catch (IOException e) {
+            // It is fine if this method does not work.
+            e.printStackTrace();
         }
 
         return userMap;
@@ -103,7 +116,7 @@ public final class RemoteStorageHandler implements UserMapHandler {
     }
 
     @Override
-    public void putUser(final User user) {
+    public void putUser(final User user) throws IOException {
 
         final Client client = Client.create();
 
@@ -121,11 +134,12 @@ public final class RemoteStorageHandler implements UserMapHandler {
             getUserMap().putUser(user);
 
         }
+        localStorageHandler.putUser(user);
 
     }
 
     @Override
-    public void removeUser(final String username) {
+    public void removeUser(final String username) throws IOException {
 
         final Client client = Client.create();
 
@@ -139,11 +153,12 @@ public final class RemoteStorageHandler implements UserMapHandler {
         if (removed != null) {
             getUserMap().removeUser(getUserMap().getUser(username));
         }
+        localStorageHandler.removeUser(username);
 
     }
 
     @Override
-    public void notifyUserChanged(final User user) {
+    public void notifyUserChanged(final User user) throws IOException {
         putUser(user);
     }
 

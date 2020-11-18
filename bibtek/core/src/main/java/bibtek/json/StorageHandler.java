@@ -56,7 +56,6 @@ public final class StorageHandler implements UserMapHandler {
             // Save remote usermap to local storage
             UserMap remoteUserMap = remoteStorageHandler.getUserMap();
             localStorageHandler.putUserMap(remoteUserMap);
-
             return remoteUserMap;
         } catch (Exception e) {
             return localStorageHandler.getUserMap();
@@ -81,6 +80,8 @@ public final class StorageHandler implements UserMapHandler {
         try {
             remoteStorageHandler.putUser(user);
             localStorageHandler.putUser(user);
+        } catch (IOException e) {
+            throw new IOException(e);
         } catch (Exception e) {
             localStorageHandler.putUser(user);
         }
@@ -91,6 +92,8 @@ public final class StorageHandler implements UserMapHandler {
         try {
             remoteStorageHandler.removeUser(username);
             localStorageHandler.removeUser(username);
+        } catch (IOException e) {
+            throw new IOException(e);
         } catch (Exception e) {
             localStorageHandler.removeUser(username);
         }
