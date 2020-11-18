@@ -35,20 +35,13 @@ public class CreateUserController extends SceneChangerController implements Init
     @FXML
     Label termsLabel;
 
-    @FXML
-    Label errorLabel;
-
     /**
      * Initializes the create user page with appropriate functions.
      */
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
-        ageInput.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                ageInput.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-        });
-        termsLabel.setOnMouseClicked((agent) -> this.showTerms());
+
+        termsLabel.setOnMouseClicked((agent) -> this.handleShowTerms());
 
     }
 
@@ -56,12 +49,26 @@ public class CreateUserController extends SceneChangerController implements Init
      * Shows the terms and conditions to the user.
      */
     @FXML
-    public void showTerms() {
-        final Stage stage = new Stage();
+    public void handleShowTerms() {
+        final Stage stage = (Stage) createUserButton.getScene().getWindow();
         try {
             this.changeScene(stage, "/bibtek/ui/fxml/Terms.fxml");
         } catch (IOException e) {
-            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error showing the terms and conditions");
+            ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error showing the terms and conditions");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Returns to the login page.
+     */
+    @FXML
+    public void handleShowLogin() {
+        final Stage stage = (Stage) createUserButton.getScene().getWindow();
+        try {
+            this.changeScene(stage, "/bibtek/ui/Login.fxml");
+        } catch (IOException e) {
+            ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error showing the login page");
             e.printStackTrace();
         }
     }
@@ -74,45 +81,43 @@ public class CreateUserController extends SceneChangerController implements Init
 
         final Stage stage = (Stage) createUserButton.getScene().getWindow();
 
-        String userName1 = userNameInput.getText();
-        String userName2 = userNameConfirmInput.getText();
-        if (!userName1.equals(userName2)) {
-            ToastUtil.makeText(stage, Toast.ToastState.INCORRECT, "Usernames don't match");
+        final String username = userNameInput.getText();
+        final String usernameConfirmation = userNameConfirmInput.getText();
+        if (!username.equals(usernameConfirmation)) {
+            ToastUtil.makeToast(stage, Toast.ToastState.INCORRECT, "Usernames don't match");
             return;
         }
         final int age;
         try {
             age = Integer.parseInt(ageInput.getText());
-        } catch (NumberFormatException e){
-            ToastUtil.makeText(stage, Toast.ToastState.INCORRECT, "You must enter a valid age");
+        } catch (NumberFormatException e) {
+            ToastUtil.makeToast(stage, Toast.ToastState.INCORRECT, "You must enter a valid age");
             return;
         }
 
         if (age < User.MINIMAL_AGE) {
-            ToastUtil.makeText(stage, Toast.ToastState.INCORRECT, "You must be at least 13 \nto create an account");
+            ToastUtil.makeToast(stage, Toast.ToastState.INCORRECT, "You must be at least 13 years old");
             return;
         }
 
         if (!confirmCheckbox.isSelected()) {
-            ToastUtil.makeText(stage, Toast.ToastState.INCORRECT, "You must consent to the terms \nto create an account");
+            ToastUtil.makeToast(stage, Toast.ToastState.INCORRECT, "You must consent to the terms");
             return;
         }
 
         try {
-            User user = new User(userName1, age);
-            StorageHandler storageHandler = new StorageHandler();
-            storageHandler.putUser(user);
+            final User user = new User(username, age);
+            new StorageHandler().putUser(user);
         } catch (Exception e) {
-            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "An error occurred");
+            ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "Failed to create user");
             e.printStackTrace();
         }
 
-        // Insert code for feedback that the user was created.
-
         try {
-            this.changeSceneAndUpdateUser(stage, "/bibtek/ui/fxml/LoginPage.fxml");
+            this.changeSceneAndUpdateUser(stage, "/bibtek/ui/fxml/Login.fxml");
+            ToastUtil.makeToast(stage, Toast.ToastState.SUCCESS, "User '" + username + "' created");
         } catch (IOException e) {
-            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing login page");
+            ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error when showing the login page");
             e.printStackTrace();
         }
 
