@@ -20,29 +20,18 @@ public final class AddBookController extends BaseBookController {
     VBox addBookISBNContainer;
 
     @FXML
-    DigitsField addBookISBNField;
+    DigitsField addBookISBNInput;
 
     @FXML
     Label errorLabelISBN;
 
     @FXML
-    @Override
-    protected void initialize() {
-
-        super.initialize();
-
-        addBookISBNField.textProperty()
-                .addListener((observable, oldValue, newValue) -> errorLabelISBN.setManaged(false));
-
-    }
-
-    @FXML
     private void handleAddBook() {
 
         final BookEntry bookEntry = new BookEntry(
-                new Book(addBookTitleField.getText(), addBookAuthorField.getText(),
-                        Integer.parseInt(addBookYearPublishedField.getText()), addBookImagePathField.getText()),
-                addBookDatePicker.getValue(), addBookReadingStatusCombo.getValue()
+                new Book(bookTitleInput.getText(), bookAuthorInput.getText(),
+                        Integer.parseInt(bookYearPublishedInput.getText()), bookImagePathInput.getText()),
+                bookDatePicker.getValue(), bookReadingStateCombo.getValue()
 
         );
 
@@ -67,18 +56,18 @@ public final class AddBookController extends BaseBookController {
     @FXML
     private void handleLoadBookFromISBNInput() {
 
-        final String isbn = addBookISBNField.getText();
+        final String isbn = addBookISBNInput.getText();
 
         if (!ISBNUtils.isValidISBN(isbn)) {
-            errorLabelISBN.setText("Looks like an invalid ISBN :(");
-            errorLabelISBN.setManaged(true);
+            final Stage stage = (Stage) addBookISBNContainer.getScene().getWindow();
+            ToastUtil.makeToast(stage, Toast.ToastState.INCORRECT, "Looks like an invalid ISBN");
             return;
         }
 
         final Book bookFromISBN = new BooksAPIHandler().fetchBook(isbn);
         if (bookFromISBN == null) {
-            errorLabelISBN.setText("No results for that ISBN :(");
-            errorLabelISBN.setManaged(true);
+            final Stage stage = (Stage) addBookISBNContainer.getScene().getWindow();
+            ToastUtil.makeToast(stage, Toast.ToastState.INFO, "No results for that ISBN :(");
             return;
         }
         loadBookInput(bookFromISBN);
@@ -87,11 +76,11 @@ public final class AddBookController extends BaseBookController {
 
     @FXML
     private void handleShowLibrary() {
-        final Stage stage = (Stage) addBookAuthorField.getScene().getWindow();
+        final Stage stage = (Stage) bookAuthorInput.getScene().getWindow();
         try {
             this.changeSceneAndUpdateUser(stage, "/bibtek/ui/fxml/Library.fxml");
         } catch (IOException e) {
-            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing your library");
+            ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error when showing your library");
             e.printStackTrace();
         }
 

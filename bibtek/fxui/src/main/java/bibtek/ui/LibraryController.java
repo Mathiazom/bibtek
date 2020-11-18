@@ -42,7 +42,7 @@ public final class LibraryController extends SceneChangerController {
                     "/bibtek/ui/fxml/ViewBook.fxml");
             editBookController.update(bookEntry, getUser());
         } catch (IOException e) {
-            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing view book page");
+            ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error when showing view book page");
             e.printStackTrace();
         }
 

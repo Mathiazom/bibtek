@@ -6,34 +6,30 @@ import bibtek.ui.utils.FxUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 public abstract class BaseBookController extends SceneChangerController {
 
     @FXML
-    TextField addBookTitleField;
+    TextField bookTitleInput;
 
     @FXML
-    TextField addBookAuthorField;
+    TextField bookAuthorInput;
 
     @FXML
-    DigitsField addBookYearPublishedField;
+    DigitsField bookYearPublishedInput;
 
     @FXML
-    TextField addBookImagePathField;
+    TextField bookImagePathInput;
 
     @FXML
-    DatePicker addBookDatePicker;
+    DatePicker bookDatePicker;
 
     @FXML
-    TextField addBookDatePickerField;
+    TextField bookDatePickerDisplay;
 
     @FXML
-    Label errorLabel;
-
-    @FXML
-    ComboBox<BookReadingState> addBookReadingStatusCombo;
+    ComboBox<BookReadingState> bookReadingStateCombo;
 
     /**
      *
@@ -43,9 +39,9 @@ public abstract class BaseBookController extends SceneChangerController {
     @FXML
     protected void initialize() {
 
-        FxUtil.setUpReadingStateDropDown(addBookReadingStatusCombo);
+        FxUtil.setUpReadingStateDropDown(bookReadingStateCombo);
 
-        FxUtil.setUpCustomDatePicker(addBookDatePicker, addBookDatePickerField);
+        FxUtil.setUpCustomDatePicker(bookDatePicker, bookDatePickerDisplay);
 
     }
 
@@ -56,15 +52,15 @@ public abstract class BaseBookController extends SceneChangerController {
      */
     protected void loadBookInput(final Book book) {
 
-        addBookTitleField.setText(book.getTitle());
+        bookTitleInput.setText(book.getTitle());
 
-        addBookAuthorField.setText(book.getAuthor());
+        bookAuthorInput.setText(book.getAuthor());
 
         if (book.getYearPublished() != Book.YEAR_PUBLISHED_MISSING) {
-            addBookYearPublishedField.setText(String.valueOf(book.getYearPublished()));
+            bookYearPublishedInput.setText(String.valueOf(book.getYearPublished()));
         }
 
-        addBookImagePathField.setText(book.getImgPath());
+        bookImagePathInput.setText(book.getImgPath());
 
     }
 

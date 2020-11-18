@@ -23,7 +23,7 @@ ScrollPane{
     -fx-max-width: 500;
 }
 
-#inputContainer TextField, #inputContainer DigitsField, #addBookISBNField, #addBookReadingStatusCombo{
+#inputContainer TextField, #inputContainer DigitsField, #addBookISBNInput, #bookReadingStateCombo{
 
     -fx-padding: 10 15;
     -fx-background-color: white;
@@ -33,7 +33,7 @@ ScrollPane{
 
 }
 
-#inputContainer TextField, #inputContainer DigitsField, #addBookReadingStatusCombo {
+#inputContainer TextField, #inputContainer DigitsField, #bookReadingStateCombo {
 
     -fx-border-width: 2px;
     -fx-border-color: #ddd;
@@ -45,7 +45,7 @@ ScrollPane{
     -fx-padding: 0 !important;
 }
 
-#addBookISBNField{
+#addBookISBNInput{
     -fx-background-color: white;
 }
 
@@ -59,7 +59,7 @@ ScrollPane{
     -fx-padding: 15 0 5 0;
 }
 
-#addBookDatePicker{
+#bookDatePicker{
     -fx-background-color: white;
     -fx-control-inner-background: white;
     -fx-faint-focus-color: white;
@@ -76,7 +76,7 @@ ScrollPane{
     -fx-background-color: orange;
 }
 
-#addBookISBNField{
+#addBookISBNInput{
     -fx-font-size: 16px;
     -fx-font-weight: bold;
     -fx-text-fill: #212121;

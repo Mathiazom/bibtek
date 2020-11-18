@@ -33,7 +33,7 @@ public final class ViewBookController extends SceneChangerController {
     private ImageView bookEntryImage;
 
     @FXML
-    ComboBox<BookReadingState> addBookReadingStatusCombo;
+    ComboBox<BookReadingState> bookReadingStateCombo;
 
     private BookEntry bookEntry;
 
@@ -64,23 +64,23 @@ public final class ViewBookController extends SceneChangerController {
         try {
             bookImage = new Image(book.getImgPath());
         } catch (IllegalArgumentException | NullPointerException e) {
-            bookImage = new Image(BOOK_IMAGE_PLACEHOLDER_LOCATION);
+            bookImage = new Image(getClass().getResource(BOOK_IMAGE_PLACEHOLDER_LOCATION).toString());
         }
         bookEntryImage.setImage(bookImage);
 
-        FxUtil.setUpReadingStateDropDown(addBookReadingStatusCombo);
+        FxUtil.setUpReadingStateDropDown(bookReadingStateCombo);
 
-        addBookReadingStatusCombo.getSelectionModel().select(bookEntry.getReadingState());
+        bookReadingStateCombo.getSelectionModel().select(bookEntry.getReadingState());
 
-        addBookReadingStatusCombo.getSelectionModel().selectedItemProperty().addListener((o, a, newState) -> {
+        bookReadingStateCombo.getSelectionModel().selectedItemProperty().addListener((o, a, newState) -> {
 
             bookEntry.setReadingState(newState);
 
             final StorageHandler storageHandler = new StorageHandler();
             storageHandler.putUser(getUser());
 
-            final Stage stage = (Stage) addBookReadingStatusCombo.getScene().getWindow();
-            ToastUtil.makeText(stage, Toast.ToastState.SUCCESS, "Reading state changed to '" + newState + "'");
+            final Stage stage = (Stage) bookReadingStateCombo.getScene().getWindow();
+            ToastUtil.makeToast(stage, Toast.ToastState.SUCCESS, "Reading state changed to '" + newState + "'");
 
         });
 
@@ -95,7 +95,7 @@ public final class ViewBookController extends SceneChangerController {
                     "/bibtek/ui/fxml/EditBook.fxml");
             editBookController.update(bookEntry, getUser());
         } catch (IOException e) {
-            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing edit book page");
+            ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error when showing edit book page");
             e.printStackTrace();
         }
 
@@ -108,7 +108,7 @@ public final class ViewBookController extends SceneChangerController {
         try {
             this.changeSceneAndUpdateUser(stage, "/bibtek/ui/fxml/Library.fxml");
         } catch (IOException e) {
-            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing your library");
+            ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error when showing your library");
             e.printStackTrace();
         }
 

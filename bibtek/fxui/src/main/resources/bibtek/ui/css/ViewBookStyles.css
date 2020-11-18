@@ -18,7 +18,7 @@ ScrollPane{
     -fx-padding: 20 30 30 30;
 }
 
-#infoContainer DigitsField, #addBookReadingStatusCombo{
+#infoContainer DigitsField, #bookReadingStateCombo{
 
     -fx-padding: 10 15 10 15;
     -fx-background-color: white;
@@ -28,7 +28,7 @@ ScrollPane{
 
 }
 
-#infoContainer DigitsField, #addBookReadingStatusCombo {
+#infoContainer DigitsField, #bookReadingStateCombo {
 
     -fx-border-width: 2px;
     -fx-border-color: #ddd;

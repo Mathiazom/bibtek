@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import bibtek.core.Book;
 import bibtek.core.BookEntry;
-import bibtek.core.BookReadingState;
 import bibtek.core.User;
 import bibtek.json.StorageHandler;
 import bibtek.ui.utils.ToastUtil;
@@ -15,17 +14,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.stage.Stage;
 
 public final class EditBookController extends BaseBookController {
-
-    @FXML
-    DatePicker addBookDatePicker;
-
-    @FXML
-    ComboBox<BookReadingState> addBookReadingStatusCombo;
 
     private BookEntry bookEntry;
 
@@ -42,12 +33,12 @@ public final class EditBookController extends BaseBookController {
     @FXML
     public void handleConfirmEditBook() {
 
-        final Book newBook = new Book(addBookTitleField.getText(), addBookAuthorField.getText(),
-                Integer.parseInt(addBookYearPublishedField.getText()), addBookImagePathField.getText());
+        final Book newBook = new Book(bookTitleInput.getText(), bookAuthorInput.getText(),
+                Integer.parseInt(bookYearPublishedInput.getText()), bookImagePathInput.getText());
 
         bookEntry.setBook(newBook);
-        bookEntry.setDateAcquired(addBookDatePicker.getValue());
-        bookEntry.setReadingState(addBookReadingStatusCombo.getValue());
+        bookEntry.setDateAcquired(bookDatePicker.getValue());
+        bookEntry.setReadingState(bookReadingStateCombo.getValue());
 
         final StorageHandler storageHandler = new StorageHandler();
         storageHandler.putUser(getUser());
@@ -90,15 +81,14 @@ public final class EditBookController extends BaseBookController {
     /**
      * Show page for single book.
      */
-    @FXML
     public void handleShowBookView() {
 
-        final Stage stage = (Stage) addBookDatePicker.getScene().getWindow();
+        final Stage stage = (Stage) bookDatePicker.getScene().getWindow();
         try {
             final ViewBookController editBookController = (ViewBookController) changeScene(stage, "/bibtek/ui/fxml/ViewBook.fxml");
             editBookController.update(bookEntry, getUser());
         } catch (IOException e) {
-            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing book page");
+            ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error when showing book page");
             e.printStackTrace();
         }
 
@@ -123,19 +113,19 @@ public final class EditBookController extends BaseBookController {
 
         loadBookInput(bookEntry.getBook());
 
-        addBookDatePicker.setValue(bookEntry.getDateAcquired());
+        bookDatePicker.setValue(bookEntry.getDateAcquired());
 
-        addBookReadingStatusCombo.getSelectionModel().select(bookEntry.getReadingState());
+        bookReadingStateCombo.getSelectionModel().select(bookEntry.getReadingState());
 
     }
 
     private void handleShowLibrary() {
 
-        final Stage stage = (Stage) addBookDatePicker.getScene().getWindow();
+        final Stage stage = (Stage) bookDatePicker.getScene().getWindow();
         try {
             this.changeSceneAndUpdateUser(stage, "/bibtek/ui/fxml/Library.fxml");
         } catch (IOException e) {
-            ToastUtil.makeText(stage, Toast.ToastState.ERROR, "There was an error when showing your library");
+            ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error when showing your library");
             e.printStackTrace();
         }
 
