@@ -3,6 +3,7 @@ package bibtek.restapi;
 
 import bibtek.core.User;
 import bibtek.core.UserMap;
+
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -23,6 +24,7 @@ public final class UserMapService {
 
     /**
      * Gives access to the map of all users currently in storage.
+     *
      * @return userMap
      */
     @GET

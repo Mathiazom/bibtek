@@ -203,7 +203,7 @@ public class BibtekServiceTest extends JerseyTest {
         Response response = target(UserMapService.USER_MAP_SERVICE_PATH).path("dante")
                 .request(MediaType.APPLICATION_JSON + ";" + MediaType.CHARSET_PARAMETER + "=UTF-8").get();
         // Test if that user exists (it should not)
-        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, response.getStatus());
+        assertEquals(HttpURLConnection.HTTP_NOT_FOUND, response.getStatus());
     }
 
 }

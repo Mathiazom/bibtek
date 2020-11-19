@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import bibtek.core.User;
 import bibtek.json.StorageHandler;
-import bibtek.ui.Toast.ToastState;
 import bibtek.ui.utils.ToastUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class LoginController extends SceneChangerController implements Initializable {
+
     @FXML
     Button logInButton;
 
@@ -40,15 +41,6 @@ public class LoginController extends SceneChangerController implements Initializ
 
         createNewUserLabel.setOnMouseClicked((agent) -> this.createNewUser());
         storageHandler = new StorageHandler();
-        try {
-            // Fetch server data
-            storageHandler.getUserMap();
-        } catch (IOException e) {
-            // If it fails, it is still fine, just notify the user
-            final Stage stage = (Stage) logInButton.getScene().getWindow();
-            ToastUtil.makeToast(stage, ToastState.INFO, "Was not able to retrieve server data");
-
-        }
 
     }
 
@@ -62,26 +54,20 @@ public class LoginController extends SceneChangerController implements Initializ
         final Stage stage = (Stage) logInButton.getScene().getWindow();
 
         final String username = userNameInput.getText();
-        if (!storageHandler.hasUser(username)) {
+        final User user = storageHandler.getUser(username);
+
+        if (user == null) {
             ToastUtil.makeToast(stage, Toast.ToastState.INFO, "No user with given username");
             return;
         }
 
-        try {
-            update(storageHandler.getUser(username));
-        } catch (IOException e1) {
-            ToastUtil.makeToast(stage, Toast.ToastState.ERROR,
-                    "There was an error updating your library, try again later.");
-            e1.printStackTrace();
-            return;
-        }
+        update(user);
 
         try {
             this.changeSceneAndUpdateUser(stage, "/bibtek/ui/fxml/Library.fxml");
         } catch (IOException e) {
             ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error when showing your library");
             e.printStackTrace();
-            return;
         }
     }
 

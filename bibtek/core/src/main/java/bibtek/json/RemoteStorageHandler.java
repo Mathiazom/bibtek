@@ -1,7 +1,6 @@
 package bibtek.json;
 
 import bibtek.core.User;
-import bibtek.core.UserMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -10,156 +9,130 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
 import javax.ws.rs.core.MediaType;
-
-import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
 
-public final class RemoteStorageHandler implements UserMapHandler {
+import static bibtek.json.UserMapHandler.Status.ERROR;
+import static bibtek.json.UserMapHandler.Status.NOT_FOUND;
+import static bibtek.json.UserMapHandler.Status.OK;
 
-    private URI endPointBaseUri;
+public final class RemoteStorageHandler implements UserMapHandler<UserMapHandler.Status> {
 
+    /**
+     * Base path to reach remote server.
+     */
+    private static final String REMOTE_BASE_PATH = "http://localhost:8080/bibtek/users/";
+    private URI remoteBaseURI;
+
+    /**
+     * JSON serializer/deserializer.
+     */
     private final Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
             .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer()).setPrettyPrinting().create();
 
-    private UserMap userMap;
+    /**
+     * Convert http status code to {@link UserMapHandler.Status}.
+     *
+     * @param statusCode to convert
+     * @return status
+     */
+    static Status statusFromHttp(final int statusCode) {
 
-    private LocalStorageHandler localStorageHandler;
-
-    RemoteStorageHandler() throws URISyntaxException, IOException {
-
-        endPointBaseUri = new URI("http://localhost:8080/bibtek/users/");
-        // A LocalStorageHandler with its base in the parents target/remoteUsers folder.
-        localStorageHandler = new LocalStorageHandler("../target/remoteUsers");
-
-    }
-
-    @Override
-    public UserMap getUserMap() {
-
-        if (userMap == null) {
-
-            final Client client = Client.create();
-
-            final WebResource webResource = client.resource(endPointBaseUri);
-
-            final ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-
-            final String responseString = response.getEntity(String.class);
-
-            this.userMap = gson.fromJson(responseString, new TypeToken<UserMap>() {
-            }.getType());
-
-        }
-        try {
-            // Retrieves the userMap from server and puts it in the serverStorage.
-            localStorageHandler.putUserMap(userMap);
-        } catch (IOException e) {
-            // It is fine if this method does not work.
-            e.printStackTrace();
+        switch (statusCode) {
+            case HttpURLConnection.HTTP_NO_CONTENT:
+            case HttpURLConnection.HTTP_OK:
+                return OK;
+            case HttpURLConnection.HTTP_NOT_FOUND:
+                return NOT_FOUND;
+            default:
+                return ERROR;
         }
 
-        return userMap;
-
     }
 
-    @Override
-    public boolean hasUser(final String username) {
-        return getUserMap().hasUser(username);
+    /**
+     * Parse remote server base path.
+     *
+     * @throws URISyntaxException if path is invalid
+     */
+    RemoteStorageHandler() throws URISyntaxException {
+        remoteBaseURI = new URI(REMOTE_BASE_PATH);
     }
 
-    @Override
-    public Collection<String> getUsernames() {
-        final Collection<String> usernames = new ArrayList<>();
-        getUserMap().forEach(user -> usernames.add(user.getUserName()));
-        return usernames;
-    }
-
+    /**
+     * Construct path for requests related to user with given username.
+     *
+     * @param username of user
+     * @return remote server URI
+     */
     private URI uriForUser(final String username) {
-
-        return endPointBaseUri.resolve(URLEncoder.encode(username, StandardCharsets.UTF_8));
-
+        return remoteBaseURI.resolve(URLEncoder.encode(username, StandardCharsets.UTF_8));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public User getUser(final String username) {
 
-        User user = getUserMap().getUser(username);
+        final Client client = Client.create();
+        final WebResource webResource = client.resource(uriForUser(username));
+        final ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
 
-        if (user == null) {
+        if (response.getClientResponseStatus() == ClientResponse.Status.OK) {
 
-            final Client client = Client.create();
-
-            final WebResource webResource = client.resource(uriForUser(username));
-
-            final ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-
-            if (response.getClientResponseStatus() == ClientResponse.Status.OK) {
-
-                final String responseString = response.getEntity(String.class);
-
-                user = gson.fromJson(responseString, new TypeToken<User>() {
-                }.getType());
-
-                getUserMap().putUser(user);
-
-            }
+            final String responseString = response.getEntity(String.class);
+            return gson.fromJson(responseString, new TypeToken<User>() {
+            }.getType());
 
         }
 
-        return user;
+        return null;
+
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void putUser(final User user) throws IOException {
+    public Status putUser(final User user) {
 
         final Client client = Client.create();
-
         final WebResource webResource = client.resource(uriForUser(user.getUserName()));
-
         final String input = gson.toJson(user);
 
         final ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).put(ClientResponse.class, input);
 
-        final String responseString = response.getEntity(String.class);
+        System.out.println("Putted user with response " + response.getStatus() + " (" + statusFromHttp(response.getStatus()) + ")");
 
-        final Boolean added = gson.fromJson(responseString, Boolean.class);
-        if (added != null) {
-
-            getUserMap().putUser(user);
-
-        }
-        localStorageHandler.putUser(user);
+        return statusFromHttp(response.getStatus());
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void removeUser(final String username) throws IOException {
+    public Status removeUser(final String username) {
 
         final Client client = Client.create();
-
         final WebResource webResource = client.resource(uriForUser(username));
-
         final ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).delete(ClientResponse.class);
 
-        final String responseString = response.getEntity(String.class);
-
-        final Boolean removed = gson.fromJson(responseString, Boolean.class);
-        if (removed != null) {
-            getUserMap().removeUser(getUserMap().getUser(username));
-        }
-        localStorageHandler.removeUser(username);
+        return statusFromHttp(response.getStatus());
 
     }
 
+    /**
+     * @see #putUser(User).
+     */
     @Override
-    public void notifyUserChanged(final User user) throws IOException {
-        putUser(user);
+    public Status notifyUserChanged(final User user) {
+        return putUser(user);
     }
 
 }

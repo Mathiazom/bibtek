@@ -34,6 +34,9 @@ public final class EditBookController extends BaseBookController {
     @FXML
     public void handleConfirmEditBook() {
 
+        // Copy current entry before making changes
+        final BookEntry oldBookEntry = new BookEntry(bookEntry);
+
         final Book newBook = new Book(bookTitleInput.getText(), bookAuthorInput.getText(),
                 Integer.parseInt(bookYearPublishedInput.getText()), bookImagePathInput.getText());
 
@@ -42,13 +45,16 @@ public final class EditBookController extends BaseBookController {
         bookEntry.setReadingState(bookReadingStateCombo.getValue());
 
         final StorageHandler storageHandler = new StorageHandler();
-        try {
-            storageHandler.putUser(getUser());
-        } catch (IOException e) {
+        if (storageHandler.notifyUserChanged(getUser()) != StorageHandler.Status.LOCAL_OK) {
+
+            // Undo changes
+            bookEntry.setBook(oldBookEntry.getBook());
+            bookEntry.setDateAcquired(oldBookEntry.getDateAcquired());
+            bookEntry.setReadingState(oldBookEntry.getReadingState());
+
             final Stage stage = (Stage) bookAuthorInput.getScene().getWindow();
             ToastUtil.makeToast(stage, Toast.ToastState.ERROR,
-                    "There was an error updating your library, try again later.");
-            e.printStackTrace();
+                    "There was an error updating book, try again later.");
             return;
         }
 
@@ -81,15 +87,15 @@ public final class EditBookController extends BaseBookController {
             return;
         }
 
-        User user = getUser();
+        final User user = getUser();
         user.getLibrary().removeBookEntry(bookEntry);
-        StorageHandler storageHandler = new StorageHandler();
-        try {
-            storageHandler.putUser(getUser());
-        } catch (IOException e) {
+
+        final StorageHandler storageHandler = new StorageHandler();
+        if (storageHandler.notifyUserChanged(user) != StorageHandler.Status.LOCAL_OK) {
+            user.getLibrary().addBookEntry(bookEntry);
             final Stage stage = (Stage) bookDatePicker.getScene().getWindow();
-            ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error deleting the book, try again later.");
-            e.printStackTrace();
+            ToastUtil.makeToast(stage, Toast.ToastState.ERROR,
+                    "There was an error deleting book, try again later.");
             return;
         }
 
@@ -110,7 +116,6 @@ public final class EditBookController extends BaseBookController {
         } catch (IOException e) {
             ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error when showing book page");
             e.printStackTrace();
-            return;
         }
 
     }
@@ -149,7 +154,6 @@ public final class EditBookController extends BaseBookController {
         } catch (IOException e) {
             ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error when showing your library");
             e.printStackTrace();
-            return;
         }
 
     }

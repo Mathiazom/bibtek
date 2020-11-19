@@ -1,106 +1,183 @@
 package bibtek.json;
 
 import bibtek.core.User;
-import bibtek.core.UserMap;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Collection;
 
 /**
  * Class responsible for reading and writing user to locally stored json files.
  */
-public final class StorageHandler implements UserMapHandler {
+public final class StorageHandler implements UserMapHandler<StorageHandler.Status> {
 
+    /**
+     * Response status of handled request.
+     */
+    public enum Status {
+
+        /**
+         * Local storage request was handled without problems.
+         */
+        LOCAL_OK,
+
+        /**
+         * Local storage did not find request-related resource.
+         */
+        LOCAL_NOT_FOUND,
+
+        /**
+         * An error occurred while processing local storage request.
+         */
+        LOCAL_ERROR,
+
+        /**
+         * Remote storage request was handled without problems.
+         */
+        REMOTE_OK,
+
+        /**
+         * Remote storage did not find request-related resource.
+         */
+        REMOTE_NOT_FOUND,
+
+        /**
+         * An error occurred while processing remote storage request.
+         */
+        REMOTE_ERROR;
+
+        /**
+         * Convert general {@link UserMapHandler.Status} to local-specific {@link Status}.
+         *
+         * @param status to convert
+         * @return status
+         */
+        static Status ofLocal(final UserMapHandler.Status status) {
+            switch (status) {
+                case OK:
+                    return LOCAL_OK;
+                case NOT_FOUND:
+                    return LOCAL_NOT_FOUND;
+                default:
+                    return LOCAL_ERROR;
+            }
+        }
+
+        /**
+         * Convert general {@link UserMapHandler.Status} to remote-specific {@link Status}.
+         *
+         * @param status to convert
+         * @return status
+         */
+        static Status ofRemote(final UserMapHandler.Status status) {
+            switch (status) {
+                case OK:
+                    return REMOTE_OK;
+                case NOT_FOUND:
+                    return REMOTE_NOT_FOUND;
+                default:
+                    return REMOTE_ERROR;
+            }
+        }
+
+    }
+
+    /**
+     * Handler for locally stored data.
+     */
     private LocalStorageHandler localStorageHandler;
+
+    /**
+     * Handler for remotely stored data (i.e. on server).
+     */
     private RemoteStorageHandler remoteStorageHandler;
 
     /**
-     * Init with appropriate user map handler.
+     * Initialize with appropriate user map handler(s).
      */
     public StorageHandler() {
 
         try {
-            localStorageHandler = new LocalStorageHandler();
             remoteStorageHandler = new RemoteStorageHandler();
         } catch (URISyntaxException e) {
             e.printStackTrace();
+        }
+
+        try {
+            localStorageHandler = new LocalStorageHandler();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
     }
 
+    /**
+     * Get user from server, or from local storage if server is not available.
+     * If server is available, the retrieved data will overwrite local storage.
+     *
+     * @param username the User's username
+     * @return user
+     */
     @Override
-    public boolean hasUser(final String username) {
+    public User getUser(final String username) {
         try {
-            return remoteStorageHandler.hasUser(username);
-        } catch (Exception e) {
-            return localStorageHandler.hasUser(username);
-        }
-    }
-
-    @Override
-    public Collection<String> getUsernames() throws IOException {
-        try {
-            return remoteStorageHandler.getUsernames();
-        } catch (Exception e) {
-            return localStorageHandler.getUsernames();
-        }
-    }
-
-    @Override
-    public UserMap getUserMap() throws IOException {
-        try {
-
-            // Save remote usermap to local storage
-            UserMap remoteUserMap = remoteStorageHandler.getUserMap();
-            localStorageHandler.putUserMap(remoteUserMap);
-            return remoteUserMap;
-        } catch (Exception e) {
-            return localStorageHandler.getUserMap();
-        }
-    }
-
-    @Override
-    public User getUser(final String username) throws IOException {
-        try {
-
-            // Save remote user to local storage
-            User remoteUser = remoteStorageHandler.getUser(username);
-            localStorageHandler.putUser(remoteUser);
-            return remoteUser;
+            final User remoteUser = remoteStorageHandler.getUser(username);
+            if (remoteUser != null) {
+                // Save remote user to local storage
+                localStorageHandler.putUser(remoteUser);
+                return remoteUser;
+            }
+            return null;
         } catch (Exception e) {
             return localStorageHandler.getUser(username);
         }
     }
 
+    /**
+     * Store user on server (if available) and locally.
+     *
+     * @param user the User
+     * @return status
+     */
     @Override
-    public void putUser(final User user) throws IOException {
+    public Status putUser(final User user) {
         try {
-            remoteStorageHandler.putUser(user);
-            localStorageHandler.putUser(user);
-        } catch (IOException e) {
-            throw new IOException(e);
+            final Status remoteStatus = Status.ofRemote(remoteStorageHandler.putUser(user));
+            if (remoteStatus != Status.REMOTE_OK) {
+                return remoteStatus;
+            }
         } catch (Exception e) {
-            localStorageHandler.putUser(user);
+            e.printStackTrace();
         }
+
+        return Status.ofLocal(localStorageHandler.putUser(user));
     }
 
+    /**
+     * @see #putUser(User)
+     */
     @Override
-    public void removeUser(final String username) throws IOException {
-        try {
-            remoteStorageHandler.removeUser(username);
-            localStorageHandler.removeUser(username);
-        } catch (IOException e) {
-            throw new IOException(e);
-        } catch (Exception e) {
-            localStorageHandler.removeUser(username);
-        }
+    public Status notifyUserChanged(final User user) {
+        return this.putUser(user);
     }
 
+    /**
+     * Delete user from server (if available) and locally.
+     *
+     * @param username of user to be deleted
+     * @return status
+     */
     @Override
-    public void notifyUserChanged(final User user) throws IOException {
-        this.putUser(user);
+    public Status removeUser(final String username) {
+        try {
+            final Status remoteStatus = Status.ofRemote(remoteStorageHandler.removeUser(username));
+            if (remoteStatus == Status.REMOTE_NOT_FOUND) {
+                return remoteStatus;
+            }
+        } catch (Exception ignored) {
+            // Catch exception for server not running
+        }
+
+        return Status.ofLocal(localStorageHandler.removeUser(username));
     }
+
 }

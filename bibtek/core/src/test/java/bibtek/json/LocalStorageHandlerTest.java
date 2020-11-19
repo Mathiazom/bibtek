@@ -1,10 +1,5 @@
 package bibtek.json;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,8 +8,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashSet;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -30,39 +23,37 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class LocalStorageHandlerTest {
-    /**
-     * Set the storage handler.
-     */
+
     private LocalStorageHandler localStorageHandler;
     private File tempDirectory;
-    private Library lib;
     private User user;
     private User user2;
-    private UserMap userMap;
 
     /**
-     * Creates dir if it is not created.
+     * Creates a target directory if it is not created.
      *
-     * @throws IOException
+     * @throws IOException if creation fails
      */
     @BeforeAll
-    public static void makeTestDir() throws IOException {
-        File testDir = new File(Paths.get("target").toAbsolutePath().toFile(), "test");
+    public static void makeTestTargetDir() throws IOException {
+        final File testDir = new File(Paths.get("target").toAbsolutePath().toFile(), "test");
         if (!testDir.exists()) {
             if (!testDir.mkdirs()) {
-                throw new IOException("Unable to create files");
+                throw new IOException("Unable to create directory");
             }
         }
     }
 
     /**
-     * Initilize he storage hanlder with a temporary file.
+     * Initialize StorageHandler with a temporary file.
      *
-     * @throws IOException
+     * @throws IOException if directory could not be created
      */
     @BeforeEach
-    public void intitilizeStorageHandler() throws IOException {
+    public void initializeLocalStorageHandler() throws IOException {
 
         try {
             tempDirectory = Files.createTempDirectory(Paths.get("target/test"), "testDirectory").toFile();
@@ -72,12 +63,13 @@ public class LocalStorageHandlerTest {
             e.printStackTrace();
             throw new IOException(e);
         }
-        lib = new Library();
+
+        final Library lib = new Library();
         lib.addBookEntry(TestConstants.BOOK_ENTRY1);
         lib.addBookEntry(TestConstants.BOOK_ENTRY2);
         user = new User("Name", TestConstants.AGE20, lib);
         user2 = new User("AnotherName", TestConstants.AGE21, lib);
-        userMap = new UserMap();
+
     }
 
     /**
@@ -85,27 +77,21 @@ public class LocalStorageHandlerTest {
      */
     @Test
     public void putUserTest() {
-        // Test if the putUser stores the user as exptected
-        try {
-            localStorageHandler.putUser(user);
-        } catch (IOException e1) {
-            e1.printStackTrace();
-            fail("IOExcption thrown");
-            return;
-        }
+        // Test if the putUser stores the user as expected
+        assertEquals(localStorageHandler.putUser(user), LocalStorageHandler.Status.OK, "Failed to put user");
         try (BufferedReader reader = new BufferedReader(
                 new FileReader(new File(this.tempDirectory, user.getUserName() + ".json")))) {
             final Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
                     .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer()).setPrettyPrinting().create();
             User actualUser = gson.fromJson(reader, new TypeToken<User>() {
             }.getType());
-            assertEquals(user, actualUser, "The LocalStorageHandlers putUser method did not store user correctly");
+            assertEquals(user, actualUser, "The LocalStorageHandlers putUser method did not store user correctly despite STATUS_OK");
         } catch (FileNotFoundException e) {
-            fail("Could not find file");
+            fail("Could not find file despite STATUS_OK");
 
         } catch (IOException e) {
             e.printStackTrace();
-            fail("IOxception thrown");
+            fail("IOxception thrown despite STATUS_OK");
         }
 
     }
@@ -135,29 +121,29 @@ public class LocalStorageHandlerTest {
      * Test the getUserMap method.
      */
     @Test
-    public void getUserMapTest() throws IOException {
-        // Test if it returns an empty UserMap when the file is empty
-        UserMap actual1;
-        try {
-            actual1 = localStorageHandler.getUserMap();
-        } catch (IOException e) {
-            e.printStackTrace();
-            fail("IOException thrown");
-            return;
-        }
-        UserMap expected1 = new UserMap();
-        assertEquals(expected1, actual1, "getUserMap() did not return an empty userMap when the file is empty");
-
-        // Test if it returns expected UserMap
-        UserMap expected2 = new UserMap();
-        expected2.putUser(user);
-        expected2.putUser(user2);
+    public void getUserMapTest() {
 
         localStorageHandler.putUser(user);
         localStorageHandler.putUser(user2);
-        UserMap actual2 = localStorageHandler.getUserMap();
+        final UserMap actual = localStorageHandler.getUserMap();
 
-        assertEquals(expected2, actual2, "getUserMap() did not return expected UserMap");
+        final UserMap expected = new UserMap();
+        expected.putUser(user);
+        expected.putUser(user2);
+
+        assertEquals(expected, actual, "getUserMap() did not return expected UserMap");
+
+    }
+
+    /**
+     * Test that LocalStorageHandler returns empty user map if no puts have been performed.
+     */
+    @Test
+    public void getEmptyUserMapTest(){
+
+        final UserMap actual = localStorageHandler.getUserMap();
+        final UserMap expected = new UserMap();
+        assertEquals(expected, actual, "getUserMap() should have returned an empty user map");
 
     }
 
@@ -165,67 +151,31 @@ public class LocalStorageHandlerTest {
      * Test the putUserMap method.
      */
     @Test
-    public void putUserMapTest() throws IOException {
-        // Test that it puts expected userMap
+    public void putUserMapTest() {
+
+        final UserMap userMap = new UserMap();
         userMap.putUser(user);
         userMap.putUser(user2);
 
         localStorageHandler.putUserMap(userMap);
         UserMap actualUserMap = localStorageHandler.getUserMap();
-        assertEquals(userMap, actualUserMap, "The user map was not stored correcly with putUserMap()");
+        assertEquals(userMap, actualUserMap, "The user map was not stored correctly with putUserMap()");
 
-        // Test that if you put an empy UserMap, the file becomes empty
-        UserMap empty = new UserMap();
+
+
+    }
+
+    /**
+     * Test that if you put an empty UserMap, the file becomes empty
+     */
+    @Test
+    public void putEmptyUserMapTest(){
+
+        final UserMap empty = new UserMap();
         localStorageHandler.putUserMap(empty);
-        UserMap actualUserMap2 = localStorageHandler.getUserMap();
-        assertEquals(empty, actualUserMap2,
-                "The user map should be emtied in the file after putting an empty user map there");
-
-    }
-
-    /**
-     * Test if the hasUser() method works as expeted.
-     *
-     * @throws IOException
-     */
-    @Test
-    public void hasUserTest() throws IOException {
-        // Test if it returns false on an empty file
-        boolean actual = localStorageHandler.hasUser("anything");
-        assertFalse(actual, "Should return false when the hasUser() is called on an empty file");
-
-        // Test if the hasUser() returns false on a nonEmpty file
-
-        localStorageHandler.putUser(user);
-
-        boolean actual2 = localStorageHandler.hasUser(user2.getUserName());
-        assertFalse(actual2, "Should return false when hasUser() us called on a username not in the file");
-
-        // Test if it returns true on the user that is in the file
-        localStorageHandler.putUser(user2);
-        boolean actual3 = localStorageHandler.hasUser(user.getUserName());
-        assertTrue(actual3, "Should return true when hasUser() is called on a username in the file");
-
-    }
-
-    /**
-     * Test if the getUsernames() method works as expected.
-     */
-    @Test
-    public void getUsernamesTest() throws IOException {
-        // Test if it returns an empty Collection when the method is called an an empty
-        // file
-        boolean actual1 = localStorageHandler.getUsernames().isEmpty();
-        assertTrue(actual1, "Should return an empty Collection when the file is empty");
-
-        // Test if it returns the expected collection when the file is not empty
-        Collection<String> expected2 = new HashSet<String>();
-        expected2.add(user.getUserName());
-        expected2.add(user2.getUserName());
-        localStorageHandler.putUser(user);
-        localStorageHandler.putUser(user2);
-        Collection<String> actual2 = localStorageHandler.getUsernames();
-        assertEquals(expected2, actual2, "getUsernames() did not return expected collection of usernames");
+        UserMap actual = localStorageHandler.getUserMap();
+        assertEquals(empty, actual,
+                "File should be empty after putting an empty user map there");
 
     }
 
@@ -233,78 +183,72 @@ public class LocalStorageHandlerTest {
      * Test the getUser(username) method.
      */
     @Test
-    public void getUserTest() throws IOException {
-        // Test if it returns a null User if the username is not there
-        User actual1 = localStorageHandler.getUser(user.getUserName());
-        boolean shouldBeTrue = actual1 == null;
-        assertTrue(shouldBeTrue, "getUser(username) should return null when it does not have that username");
+    public void getUserTest() {
 
-        // Test if pusUser returns the expected user.
         localStorageHandler.putUser(user);
         localStorageHandler.putUser(user2);
-        User actual2 = localStorageHandler.getUser(user2.getUserName());
-        assertEquals(user2, actual2, "getUser did not return expected user");
+        final User actual = localStorageHandler.getUser(user2.getUserName());
+        assertEquals(user2, actual, "getUser did not return expected user");
 
     }
 
     /**
-     * Test the removeUser(username) method.
-     *
-     * @throws IOException
+     * Test if it returns a null User if the username is not there.
      */
     @Test
-    public void removeUserTest() throws IOException {
-        // Test if the removeUser() actaully removes the correct user
+    public void getNonExistentUserTest(){
+
+        localStorageHandler.putUser(user2);
+
+        final User actual = localStorageHandler.getUser(user.getUserName());
+        assertNull(actual, "getUser(username) should return null when it does not have that username");
+
+    }
+
+    /**
+     * Test if the removeUser() actually removes the correct user
+     */
+    @Test
+    public void removeUserTest() {
+
         localStorageHandler.putUser(user);
         localStorageHandler.putUser(user2);
         localStorageHandler.removeUser(user.getUserName());
-        userMap.putUser(user2);
-        UserMap actual2 = localStorageHandler.getUserMap();
-        assertEquals(userMap, actual2, "removeUser did not remove the user");
 
-        // Test if it does not remove a user when the username does not exist in file
-        try {
-            localStorageHandler.removeUser("Non Existent User");
-            fail("Should throw exception when removeUser() is called on a non existent username");
-        } catch (Exception e) {
-            // Succeeds
-        }
-        assertEquals(userMap, actual2,
-                "Something wrong happened when removeUser() was called on a non exixtent username");
+        final UserMap expected = new UserMap();
+        expected.putUser(user2);
+
+        final UserMap actual = localStorageHandler.getUserMap();
+        assertEquals(expected, actual, "removeUser did not remove the user");
+
+        assertEquals(LocalStorageHandler.Status.NOT_FOUND, localStorageHandler.removeUser("Non Existent User"), "Should return NOT_FOUND on non existent username");
+
+        assertEquals(expected, actual,
+                "User map changed after removeUser() on a non existent username");
     }
 
     /**
-     * Test notifyUserChanged() method.
-     */
-    @Test
-    public void notifyUserChangedTest() {
-        // This is just putUserTest.
-    }
-
-    /**
-     * Delete recursively function.
+     * Delete directory recursively.
      *
-     * @param directoryToBeDeleted
+     * @param directory to be deleted
      * @return true if it got deleted false otherwise.
      */
-    private boolean deleteDirectory(final File directoryToBeDeleted) {
-        File[] allContents = directoryToBeDeleted.listFiles();
+    private boolean deleteDirectory(final File directory) {
+        final File[] allContents = directory.listFiles();
         if (allContents != null) {
             for (File file : allContents) {
                 deleteDirectory(file);
             }
         }
-        return directoryToBeDeleted.delete();
+        return directory.delete();
     }
 
     /**
-     * Delete temp file after reach test.
-     *
-     * @throws IOException if faile to delete directory.
+     * Delete temp file after each test.
      */
     @AfterEach
-    public void deleteTempFile() throws IOException {
-        deleteDirectory(tempDirectory);
+    public void deleteTempFile() {
+        assertTrue(deleteDirectory(tempDirectory), "Failed to delete temp dir after test");
     }
 
 }

@@ -72,18 +72,25 @@ public final class ViewBookController extends SceneChangerController {
 
         bookReadingStateCombo.getSelectionModel().select(bookEntry.getReadingState());
 
-        bookReadingStateCombo.getSelectionModel().selectedItemProperty().addListener((o, a, newState) -> {
+        bookReadingStateCombo.getSelectionModel().selectedItemProperty().addListener((o, oldState, newState) -> {
+
+            // Ignore selection of current value
+            if (newState == bookEntry.getReadingState()) {
+                return;
+            }
 
             bookEntry.setReadingState(newState);
 
             final StorageHandler storageHandler = new StorageHandler();
-            try {
-                storageHandler.putUser(getUser());
-            } catch (IOException e) {
-                final Stage stage1 = (Stage) bookReadingStateCombo.getScene().getWindow();
-                ToastUtil.makeToast(stage1, Toast.ToastState.ERROR,
-                        "There was an error updating the reading status, try again later.");
-                e.printStackTrace();
+            if (storageHandler.putUser(user) != StorageHandler.Status.LOCAL_OK) {
+
+                // Undo changes
+                bookEntry.setReadingState(oldState);
+                bookReadingStateCombo.setValue(oldState);
+
+                final Stage stage = (Stage) bookReadingStateCombo.getScene().getWindow();
+                ToastUtil.makeToast(stage, Toast.ToastState.ERROR,
+                        "There was an error updating the reading status");
                 return;
             }
 

@@ -1,67 +1,64 @@
 package bibtek.json;
 
 import bibtek.core.User;
-import bibtek.core.UserMap;
-
-import java.io.IOException;
-import java.util.Collection;
 
 /**
  * Standard for UserMap access.
+ *
+ * @param <T> status type
  */
-public interface UserMapHandler {
+public interface UserMapHandler<T> {
 
-    /**
-     * Checks if there (already) exists a User with the provided username.
-     *
-     * @param username the (new) username
-     * @return true if there exists a User with the provided username, false
-     *         otherwise
-     */
-    boolean hasUser(String username);
+    enum Status {
 
-    /**
-     * Gets the usernames of the Users in UserMap.
-     *
-     * @return the usernames of the Users in UserMap.
-     */
-    Collection<String> getUsernames() throws IOException;
+        /**
+         * Storage request was handled without problems.
+         */
+        OK,
 
-    /**
-     * Gets all the Users currently stored.
-     *
-     * @return the UserMap with stored Users
-     */
-    UserMap getUserMap() throws IOException;
+        /**
+         * Storage did not find request-related resource.
+         */
+        NOT_FOUND,
+
+        /**
+         * An error occurred while processing storage request.
+         */
+        ERROR
+
+    }
 
     /**
      * Gets the User with the given username.
      *
      * @param username the User's username
-     * @return the User with the given username
+     * @return the User with the given username, or null if the user does not exist
      */
-    User getUser(String username) throws IOException;
+    User getUser(String username);
 
     /**
-     * Adds a User to the UserMap.
+     * Adds/updates a User to the UserMap.
      *
      * @param user the User
+     * @return response status code
      */
-    void putUser(User user) throws IOException;
-
-    /**
-     * Removes the User with the given username from the UserMap.
-     *
-     * @param username the username of the User to remove
-     */
-    void removeUser(String username) throws IOException;
+    T putUser(User user);
 
     /**
      * Notifies that the User has changed, e.g. Library entries have been edited,
      * added or removed.
      *
      * @param user the User that has changed
+     * @return response status code
      */
-    void notifyUserChanged(User user) throws IOException;
+    T notifyUserChanged(User user);
+
+    /**
+     * Removes the User with the given username from the UserMap.
+     *
+     * @param username the username of the User to remove
+     * @return response status code
+     */
+    T removeUser(String username);
 
 }

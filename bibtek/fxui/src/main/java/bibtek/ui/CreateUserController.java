@@ -110,12 +110,12 @@ public class CreateUserController extends SceneChangerController implements Init
             return;
         }
 
-        try {
-            final User user = new User(username, age);
-            new StorageHandler().putUser(user);
-        } catch (Exception e) {
-            ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "Failed to create user");
-            e.printStackTrace();
+        final User user = new User(username, age);
+        final StorageHandler storageHandler = new StorageHandler();
+        if (storageHandler.putUser(user) != StorageHandler.Status.LOCAL_OK) {
+            ToastUtil.makeToast(stage, Toast.ToastState.ERROR,
+                    "There was an error storing new user");
+            return;
         }
 
         try {

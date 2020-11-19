@@ -37,7 +37,7 @@ public final class AddBookController extends BaseBookController {
                     bookDatePicker.getValue(), bookReadingStateCombo.getValue());
         } catch (Exception e) {
             Stage stage = (Stage) addBookISBNInput.getScene().getWindow();
-            ToastUtil.makeToast(stage, ToastState.INCORRECT, "You must fill out all fields except \'Cover image\'");
+            ToastUtil.makeToast(stage, ToastState.INCORRECT, "You must fill out all fields except \'cover image\'");
             return;
         }
 
@@ -46,14 +46,12 @@ public final class AddBookController extends BaseBookController {
         user.getLibrary().addBookEntry(bookEntry);
 
         final StorageHandler storageHandler = new StorageHandler();
-        try {
-            storageHandler.notifyUserChanged(user);
-        } catch (IOException e) {
+        if (storageHandler.notifyUserChanged(user) != StorageHandler.Status.LOCAL_OK) {
+            user.getLibrary().removeBookEntry(bookEntry);
             final Stage stage = (Stage) addBookISBNContainer.getScene().getWindow();
             ToastUtil.makeToast(stage, Toast.ToastState.ERROR,
                     "There was an error updating your library, try again later.");
             return;
-
         }
 
         handleShowLibrary();
@@ -96,7 +94,6 @@ public final class AddBookController extends BaseBookController {
         } catch (IOException e) {
             ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error when showing your library");
             e.printStackTrace();
-            return;
         }
 
     }

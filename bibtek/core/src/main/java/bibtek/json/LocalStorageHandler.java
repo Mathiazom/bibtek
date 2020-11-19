@@ -9,7 +9,6 @@ import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,22 +17,26 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashSet;
 
 /**
  * Class responsible for reading and writing users to stored json files.
+ * File names are of the form '{username}.json'
+ * example:
+ * - dante.json
+ * - heinrich.json
+ * - sigmund.json
  */
-public final class LocalStorageHandler implements UserMapHandler {
+public final class LocalStorageHandler implements UserMapHandler<UserMapHandler.Status> {
 
     /**
      * The path of bibtek.
      */
     private static final File TARGET_PATH = Paths.get("target").toAbsolutePath().toFile();
+
     /**
      * The path where the users file should be stored by default.
      */
-    private static final String DEFAULT_STORAGE_DIRECTRY = new File(TARGET_PATH, "users").toString();
+    private static final String DEFAULT_STORAGE_DIRECTORY = new File(TARGET_PATH, "users").toString();
 
     /**
      * The file path where the json data will be stored.
@@ -55,20 +58,21 @@ public final class LocalStorageHandler implements UserMapHandler {
     /**
      * Default constructor of storageHandler, creating a storageHandler with the
      * default storage directory.
-     *
-     * @throws IOException
      */
     public LocalStorageHandler() throws IOException {
-        this(LocalStorageHandler.DEFAULT_STORAGE_DIRECTRY);
+        this(DEFAULT_STORAGE_DIRECTORY);
     }
 
     /**
-     * Change the location at which the library entries should be stored. Attempts
-     * to create a new file at this location.
+     * Change the location at which the users should be stored.
+     * Attempts to create a new directory if does not exist.
      *
      * @param directory new storage directory
+     * @throws IOException if path is not a directory,
+     *                     or directory does not exist and cannot be created.
      */
     public void setStorageDirectory(final String directory) throws IOException {
+
         this.storageDirectory = new File(directory);
         if (this.storageDirectory.isFile()) {
             throw new IOException("Not a directory");
@@ -82,33 +86,38 @@ public final class LocalStorageHandler implements UserMapHandler {
     }
 
     /**
-     * Method that finds all users in the given directory and returns a UserMap with
-     * them.
+     * Get File of user with given username.
      *
-     * @return A UserMap with all users in directory
+     * @param username of user
+     * @return user file
      */
-    // @Override
-    public UserMap getUserMap() throws IOException {
+    private File getUserFile(final String username) {
 
-        UserMap userMap = new UserMap();
+        return new File(this.storageDirectory, username + ".json");
+
+    }
+
+    /**
+     * Method that finds all users in the given directory and returns them in a UserMap.
+     *
+     * @return A UserMap with all users in directory, or null if failed.
+     */
+    public UserMap getUserMap() {
+
+        final UserMap userMap = new UserMap();
         // Setup directory and its files
-        File[] directoryListing = this.storageDirectory.listFiles();
+        final File[] directoryListing = this.storageDirectory.listFiles();
         if (directoryListing == null) {
-            throw new IOException("No such directory");
+            return null;
         }
 
-        // Loop through all files in directory
+        // Get all users in directory
         for (File file : directoryListing) {
-            try (Reader reader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
 
-                User user = gson.fromJson(reader, new TypeToken<User>() {
-                }.getType());
+            final User user = readUserFromFile(file);
 
-                userMap.putUser(user);
+            userMap.putUser(user);
 
-            } catch (IOException e) {
-                throw new IOException(e);
-            }
         }
 
         return userMap;
@@ -116,84 +125,93 @@ public final class LocalStorageHandler implements UserMapHandler {
     }
 
     /**
-     * Saves a usermap to local storage.
+     * Stores a usermap to local storage.
      *
-     * @param userMap holding all users
+     * @param userMap to store
      */
-    public void putUserMap(final UserMap userMap) throws IOException {
-        for (User user : userMap) {
-            File file = new File(this.storageDirectory, user.getUserName() + ".json");
-            try (Writer writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
-
-                gson.toJson(user, writer);
-
-            } catch (IOException e) {
-                throw new IOException(e);
-            }
-
+    public void putUserMap(final UserMap userMap) {
+        for (final User user : userMap) {
+            putUser(user);
         }
     }
 
-    @Override
-    public boolean hasUser(final String username) {
-        try {
-            return getUserMap().hasUser(username);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+    /**
+     * Read user from file.
+     *
+     * @param file to read
+     * @return user instance, or null if fails.
+     */
+    private User readUserFromFile(final File file) {
 
-    @Override
-    public Collection<String> getUsernames() throws IOException {
-        final Collection<String> usernames = new HashSet<String>();
-        getUserMap().forEach(user -> usernames.add(user.getUserName()));
-        return usernames;
-    }
-
-    @Override
-    public User getUser(final String username) throws IOException {
-        File file = new File(this.storageDirectory, username + ".json");
         try (Reader reader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             return gson.fromJson(reader, new TypeToken<User>() {
             }.getType());
-
-        } catch (FileNotFoundException e) {
-            return null;
         } catch (IOException e) {
-            throw new IOException(e);
+            return null;
         }
 
     }
 
+    /**
+     * Retrieve user with given username from files.
+     *
+     * @param username the User's username
+     * @return user
+     */
     @Override
-    public void putUser(final User user) throws IOException {
-        File file = new File(this.storageDirectory, user.getUserName() + ".json");
+    public User getUser(final String username) {
+
+        return readUserFromFile(getUserFile(username));
+
+    }
+
+    /**
+     * Store user to file '{username}.json'.
+     *
+     * @param user the User
+     * @return status
+     */
+    @Override
+    public Status putUser(final User user) {
+
+        final File file = getUserFile(user.getUserName());
         try (Writer writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
 
             gson.toJson(user, writer);
 
         } catch (IOException e) {
-            throw new IOException(e);
+            e.printStackTrace();
+            return Status.ERROR;
         }
+        return Status.OK;
 
     }
 
+    /**
+     * Delete file related to user of given username.
+     *
+     * @param username of the User to remove
+     * @return response status
+     */
     @Override
-    public void removeUser(final String username) throws IOException {
-        File userFile = new File(this.storageDirectory, username + ".json");
+    public Status removeUser(final String username) {
 
-        if (!userFile.delete()) {
-            throw new IOException("Unable to delete user");
+        final File userFile = getUserFile(username);
+
+        if (!userFile.exists()) {
+            return Status.NOT_FOUND;
         }
+
+        return userFile.delete() ? Status.OK : Status.ERROR;
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void notifyUserChanged(final User user) throws IOException {
-
-        putUser(user);
-
+    public Status notifyUserChanged(final User user) {
+        return putUser(user);
     }
 
 }
