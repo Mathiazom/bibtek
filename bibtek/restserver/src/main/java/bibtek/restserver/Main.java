@@ -17,11 +17,9 @@ public final class Main {
      */
     public static final String BASE_URI = "http://localhost:8080/bibtek/";
 
-
-    // Private constructor to prevent instantiating of utility class
     private Main() {
+        // Private constructor to prevent instantiating of utility class
     }
-
 
     /**
      * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.

@@ -8,10 +8,17 @@ import bibtek.restapi.UserMapService;
 import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 
+import java.io.IOException;
+
 public final class BibtekConfig extends ResourceConfig {
+
+    private static final String SERVER_PERSISTENCE_DIRECTORY = "target/remoteUsers";
 
     /**
      * Setup server configs.
+     *
+     * Specify Gson as JSON serializer
+     * Connect to rest API and inject user map
      *
      * @param userMap map of Users to start server with
      */
@@ -26,21 +33,27 @@ public final class BibtekConfig extends ResourceConfig {
         });
     }
 
+    /**
+     * Retrieve user data persisted in file storage.
+     *
+     * @return userMap of persisted users
+     */
     private static UserMap getPreviouslyLoadedData() {
+
         UserMap loadedUserMap;
         try {
             // Try to retrieve previously loaded data if it exists.
-            LocalStorageHandler localStorageHandler = new LocalStorageHandler("target/remoteUsers");
+            final LocalStorageHandler localStorageHandler = new LocalStorageHandler(SERVER_PERSISTENCE_DIRECTORY);
             loadedUserMap = localStorageHandler.getUserMap();
-            if (loadedUserMap.equals(new UserMap())) {
+            if (loadedUserMap == null || !loadedUserMap.iterator().hasNext()) {
                 loadedUserMap = createDefaultUserMap();
             }
-
-        } catch (Exception e) {
+        } catch (IOException e) {
             // Otherwise use the default data
             loadedUserMap = createDefaultUserMap();
         }
         return loadedUserMap;
+
     }
 
     /**
@@ -48,11 +61,9 @@ public final class BibtekConfig extends ResourceConfig {
      */
     public BibtekConfig() {
         this(BibtekConfig.getPreviouslyLoadedData());
-
     }
 
     /**
-     *
      * Populate user map with dummy user and book entries.
      *
      * @return UserMap with dummy user
@@ -62,7 +73,6 @@ public final class BibtekConfig extends ResourceConfig {
         final User dummyUser = ServerUtil.DANTE_USER;
         userMap.putUser(dummyUser);
         return userMap;
-
     }
 
 }
