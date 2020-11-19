@@ -13,7 +13,7 @@ public final class App extends Application {
 
     primaryStage.setTitle("Bibtek");
     try {
-      primaryStage.getIcons().add(new Image("/bibtek/ui/images/icon.png"));
+      primaryStage.getIcons().add(new Image("/bibtek/ui/images/bibtek_round.png"));
     } catch (Exception e) {
       // Don't add this icon.
     }

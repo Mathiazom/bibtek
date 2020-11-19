@@ -36,7 +36,7 @@ public class SettingsController extends SceneChangerController {
     public void logOff() {
         final Stage stage = (Stage) logOffButton.getScene().getWindow();
         try {
-            this.changeSceneAndUpdateUser(stage, "/bibtek/ui/fxml/LoginPage.fxml");
+            this.changeScene(stage, "/bibtek/ui/fxml/Login.fxml");
         } catch (IOException e) {
             ToastUtil.makeToast(stage, Toast.ToastState.ERROR, "There was an error logging off");
             e.printStackTrace();

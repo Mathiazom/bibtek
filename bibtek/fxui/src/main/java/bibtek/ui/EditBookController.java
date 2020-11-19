@@ -14,6 +14,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public final class EditBookController extends BaseBookController {
@@ -53,9 +54,12 @@ public final class EditBookController extends BaseBookController {
     @FXML
     public void handleDeleteBook() {
 
-        Alert alert = new Alert(AlertType.INFORMATION);
+        final Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Confirm book deletion");
-        alert.setHeaderText("Are you sure you want to delete this book. This acton cannot be undone");
+        alert.setHeaderText("Are you sure you want to delete this book. This action cannot be undone");
+
+        final Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+        alertStage.getIcons().add(new Image("/bibtek/ui/images/bibtek_round.png"));
 
         final ButtonType deleteButtonType = new ButtonType("Delete", ButtonData.RIGHT);
 

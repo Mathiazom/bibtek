@@ -81,12 +81,17 @@ public class CreateUserController extends SceneChangerController implements Init
 
         final Stage stage = (Stage) createUserButton.getScene().getWindow();
 
-        final String username = userNameInput.getText();
-        final String usernameConfirmation = userNameConfirmInput.getText();
+        final String username = userNameInput.getText().strip();
+        final String usernameConfirmation = userNameConfirmInput.getText().strip();
         if (!username.equals(usernameConfirmation)) {
             ToastUtil.makeToast(stage, Toast.ToastState.INCORRECT, "Usernames don't match");
             return;
         }
+        if (username.isEmpty()) {
+            ToastUtil.makeToast(stage, Toast.ToastState.INCORRECT, "Username required");
+            return;
+        }
+
         final int age;
         try {
             age = Integer.parseInt(ageInput.getText());
