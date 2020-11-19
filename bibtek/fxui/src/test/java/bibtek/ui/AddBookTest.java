@@ -1,7 +1,6 @@
 package bibtek.ui;
 
 import bibtek.core.*;
-import bibtek.json.BooksAPIHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,25 +12,19 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.testfx.framework.junit5.ApplicationTest;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
+import static bibtek.ui.TestConstants.ROBOT_PAUSE_MS;
+import static bibtek.ui.TestConstants.WRITE_ROBOT_PAUSE_MILLIS;
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class AddBookTest extends ApplicationTest {
+public class AddBookTest extends WireMockApplicationTest {
 
-    /**
-     * Sleep time between each typed character
-     */
-    private static final int WRITE_ROBOT_PAUSE_MILLIS = 1;
-
-    /**
-     * Sleep time between operations to simulate user behaviour
-     */
-    private static final int ROBOT_PAUSE_MS = 300;
 
     private Parent parent;
     private AddBookController controller;
@@ -66,64 +59,9 @@ public class AddBookTest extends ApplicationTest {
         final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/fxml/AddBook.fxml"));
         this.parent = fxmlLoader.load();
         this.controller = fxmlLoader.getController();
-        controller.update(dummyUser()); // Dummy user
+        controller.update(TestConstants.userDante()); // Dummy user
         stage.setScene(new Scene(parent));
         stage.show();
-
-    }
-
-    // TODO: Replace with dummy from rebase
-    private static User dummyUser() {
-
-        final Library library = new Library();
-
-        final int danteBigBoyAge = 800;
-        final User dummyUser = new User("dante", danteBigBoyAge, library);
-
-        final int dummyBookYear = 1953;
-        final int dummyBookYear2 = 1948;
-
-        library.addBookEntry(
-                new BookEntry(
-                        new Book(
-                                "Fahrenheit 451",
-                                "Ray Bradbury",
-                                dummyBookYear,
-                                "https://s2982.pcdn.co/wp-content/uploads/2017/09/fahrenheit-451-flamingo-edition.jpg"
-                        ),
-                        LocalDate.now(),
-                        BookReadingState.READING
-                )
-        );
-        library.addBookEntry(
-                new BookEntry(
-                        new Book(
-                                "1984",
-                                "George Orwell",
-                                dummyBookYear2
-                        ),
-                        LocalDate.now(),
-                        BookReadingState.COMPLETED
-                )
-        );
-
-        library.addBookEntry(
-                new BookEntry(
-                        new BooksAPIHandler().fetchBook("9780241242643"),
-                        LocalDate.now(),
-                        BookReadingState.ABANDONED
-                )
-        );
-
-        library.addBookEntry(
-                new BookEntry(
-                        new BooksAPIHandler().fetchBook("9780765394866"),
-                        LocalDate.now(),
-                        BookReadingState.NOT_STARTED
-                )
-        );
-
-        return dummyUser;
 
     }
 
@@ -136,7 +74,6 @@ public class AddBookTest extends ApplicationTest {
 
         final TextField addBookTitleInput = (TextField) parent.lookup("#bookTitleInput");
         clickOn(addBookTitleInput).write("Finnegans Wake", WRITE_ROBOT_PAUSE_MILLIS);
-
         assertEquals("Finnegans Wake", addBookTitleInput.getText(), "Book Title should be \"Finnegans Wake\" ");
 
         final TextField addBookAuthorInput = (TextField) parent.lookup("#bookAuthorInput");
@@ -175,6 +112,38 @@ public class AddBookTest extends ApplicationTest {
                 .press(KeyCode.ENTER); // Select second element
         assertEquals(BookReadingState.READING, addBookReadingStateCombo.getValue(),
                 "BookReadingState should be READING");
+
+        // Mock request response
+        stubFor(put(urlEqualTo("/bibtek/users/dante"))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("true")
+                )
+        );
+
+        // Create book entry
+        clickOn("#confirmAddBookButton");
+
+
+        // Testing if it has created a correct library object with the given input
+        final BookEntry expectedEntry = new BookEntry(
+                new Book(
+                        "Finnegans Wake",
+                        "James Joyce",
+                        1939,
+                        "http://books.google.com/books/content?id=FNMS7qOqRwEC&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+                ),
+                LocalDate.of(2020, 9, 30),
+                BookReadingState.READING
+        );
+        final Set<BookEntry> expectedEntries = controller.getUser().getLibrary().getBookEntries();
+        expectedEntries.add(expectedEntry);
+        final Library library = controller.getUser().getLibrary();
+        final String expected = expectedEntries.stream().map(BookEntry::toString).reduce("", (a, b) -> a + b);
+        final String actual = library.getBookEntries().stream().map(BookEntry::toString).reduce("", (a, b) -> a + b);
+        assertEquals(expected, actual, "Expected book entries was not equal to the actual book entries");
 
     }
 

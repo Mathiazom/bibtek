@@ -1,5 +1,6 @@
 package bibtek.ui;
 
+import bibtek.core.UserMap;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -8,12 +9,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.testfx.framework.junit5.ApplicationTest;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CreateUserTest extends ApplicationTest {
+public class CreateUserTest extends WireMockApplicationTest {
 
     private Parent parent;
     private Stage stage;
@@ -64,6 +65,15 @@ public class CreateUserTest extends ApplicationTest {
     }
 
     @Test
+    public void usernameEmptyTest(){
+
+        clickOn("#createUserButton");
+
+        FxTestUtil.assertToast(Toast.ToastState.INCORRECT, "Username required", parent);
+
+    }
+
+    @Test
     public void badAgeTest() {
 
         ((TextField) parent.lookup("#userNameInput")).setText("heinrich");
@@ -92,17 +102,45 @@ public class CreateUserTest extends ApplicationTest {
 
     }
 
+    @Test
+    public void createUserTest(){
+
+        ((TextField) parent.lookup("#userNameInput")).setText("heinrich");
+        ((TextField) parent.lookup("#userNameConfirmInput")).setText("heinrich");
+        ((DigitsField) parent.lookup("#ageInput")).setText("17");
+        clickOn("#confirmCheckbox");
+
+        // Mock request response
+        stubFor(put(urlEqualTo("/bibtek/users/heinrich"))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("true")
+                )
+        );
+
+        clickOn("#createUserButton");
+
+    }
+
     /**
      * Make sure user can view terms page
      */
     @Test
-    public void showTermsTest() {
+    public void showAndCloseTermsTest() {
 
         clickOn("#termsLabel");
 
         final AnchorPane termsRoot = (AnchorPane) stage.getScene().getRoot().lookup("#termsRoot");
         assertNotNull(termsRoot);
         assertTrue(termsRoot.isVisible());
+
+        clickOn("#close");
+
+        final AnchorPane createUserRoot = (AnchorPane) stage.getScene().getRoot().lookup("#createUserRoot");
+        assertNotNull(createUserRoot);
+        assertTrue(createUserRoot.isVisible());
 
     }
 

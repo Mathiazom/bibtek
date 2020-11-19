@@ -1,6 +1,14 @@
 package bibtek.ui;
 
 import javafx.scene.Parent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+import org.testfx.api.FxRobot;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -47,6 +55,22 @@ public class FxTestUtil {
      */
     public static void assertToastStateEquals(final Toast.ToastState expectedState, final Parent parent) {
         assertEquals(expectedState, ((Toast) parent.lookup("Toast")).getState());
+    }
+
+
+    static Stage getTopModalStage(final FxRobot robot) {
+        // Get a list of windows but ordered from top[0] to bottom[n] ones.
+        // It is needed to get the first found modal window.
+        final List<Window> allWindows = new ArrayList<>(robot.listWindows());
+        System.out.println(allWindows);
+        Collections.reverse(allWindows);
+
+        return (Stage) allWindows
+                .stream()
+                .filter(window -> window instanceof Stage)
+                .filter(window -> ((Stage) window).getModality() == Modality.APPLICATION_MODAL)
+                .findFirst()
+                .orElse(null);
     }
 
 }

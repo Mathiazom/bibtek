@@ -17,10 +17,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Testing if the logic connected to this fxml scene works as expected.
  */
 
-public class LibraryTest extends ApplicationTest {
+public class SettingsTest extends ApplicationTest {
 
     private Parent parent;
-    private LibraryController controller;
     private Stage stage;
 
     /**
@@ -49,51 +48,36 @@ public class LibraryTest extends ApplicationTest {
     @Override
     public void start(final Stage stage) throws Exception {
         this.stage = stage;
-        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/fxml/Library.fxml"));
+        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/fxml/Settings.fxml"));
         parent = fxmlLoader.load();
-        this.controller = fxmlLoader.getController();
-        controller.update(TestConstants.userDante()); // Dummy user
+        final SettingsController settingsController = fxmlLoader.getController();
+        settingsController.update(TestConstants.userDante());
         stage.setScene(new Scene(parent));
         stage.show();
     }
 
     @Test
-    public void openSettingsTest(){
+    public void logOffTest(){
 
-        clickOn("#openSettingsButton");
+        clickOn("#logOffButton");
 
-        final AnchorPane settingsRoot = (AnchorPane) stage.getScene().getRoot().lookup("#settingsRoot");
-        assertNotNull(settingsRoot);
-        assertTrue(settingsRoot.isVisible());
-
-    }
-
-    /**
-     * Testing if the handleAddBook() method works correctly.
-     */
-    @Test
-    public void handleAddBookTest() {
-
-        clickOn("#addBookButton");
-
-        final AnchorPane addBookRoot = (AnchorPane) stage.getScene().getRoot().lookup("#addBookRoot");
-        assertNotNull(addBookRoot);
-        assertTrue(addBookRoot.isVisible());
+        final AnchorPane loginRoot = (AnchorPane) stage.getScene().getRoot().lookup("#loginRoot");
+        assertNotNull(loginRoot);
+        assertTrue(loginRoot.isVisible());
 
     }
 
     /**
-     * Make sure the user can view a book from the list
+     * Make sure user can change their mind and go back to their library without adding a book.
      */
     @Test
-    public void viewBookTest(){
+    public void backToLibraryTest(){
 
-        final ListView<BookItemView> libraryList = (ListView<BookItemView>) parent.lookup("#libraryList");
-        clickOn(libraryList.getItems().get(0));
+        clickOn("#exitSettingsButton");
 
-        final AnchorPane viewBookRoot = (AnchorPane) stage.getScene().getRoot().lookup("#viewBookRoot");
-        assertNotNull(viewBookRoot);
-        assertTrue(viewBookRoot.isVisible());
+        final AnchorPane libraryRoot = (AnchorPane) stage.getScene().getRoot().lookup("#libraryRoot");
+        assertNotNull(libraryRoot);
+        assertTrue(libraryRoot.isVisible());
 
     }
 

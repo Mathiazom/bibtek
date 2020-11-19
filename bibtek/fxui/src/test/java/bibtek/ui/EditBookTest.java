@@ -1,33 +1,32 @@
 package bibtek.ui;
 
 import bibtek.core.*;
-import bibtek.json.BooksAPIHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
-import java.time.LocalDate;
-
+import static bibtek.ui.TestConstants.ROBOT_PAUSE_MS;
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Testing if the logic connected to this fxml scene works as expected.
  */
 
-public class EditBookTest extends ApplicationTest {
+public class EditBookTest extends WireMockApplicationTest {
 
     private Parent parent;
     private EditBookController controller;
     private Stage stage;
 
+    private User user;
     private BookEntry bookEntry;
 
     /**
@@ -59,7 +58,7 @@ public class EditBookTest extends ApplicationTest {
         final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/fxml/EditBook.fxml"));
         parent = fxmlLoader.load();
         this.controller = fxmlLoader.getController();
-        final User user = dummyUser();
+        this.user = TestConstants.userDante();
         this.bookEntry = user.getLibrary().getBookEntries().iterator().next();
         controller.update(bookEntry, user); // Dummy user
         stage.setScene(new Scene(parent));
@@ -67,61 +66,57 @@ public class EditBookTest extends ApplicationTest {
 
     }
 
-    // TODO: Replace with dummy from rebase
-    private User dummyUser(){
+//    @Test
+//    public void deleteBookTest(){
+//
+//        clickOn("#deleteBookButton");
+//
+//        sleep(1000);
+//
+//        final Stage alertDialog = FxTestUtil.getTopModalStage(this);
+//        assertNotNull(alertDialog);
+//
+//        final DialogPane dialogPane = (DialogPane) alertDialog.getScene().getRoot();
+//        assertEquals("Confirm book deletion", dialogPane.getHeaderText());
+//        assertEquals("Are you sure you want to delete this book. This action cannot be undone", dialogPane.getContentText());
+//
+//        final Button cancelButton = (Button) dialogPane.lookupButton(ButtonType.CANCEL);
+//        clickOn(cancelButton);
+//        assertTrue(user.getLibrary().getBookEntries().contains(bookEntry));
+//
+//        final Button deleteButton = (Button) dialogPane.lookupButton(new ButtonType("Delete", ButtonBar.ButtonData.RIGHT));
+//        clickOn(deleteButton);
+//        assertFalse(user.getLibrary().getBookEntries().contains(bookEntry));
+//
+//    }
 
-        final Library library = new Library();
+    @Test
+    public void editBookFieldTest(){
 
-        final int danteBigBoyAge = 800;
-        final User dummyUser = new User("dante", danteBigBoyAge, library);
+        final ComboBox<BookReadingState> addBookReadingStateCombo = (ComboBox<BookReadingState>) parent.lookup("#bookReadingStateCombo");
+        clickOn(addBookReadingStateCombo)
+                .sleep(ROBOT_PAUSE_MS)
+                .press(KeyCode.DOWN)
+                .sleep(ROBOT_PAUSE_MS)
+                .press(KeyCode.ENTER); // Select second element
+        assertEquals(BookReadingState.READING, addBookReadingStateCombo.getValue(),
+                "BookReadingState should be READING");
 
-        final int dummyBookYear = 1953;
-        final int dummyBookYear2 = 1948;
-
-        library.addBookEntry(
-                new BookEntry(
-                        new Book(
-                                "Fahrenheit 451",
-                                "Ray Bradbury",
-                                dummyBookYear,
-                                "https://s2982.pcdn.co/wp-content/uploads/2017/09/fahrenheit-451-flamingo-edition.jpg"
-                        ),
-                        LocalDate.now(),
-                        BookReadingState.READING
-                )
-        );
-        library.addBookEntry(
-                new BookEntry(
-                        new Book(
-                                "1984",
-                                "George Orwell",
-                                dummyBookYear2
-                        ),
-                        LocalDate.now(),
-                        BookReadingState.COMPLETED
-                )
-        );
-
-        library.addBookEntry(
-                new BookEntry(
-                        new BooksAPIHandler().fetchBook("9780241242643"),
-                        LocalDate.now(),
-                        BookReadingState.ABANDONED
-                )
-        );
-
-        library.addBookEntry(
-                new BookEntry(
-                        new BooksAPIHandler().fetchBook("9780765394866"),
-                        LocalDate.now(),
-                        BookReadingState.NOT_STARTED
+        // Mock request response
+        stubFor(put(urlEqualTo("/bibtek/users/dante"))
+                .withHeader("Accept", equalTo("application/json"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("true")
                 )
         );
 
-        return dummyUser;
+        clickOn("#confirmEditBookButton");
+
+        assertEquals(BookReadingState.READING, bookEntry.getReadingState(),"BookReadingState should be READING after editing");
 
     }
-
 
     @Test
     public void bookDetailsTest(){
@@ -159,9 +154,9 @@ public class EditBookTest extends ApplicationTest {
 
         clickOn("#cancelButton");
 
-        final AnchorPane libraryRoot = (AnchorPane) stage.getScene().getRoot().lookup("#viewBookRoot");
-        assertNotNull(libraryRoot);
-        assertTrue(libraryRoot.isVisible());
+        final AnchorPane viewBookRoot = (AnchorPane) stage.getScene().getRoot().lookup("#viewBookRoot");
+        assertNotNull(viewBookRoot);
+        assertTrue(viewBookRoot.isVisible());
 
     }
 
