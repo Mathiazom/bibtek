@@ -11,63 +11,63 @@ import java.time.LocalDate;
 
 public class TestConstants {
 
-    /**
-     * Sleep time between each typed character
-     */
-    static final int WRITE_ROBOT_PAUSE_MILLIS = 1;
+        /**
+         * Sleep time between each typed character.
+         */
+        static final int WRITE_ROBOT_PAUSE_MILLIS = 1;
 
-    /**
-     * Sleep time between operations to simulate user behaviour
-     */
-    static final int ROBOT_PAUSE_MS = 300;
+        /**
+         * Sleep time between operations to simulate user behaviour.
+         */
+        static final int ROBOT_PAUSE_MS = 300;
 
-    private static final Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
-            .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer()).setPrettyPrinting().create();
+        private static final Gson gson = new GsonBuilder()
+                        .registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
+                        .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer()).setPrettyPrinting().create();
 
-    private TestConstants() {
+        private TestConstants() {
 
-    }
+        }
 
-    public static String userMapDanteJson(){
+        public static String userMapDanteJson() {
 
-        final UserMap userMap = new UserMap();
+                final UserMap userMap = new UserMap();
 
-        userMap.putUser(userDante());
+                userMap.putUser(userDante());
 
-        return gson.toJson(userMap);
+                return gson.toJson(userMap);
 
-    }
+        }
 
-    public static String userDanteJson(){
+        public static String userDanteJson() {
 
-        return gson.toJson(userDante());
+                return gson.toJson(userDante());
 
-    }
+        }
 
-    public static User userDante() {
+        public static User userDante() {
 
-        final Library library = new Library();
+                final Library library = new Library();
 
-        final int danteBigBoyAge = 800;
+                final int danteBigBoyAge = 800;
 
-        final int dummyBookYear = 1953;
-        final int dummyBookYear2 = 1948;
+                final int dummyBookYear = 1953;
+                final int dummyBookYear2 = 1948;
 
-        library.addBookEntry(new BookEntry(
-                new Book("Fahrenheit 451", "Ray Bradbury", dummyBookYear,
-                        "https://s2982.pcdn.co/wp-content/uploads/2017/09/fahrenheit-451-flamingo-edition.jpg"),
-                LocalDate.now(), BookReadingState.READING));
-        library.addBookEntry(new BookEntry(new Book("1984", "George Orwell", dummyBookYear2), LocalDate.now(),
-                BookReadingState.COMPLETED));
+                library.addBookEntry(new BookEntry(new Book("Fahrenheit 451", "Ray Bradbury", dummyBookYear,
+                                "https://s2982.pcdn.co/wp-content/uploads/2017/09/fahrenheit-451-flamingo-edition.jpg"),
+                                LocalDate.now(), BookReadingState.READING));
+                library.addBookEntry(new BookEntry(new Book("1984", "George Orwell", dummyBookYear2), LocalDate.now(),
+                                BookReadingState.COMPLETED));
 
-        library.addBookEntry(new BookEntry(new BooksAPIHandler().fetchBook("9780241242643"), LocalDate.now(),
-                BookReadingState.ABANDONED));
+                library.addBookEntry(new BookEntry(new BooksAPIHandler().searchForBooks("9780241242643").get(0),
+                                LocalDate.now(), BookReadingState.ABANDONED));
 
-        library.addBookEntry(new BookEntry(new BooksAPIHandler().fetchBook("9780765394866"), LocalDate.now(),
-                BookReadingState.NOT_STARTED));
+                library.addBookEntry(new BookEntry(new BooksAPIHandler().searchForBooks("9780765394866").get(0),
+                                LocalDate.now(), BookReadingState.NOT_STARTED));
 
-        return new User("dante", danteBigBoyAge, library);
+                return new User("dante", danteBigBoyAge, library);
 
-    }
+        }
 
 }

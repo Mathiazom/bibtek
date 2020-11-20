@@ -1,6 +1,7 @@
 package bibtek.json;
 
 import bibtek.core.Book;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -13,67 +14,63 @@ import javax.ws.rs.core.MediaType;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Handler responsible for communicating with the Google Books API.
  */
 public final class BooksAPIHandler {
+    private static final String BOOKS_API_URI_PREFIX = "https://www.googleapis.com/books/v1/volumes?q=";
 
-    private static final String BOOKS_API_URI_PREFIX = "https://www.googleapis.com/books/v1/volumes?q=isbn:";
-
-    /**
-     * Request book data from Google Books API based on ISBN number.
-     *
-     * @param isbn Unique book identification
-     * @return Book loaded with the retrieved API data, or null if isbn gave no results
-     */
-    public Book fetchBook(final String isbn) {
-
+    private JsonObject fetchBooks(final String searchTerm) {
         final Client client = Client.create();
 
-        final WebResource webResource = client
-                .resource(URI.create(getFetchURIForISBN(isbn)));
+        final WebResource webResource = client.resource(URI.create(getFetchURI(searchTerm)));
 
-        final ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON)
-                .get(ClientResponse.class);
+        final ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
 
         final String responseString = response.getEntity(String.class);
 
         final JsonObject responseObject = JsonParser.parseString(responseString).getAsJsonObject();
 
-        // Make sure there is at least one search result
-        if (responseObject.get("totalItems").getAsInt() == 0 || responseObject.get("items") == null) {
-            return null;
-        }
+        return responseObject;
+    }
 
-        // Pick the first element from search results
-        final JsonObject bookObject = responseObject.get("items").getAsJsonArray().get(0).getAsJsonObject();
-
-        final JsonObject bookInfo = (JsonObject) bookObject.get("volumeInfo");
-        if (bookInfo == null) {
-            // No volume info found, abort
-            return null;
-        }
+    private String getBookTitle(final JsonObject bookInfo) {
+        String bookTitle = "";
 
         final JsonElement bookTitleElement = bookInfo.get("title");
-        String bookTitle = "";
         if (bookTitleElement != null) {
             bookTitle = bookTitleElement.getAsString();
         }
 
-        final JsonElement bookAuthorElement = bookInfo.get("authors");
+        return bookTitle;
+    }
+
+    private String getBookAuthor(final JsonObject bookInfo) {
         String bookAuthor = "";
+
+        final JsonElement bookAuthorElement = bookInfo.get("authors");
         if (bookAuthorElement != null) {
             bookAuthor = jsonArrayToSimpleString(bookAuthorElement.getAsJsonArray());
         }
 
+        return bookAuthor;
+    }
+
+    private String getBookImgPath(final JsonObject bookInfo) {
         String bookImgPath = "";
+
         try {
             bookImgPath = bookInfo.get("imageLinks").getAsJsonObject().get("thumbnail").getAsString();
         } catch (NullPointerException ignored) {
             // No thumbnail available for this book
         }
+        return bookImgPath;
+    }
 
+    private int getBookYearPublished(final JsonObject bookInfo) {
         int bookYearPublished = Book.YEAR_PUBLISHED_MISSING;
 
         // Check if publishing date is provided in the fetched data
@@ -90,25 +87,59 @@ public final class BooksAPIHandler {
                 try {
                     bookYearPublished = LocalDate.parse(bookPublishedString).getYear();
                 } catch (DateTimeParseException e) {
-                    e.printStackTrace();
+                    System.out.println(e.getMessage());
                 }
             }
 
         }
 
-        return new Book(bookTitle, bookAuthor, bookYearPublished, bookImgPath);
+        return bookYearPublished;
+    }
+
+    /**
+     * Search for book data from Google Books API.
+     *
+     * @param searchTerm The search term
+     * @return A list of books matching the search term, null if no books are found
+     */
+    public List<Book> searchForBooks(final String searchTerm) {
+
+        JsonObject responseObject = fetchBooks(searchTerm);
+
+        // Make sure there is at least one search result
+        if (responseObject.get("totalItems").getAsInt() == 0 || responseObject.get("items") == null) {
+            return null;
+        }
+
+        List<Book> bookList = new ArrayList<>();
+
+        responseObject.get("items").getAsJsonArray().forEach(bookElement -> {
+            final JsonObject bookInfo = (JsonObject) bookElement.getAsJsonObject().get("volumeInfo");
+            if (bookInfo == null) {
+                // No volume info found, skip
+                return;
+            }
+            String bookTitle = getBookTitle(bookInfo);
+            String bookAuthor = getBookAuthor(bookInfo);
+            String bookImgPath = getBookImgPath(bookInfo);
+            int bookYearPublished = getBookYearPublished(bookInfo);
+
+            bookList.add(new Book(bookTitle, bookAuthor, bookYearPublished, bookImgPath));
+        });
+
+        return bookList;
 
     }
 
     /**
-     * Builds valid URI for fetching book data from Google Books API by ISBN.
+     * Builds valid URI for fetching book data from Google Books API.
      *
-     * @param isbn Unique book identification
+     * @param searchTerm The search term (eg. ISBN, Algorithms to live by)
      * @return URI as string
      */
-    public String getFetchURIForISBN(final String isbn) {
-
-        return BOOKS_API_URI_PREFIX + isbn;
+    public String getFetchURI(final String searchTerm) {
+        System.out.println("fetching: " + BOOKS_API_URI_PREFIX + searchTerm.replaceAll(" ", "%20"));
+        return BOOKS_API_URI_PREFIX + searchTerm.replaceAll(" ", "%20");
 
     }
 
@@ -116,7 +147,8 @@ public final class BooksAPIHandler {
      * Parses a {@link JsonArray} and creates a comma separated string of elements.
      *
      * @param array Array with elements of type {@link JsonElement}
-     * @return string concatenation of {@link JsonElement} strings separated by comma.
+     * @return string concatenation of {@link JsonElement} strings separated by
+     *         comma.
      */
     public String jsonArrayToSimpleString(final JsonArray array) {
 
@@ -131,6 +163,5 @@ public final class BooksAPIHandler {
         return builder.toString();
 
     }
-
 
 }

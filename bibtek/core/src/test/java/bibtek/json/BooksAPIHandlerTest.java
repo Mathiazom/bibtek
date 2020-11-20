@@ -20,7 +20,7 @@ public class BooksAPIHandlerTest {
         try {
             final int yearPublished = 2009;
             Book expected = new Book("Introduction to Algorithms", "Thomas H. Cormen", yearPublished);
-            Book actual = booksApiHandler.fetchBook(isbn);
+            Book actual = booksApiHandler.searchForBooks(isbn).get(0);
             assertEquals(expected, actual, "fetchBook() did not return correct book");
         } catch (Exception e) {
             e.printStackTrace();
@@ -30,7 +30,7 @@ public class BooksAPIHandlerTest {
         final String illegalISBN = "978026203384---------8";
         try {
             Book expected2 = null;
-            Book actual2 = booksApiHandler.fetchBook(illegalISBN);
+            Book actual2 = booksApiHandler.searchForBooks(illegalISBN).get(0);
             assertEquals(expected2, actual2, "fetchBook() did not return correct book");
         } catch (Exception e) {
             e.printStackTrace();

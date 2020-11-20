@@ -25,7 +25,7 @@
                 <Label styleClass="toolbarTitle" text="Add new book"/>
             </VBox>
             <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="0.0">
-                <Button fx:id="isbnButton" styleClass="grayButton" mnemonicParsing="false" onAction="#toggleShowISBNInput">
+                <Button fx:id="showSearchButton" styleClass="grayButton" mnemonicParsing="false" onAction="#toggleShowSearchInput">
                     <graphic>
                         <FontIcon iconLiteral="mdi-barcode-scan"/>
                     </graphic>
@@ -44,16 +44,18 @@
             </Button>
         </AnchorPane>
         <VBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
-            <VBox fx:id="addBookISBNContainer" managed="false" alignment="TOP_CENTER">
+            <VBox fx:id="searchBookContainer" managed="false" alignment="TOP_CENTER">
                 <HBox alignment="CENTER">
-                    <DigitsField fx:id="addBookISBNInput" promptText="ISBN"/>
-                    <Button id="addBookISBNButton" mnemonicParsing="false" onAction="#handleLoadBookFromISBNInput">
+                    <TextField fx:id="searchBookField" promptText="Search for book"/>
+                    <Button id="searchBookButton" mnemonicParsing="false" onAction="#handleSearchBook">
                         <graphic>
                             <FontIcon iconLiteral="mdi-cloud-download"/>
                         </graphic>
                     </Button>
                 </HBox>
-                <Label fx:id="errorLabelISBN" styleClass="errorLabel" managed="false" alignment="CENTER"/>
+                <Label fx:id="errorLabelSearch" styleClass="errorLabel" managed="false" alignment="CENTER"/>
+                <VBox fx:id="suggestionContainer" alignment="CENTER">
+                </VBox>
             </VBox>
             <ScrollPane styleClass="edge-to-edge">
                <VBox id="inputContainerWrap" alignment="TOP_CENTER" VBox.vgrow="ALWAYS">

@@ -4,9 +4,9 @@ module bibtek.fxui {
 	requires transitive javafx.graphics;
 	requires javafx.controls;
 	requires transitive bibtek.core;
-    requires org.kordamp.ikonli.javafx;
+	requires org.kordamp.ikonli.javafx;
 
-    exports bibtek.ui;
+	exports bibtek.ui;
 
 	opens bibtek.ui to javafx.fxml;
 }
