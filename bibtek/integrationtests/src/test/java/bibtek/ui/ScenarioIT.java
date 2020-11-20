@@ -21,10 +21,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ScenarioIT extends ApplicationTest {
 
-    private SceneChangerController controller;
+    // Stage for the current window (stays the same through scenario)
     private Stage stage;
+
+    // Parent of current page (changes as user moves through scenario)
     private Parent parent;
 
+    // Used to verify changes are saved to server
     private RemoteStorageHandler remoteStorageHandler;
 
     @Override
@@ -34,7 +37,7 @@ public class ScenarioIT extends ApplicationTest {
 
         final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/fxml/Login.fxml"));
         this.parent = fxmlLoader.load();
-        this.controller = fxmlLoader.getController();
+        fxmlLoader.getController();
         stage.setScene(new Scene(parent));
         stage.show();
 
@@ -64,6 +67,8 @@ public class ScenarioIT extends ApplicationTest {
 
         editBookTest();
 
+        logOffTest();
+
     }
 
 
@@ -90,7 +95,9 @@ public class ScenarioIT extends ApplicationTest {
 
         this.parent = stage.getScene().getRoot();
 
-        assertNotNull(parent.lookup("#loginRoot"),"Failed to create user");
+        assertNotNull(remoteStorageHandler.getUser("heinrich"), "Failed to create user");
+
+        assertNotNull(parent.lookup("#loginRoot"),"Failed to return to login page");
 
     }
 
@@ -138,10 +145,11 @@ public class ScenarioIT extends ApplicationTest {
                 .type(KeyCode.ENTER) // Pick date
                 .type(KeyCode.ESCAPE); // Hide datepicker
 
-//        final ComboBox<BookReadingState> addBookReadingStatusCombo = (ComboBox<BookReadingState>) parent.lookup("#addBookReadingStatusCombo");
-//        clickOn(addBookReadingStatusCombo)
-//                .press(KeyCode.DOWN)
-//                .press(KeyCode.ENTER); // Select second element
+        final ComboBox<BookReadingState> addBookReadingStatusCombo = (ComboBox<BookReadingState>) parent.lookup("#bookReadingStateCombo");
+        clickOn(addBookReadingStatusCombo)
+                .press(KeyCode.DOWN)
+                .press(KeyCode.UP)
+                .press(KeyCode.ENTER); // Select first element
 
         clickOn("#confirmAddBookButton");
 
@@ -228,6 +236,25 @@ public class ScenarioIT extends ApplicationTest {
 
         final Label bookEntryTitle = (Label) parent.lookup("#bookEntryTitle");
         assertEquals("Finnegans Wake (Anniversary Edition)", bookEntryTitle.getText(), "Book title was not edited");
+
+        clickOn("#backButton");
+
+        this.parent = stage.getScene().getRoot();
+        assertNotNull(parent.lookup("#libraryRoot"), "Failed to return to library");
+
+    }
+
+    private void logOffTest(){
+
+        clickOn("#openSettingsButton");
+
+        this.parent = stage.getScene().getRoot();
+        assertNotNull(parent.lookup("#settingsRoot"), "Failed to open settings");
+
+        clickOn("#logOffButton");
+
+        this.parent = stage.getScene().getRoot();
+        assertNotNull(parent.lookup("#loginRoot"), "Failed to log off");
 
     }
 
