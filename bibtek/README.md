@@ -6,7 +6,7 @@
 The project is a three layered application consisting of the following layers:
 
 - **domain** (*[bibtek.core](core/src/main/java/bibtek/core)*) - classes to represent data models used in the app
-- **persistance** (*[bibtek.json](core/src/main/java/bibtek/json)*) - handles storing and loading of user generated data
+- **persistance** (*[bibtek.restapi](core/src/main/java/bibtek/restapi)*) - handles storing and loading of user generated data
 - **user interface** (*[bibtek.ui](fxui/src/main/java/bibtek/ui)*) - handles display to screen and user input
 
 ## Modules
@@ -14,6 +14,8 @@ The project is a three layered application consisting of the following layers:
 The app is also divided into two modules:
 - **core** - domain and persistance
 - **fxui** - user interface
+- **integrationTests** - test integration with backend
+- **restapi** and **restserver** - data persistance 
 
 This enables for example dependencies like **javafx** to be exclusive for the parts that actually need it
 
