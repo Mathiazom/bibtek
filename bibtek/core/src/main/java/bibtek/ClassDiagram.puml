@@ -1,29 +1,53 @@
 @startuml ClassDiagram
 title Class diagram of main.java.bibtek
 
-
-
-
 class Book {
     - String title
     - String author
-    - String yearPublished
+    - Int yearPublished
+    - String imgPath
  
     + String getTitle()
     + String getAuthor()
     + int getYearPublished()
-
+    + String get imgPath
+    + String toString()
+    + Boolean equals()
+    + int hashCode()
 }
 
 class BookEntry {
     - Book book
-    - LocalDate dateAquired
+    - LocalDate dateAcquired
     - BookReadingState readingState
  
     + Book getBook()
-    + LocalDate getDateAquired()
+    + LocalDate getDateAcquired()
     + BookReadingState getReadingState()
     + String toPrintString()
+    + String toString()
+    + Boolean equals()
+}
+
+enum BookReadingState {
+    NOT_STARTED
+    READING
+    COMPLETED
+    ABANDONED
+}
+
+class BooksAPIHandler {
+    - String Books_API_URI_PREFIX
+    + Book fetchBook(isbn)
+    + String getFetchURIForISBN(isbn)
+    + String jsonArrayToSimpleString(array)
+
+}
+
+class ISBNUtils {
+    - ISBNUtils()
+    - List<Integer> VALID_ISBN_LENGTHS
+    + isValidISBN(isbn)
 }
 
 class Library {
@@ -33,39 +57,122 @@ class Library {
     + void removeBookEntry(BookEntry)
     + Set<BookEntry> getBookEntries()
     + void setStoragePath(String)
-    - boolean isValiedBookEntry(BookEntry)
+    + String toString()
+    + Boolean equals()
+    + int hashCode()
+    - boolean isValidBookEntry(BookEntry)
     - void setBookEntries(Set<BookEntry>)
-} 
-class StorageHandler {
-    -Path storagePath
-
-    + void setStoragePath(String)
-    + void storeBookEntries(Set<BookEntry>)
-    + Set<BookEntry> fetchBookEntries()
-
-     
 }
 
 class LocalDateSerializer{
 
 }
 class LocalDateDeserializer{
-    
-}
-enum BookReadingState {
-    NOT_STARTED
-    READING
-    COMPLETED
-    ABANDONED
-
 
 }
+
+class LocalStorageHandler{
+    - String DEFAULT_STORAGE_PATH
+    - Path storagePath
+    - Gson gson
+    - UserMap userMap
+    + LocalStorageHandler(path)
+    + LocalStorageHandler()
+    + void setStoragePath(path)
+    + UserMap getUserMap()
+    + void putUserMap()
+    + Boolean hasUser(username)
+    + Collection<String> getUsernames()
+    + User getUser(username)
+    + void putUser(user)
+    + void removeUser(username)
+    + void notifyUserChanged(user)
+}
+
+class RemoteStorageHandler{
+    - URI endPointBaseUri
+    - Gson gson
+    - UserMap userMap
+    - URI uriForUser(username)
+    + UserMap getUserMap()
+    + Boolean hasUser(username)
+    + Collection<String> getUsernames()
+    + User getUser(username)
+    + void putUser(user)
+    + void removeUser(username)
+    + void notifyUserChanged(user)
+}
+
+class StorageHandler {
+    - Path storagePath
+    - LocalStorageHandler localStorageHandler
+    - RemoteStorageHandler remoteStorageHandler
+    + void setStoragePath(String)
+    + void storeBookEntries(Set<BookEntry>)
+    + Set<BookEntry> fetchBookEntries()
+    + Collection<String> getUsernames()
+    + UserMap getUserMap()
+    + User getUser(username)
+    + Boolean hasUser(username)
+    + void putUser(user)
+    + void removeUSer(username)
+    + void notifyUserChanged(user)
+}
+
+
+Class User {
+    - int MINIMAL_AGE
+    - String username
+    - int Age
+    - Library library
+    + getUsername()
+    + getAge()
+    + getLibrary()
+    + toString()
+    + equals()
+    + int hashCode()
+}
+
+Class UserMap {
+    - Map <String, User> users
+    + hasUser(username)
+    + void removeUser(user)
+    + User getUser(username)
+    + User putUser(user)
+    + Iterator<User> iterator()
+    + Boolean equals()
+    + int hashCode()
+    + String toString()
+}
+
+Interface UserMapHandler{
+    boolean hasUser(username)
+    Collection<String> getUsernames()
+    UserMap getUserMap()
+    User getUser(String username)
+    void putUser(User user)
+    void removeUser(String username)
+    void notifyUserChanged(User user)
+}
+
+
+
 Library --> "*" BookEntry
-Library --> "1" StorageHandler
+Library --> "1" User
 BookEntry --> "1" Book
 BookEntry --> "1" BookReadingState
+BookEntry --> BooksAPIHandler
+BooksAPIHandler -->"1" ISBNUtils
+
+User ..> UserMap
+UserMap --> UserMapHandler
+UserMapHandler ..> StorageHandler
+UserMapHandler ..> LocalStorageHandler
+UserMapHandler ..> RemoteStorageHandler
 StorageHandler ..> LocalDateDeserializer
 StorageHandler ..> LocalDateSerializer
+
+
 
 
 @enduml

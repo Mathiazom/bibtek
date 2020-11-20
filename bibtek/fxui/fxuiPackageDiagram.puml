@@ -4,8 +4,20 @@ namespace fxui {
     namespace src {
         namespace main.java.bibtek {
             class AddBookController
-            class LibraryController
             class App
+            class BaseBookController
+            class BookItemView
+            class CreateUserController
+            class DigitsField
+            class EditBookController
+            class LibraryController
+            class LoginPageController
+            class SceneChangerController
+            class SettingsController
+            class TermsController
+            class Toast
+            class ViewBookController
+
         }
         namespace test.java.bibtek {
             namespace ui {

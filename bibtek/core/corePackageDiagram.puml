@@ -8,19 +8,31 @@ namespace core {
                 class BookEntry
                 class BookReadingState
                 class Library
+                class User
+                class UserMap
             }
             namespace json {
-                class StorageHandler
+                class BooksAPIHandler
+                class ISBNUtils
                 class LocalDateSerializer
                 class LocalDateDeSerializer
+                interface UserMapHandler
+                class RemoteStorageHandler
+                class LocalStorageHandler
+                class StorageHandler
             }
         }
         namespace test.java.bibtek {
             namespace core {
+                class BookReadingStateTest
                 class LibraryTest
+                class TestConstants
+                class UserTest
+
             }
             namespace json {
-                class StorageHandlerTest
+            class BooksAPIHandlerTest
+                class LocalStorageHandlerTest
             }
         }
     }
