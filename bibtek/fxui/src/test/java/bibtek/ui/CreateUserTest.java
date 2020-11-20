@@ -90,7 +90,7 @@ public class CreateUserTest extends WireMockApplicationTest {
         ((DigitsField) parent.lookup("#ageInput")).setText("17");
         clickOn("#confirmCheckbox");
 
-        // Mock request response
+        /*// Mock request response
         stubFor(put(urlEqualTo("/bibtek/users/heinrich"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
@@ -98,7 +98,7 @@ public class CreateUserTest extends WireMockApplicationTest {
                         .withHeader("Content-Type", "application/json")
                         .withBody("true")
                 )
-        );
+        );*/
 
         clickOn("#createUserButton");
 

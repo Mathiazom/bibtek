@@ -12,6 +12,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
+import org.testfx.framework.junit5.ApplicationTest;
 
 import static bibtek.ui.TestConstants.ROBOT_PAUSE_MS;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -21,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Testing if the logic connected to this fxml scene works as expected.
  */
 
-public class EditBookTest extends WireMockApplicationTest {
+public class EditBookTest extends /*WireMock*/ApplicationTest {
 
     private Parent parent;
     private EditBookController controller;
@@ -61,7 +62,7 @@ public class EditBookTest extends WireMockApplicationTest {
         assertEquals(BookReadingState.READING, addBookReadingStateCombo.getValue(),
                 "BookReadingState should be READING");
 
-        // Mock request response
+        /*// Mock request response
         stubFor(put(urlEqualTo("/bibtek/users/dante"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
@@ -69,7 +70,7 @@ public class EditBookTest extends WireMockApplicationTest {
                         .withHeader("Content-Type", "application/json")
                         .withBody("true")
                 )
-        );
+        );*/
 
         clickOn("#confirmEditBookButton");
 

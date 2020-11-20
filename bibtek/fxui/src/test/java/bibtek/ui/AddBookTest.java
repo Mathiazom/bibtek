@@ -11,6 +11,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
+import org.testfx.framework.junit5.ApplicationTest;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,7 +23,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class AddBookTest extends WireMockApplicationTest {
+public class AddBookTest extends /*WireMock*/ApplicationTest {
 
 
     private Parent parent;
@@ -94,7 +95,7 @@ public class AddBookTest extends WireMockApplicationTest {
         assertEquals(BookReadingState.READING, addBookReadingStateCombo.getValue(),
                 "BookReadingState should be READING");
 
-        // Mock request response
+        /*// Mock request response
         stubFor(put(urlEqualTo("/bibtek/users/dante"))
                 .withHeader("Accept", equalTo("application/json"))
                 .willReturn(aResponse()
@@ -102,7 +103,7 @@ public class AddBookTest extends WireMockApplicationTest {
                         .withHeader("Content-Type", "application/json")
                         .withBody("true")
                 )
-        );
+        );*/
 
         // Create book entry
         clickOn("#confirmAddBookButton");
