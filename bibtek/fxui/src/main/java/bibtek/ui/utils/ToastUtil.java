@@ -29,7 +29,7 @@ public final class ToastUtil {
      */
     public static void makeToast(final Stage ownerStage, final Toast.ToastState state, final String message) {
 
-        makeToast(ownerStage, state, toastMsg, null, DEFAULT_MSG_TIME, DEFAULT_FADE_IN_TIME, DEFAULT_FADE_OUT_TIME);
+        makeToast(ownerStage, state, message, null, DEFAULT_MSG_TIME, DEFAULT_FADE_IN_TIME, DEFAULT_FADE_OUT_TIME);
 
     }
 
@@ -46,21 +46,21 @@ public final class ToastUtil {
     /**
      * Utility method to display simple toast message.
      *
-     * @param ownerStage   where toast should be hosted
-     * @param state        to specify toast color and icon
-     * @param toastMsg     to display inside toast
-     * @param extraMsg     to display in parenthesis after main message (unless null)
-     * @param toastMsgTime total time toast should be visible
-     * @param fadeInTime   total time used to transition in toast
-     * @param fadeOutTime  total time used to transition out toast
+     * @param ownerStage        where toast should be hosted
+     * @param state             to specify toast color and icon
+     * @param toastMsg          to display inside toast
+     * @param extraMsg          to display in parenthesis after main message (unless null)
+     * @param displayTime       total time toast should be visible
+     * @param transitionInTime  total time used to transition in toast
+     * @param transitionOutTime total time used to transition out toast
      */
     public static void makeToast(final Stage ownerStage,
-                                final Toast.ToastState state,
-                                final String toastMsg,
-                                final String extraMsg,
-                                final int toastMsgTime,
-                                final int fadeInTime,
-                                final int fadeOutTime) {
+                                 final Toast.ToastState state,
+                                 final String toastMsg,
+                                 final String extraMsg,
+                                 final int displayTime,
+                                 final int transitionInTime,
+                                 final int transitionOutTime) {
 
         String msg = toastMsg;
         if (extraMsg != null) {
