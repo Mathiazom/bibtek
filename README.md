@@ -70,7 +70,12 @@ Before running the app, it needs to be built.
 
 1. Building is done with `mvn install` from the app's root folder [**/bibtek/**](/bibtek)
 
+    (additionally `-Dfast` is used to skip *surefire* tests, *checkstyle* and *spotbugs*, and `-DskipIntegrationTests` to skip *failsafe* integration tests)
+
 2. Running the app is done through the fxui module with the command `mvn javafx:run -f fxui`
+
+3. Running back-end is done through the restserver module with the command `mvn exec:java -f restserver`
+
 
 ## Screenshot
 <img src="promo.png" width="500">
