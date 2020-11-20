@@ -36,11 +36,11 @@ public class LoginTest extends WireMockApplicationTest {
 
         clickOn("#userNameInput").write("dante");
 
-        stubFor(get(urlEqualTo("/bibtek/users/"))
+        stubFor(get(urlEqualTo("/bibtek/users/dante"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBody(TestConstants.userMapDanteJson())
+                        .withBody(TestConstants.userDanteJson())
                 )
         );
 

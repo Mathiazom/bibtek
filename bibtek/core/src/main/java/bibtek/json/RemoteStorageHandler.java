@@ -112,6 +112,10 @@ public final class RemoteStorageHandler implements UserMapHandler {
         final String input = gson.toJson(user);
 
         final ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).put(ClientResponse.class, input);
+
+        System.out.println(response.getClientResponseStatus());
+        System.out.println(response.getEntity(String.class));
+
         System.out.println(response);
         System.out.println(statusFromHttp(response.getStatus()));
         return statusFromHttp(response.getStatus());
