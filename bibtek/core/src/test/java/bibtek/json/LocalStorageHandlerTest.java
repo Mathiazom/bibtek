@@ -78,7 +78,7 @@ public class LocalStorageHandlerTest {
     @Test
     public void putUserTest() {
         // Test if the putUser stores the user as expected
-        assertEquals(localStorageHandler.putUser(user), LocalStorageHandler.Status.OK, "Failed to put user");
+        assertEquals(localStorageHandler.putUser(user), LocalStorageHandler.OK, "Failed to put user");
         try (BufferedReader reader = new BufferedReader(
                 new FileReader(new File(this.tempDirectory, user.getUserName() + ".json")))) {
             final Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
@@ -221,7 +221,7 @@ public class LocalStorageHandlerTest {
         final UserMap actual = localStorageHandler.getUserMap();
         assertEquals(expected, actual, "removeUser did not remove the user");
 
-        assertEquals(LocalStorageHandler.Status.NOT_FOUND, localStorageHandler.removeUser("Non Existent User"), "Should return NOT_FOUND on non existent username");
+        assertEquals(LocalStorageHandler.NOT_FOUND, localStorageHandler.removeUser("Non Existent User"), "Should return NOT_FOUND on non existent username");
 
         assertEquals(expected, actual,
                 "User map changed after removeUser() on a non existent username");
