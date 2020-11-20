@@ -1,13 +1,11 @@
 package bibtek.ui;
 
-import bibtek.core.UserMap;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -18,24 +16,6 @@ public class CreateUserTest extends WireMockApplicationTest {
 
     private Parent parent;
     private Stage stage;
-
-    /**
-     * Prepares the system.
-     */
-    @BeforeAll
-    public static void headless() {
-        if (Boolean.parseBoolean(System.getProperty("gitlab-ci", "false"))) {
-            System.setProperty("prism.verbose", "true");
-            System.setProperty("java.awt.headless", "true");
-            System.setProperty("testfx.robot", "glass");
-            System.setProperty("testfx.headless", "true");
-            System.setProperty("glass.platform", "Monocle");
-            System.setProperty("monocle.platform", "Headless");
-            System.setProperty("prism.order", "sw");
-            System.setProperty("prism.text", "t2k");
-            System.setProperty("testfx.setup.timeout", "2500");
-        }
-    }
 
     /**
      * Starts the app to test it.

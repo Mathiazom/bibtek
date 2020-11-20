@@ -1,6 +1,9 @@
 package bibtek.ui;
 
-import bibtek.core.*;
+import bibtek.core.Book;
+import bibtek.core.BookEntry;
+import bibtek.core.BookReadingState;
+import bibtek.core.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -8,9 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.testfx.framework.junit5.ApplicationTest;
 
 import static bibtek.ui.TestConstants.ROBOT_PAUSE_MS;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -28,24 +29,6 @@ public class EditBookTest extends WireMockApplicationTest {
 
     private User user;
     private BookEntry bookEntry;
-
-    /**
-     * Prepares the system.
-     */
-    @BeforeAll
-    public static void headless() {
-        if (Boolean.parseBoolean(System.getProperty("gitlab-ci", "false"))) {
-            System.setProperty("prism.verbose", "true");
-            System.setProperty("java.awt.headless", "true");
-            System.setProperty("testfx.robot", "glass");
-            System.setProperty("testfx.headless", "true");
-            System.setProperty("glass.platform", "Monocle");
-            System.setProperty("monocle.platform", "Headless");
-            System.setProperty("prism.order", "sw");
-            System.setProperty("prism.text", "t2k");
-            System.setProperty("testfx.setup.timeout", "2500");
-        }
-    }
 
     /**
      * Starts the app to test it.
