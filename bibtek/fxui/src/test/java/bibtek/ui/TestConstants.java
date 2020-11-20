@@ -70,40 +70,4 @@ public class TestConstants {
 
     }
 
-//    private static User userVergil() {
-//        final Library library = new Library();
-//
-//        final int vergilBigBoyAge = 2090;
-//
-//        library.addBookEntry(new BookEntry(new BooksAPIHandler().fetchBook("9780192835840"), LocalDate.now(),
-//                BookReadingState.COMPLETED));
-//        library.addBookEntry(new BookEntry(new BooksAPIHandler().fetchBook("9781686172717"), LocalDate.now(),
-//                BookReadingState.NOT_STARTED));
-//
-//        final User dummyUser = new User("vergil", vergilBigBoyAge, library);
-//
-//        return dummyUser;
-//
-//    }
-//
-//    private static User userDanteEdited() {
-//        final Library library = new Library();
-//
-//        final int danteBigBoyAge = 821;
-//
-//        final int dummyBookYear2 = 1948;
-//
-//        library.addBookEntry(new BookEntry(new Book("1984", "George Orwell", dummyBookYear2), LocalDate.now(),
-//                BookReadingState.COMPLETED));
-//
-//        library.addBookEntry(new BookEntry(new BooksAPIHandler().fetchBook("9780241242643"), LocalDate.now(),
-//                BookReadingState.ABANDONED));
-//
-//        library.addBookEntry(new BookEntry(new BooksAPIHandler().fetchBook("9780765394866"), LocalDate.now(),
-//                BookReadingState.READING));
-//
-//        return new User("dante", danteBigBoyAge, library);
-//
-//    }
-
 }
