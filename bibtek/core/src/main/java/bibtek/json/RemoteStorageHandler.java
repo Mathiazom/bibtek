@@ -50,7 +50,7 @@ public final class RemoteStorageHandler implements UserMapHandler {
      *
      * @throws URISyntaxException if path is invalid
      */
-    RemoteStorageHandler() throws URISyntaxException {
+    public RemoteStorageHandler() throws URISyntaxException {
         remoteBaseURI = new URI(REMOTE_BASE_PATH);
     }
 
