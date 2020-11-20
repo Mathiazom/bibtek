@@ -49,30 +49,6 @@ public class EditBookTest extends WireMockApplicationTest {
 
     }
 
-//    @Test
-//    public void deleteBookTest(){
-//
-//        clickOn("#deleteBookButton");
-//
-//        sleep(1000);
-//
-//        final Stage alertDialog = FxTestUtil.getTopModalStage(this);
-//        assertNotNull(alertDialog);
-//
-//        final DialogPane dialogPane = (DialogPane) alertDialog.getScene().getRoot();
-//        assertEquals("Confirm book deletion", dialogPane.getHeaderText());
-//        assertEquals("Are you sure you want to delete this book. This action cannot be undone", dialogPane.getContentText());
-//
-//        final Button cancelButton = (Button) dialogPane.lookupButton(ButtonType.CANCEL);
-//        clickOn(cancelButton);
-//        assertTrue(user.getLibrary().getBookEntries().contains(bookEntry));
-//
-//        final Button deleteButton = (Button) dialogPane.lookupButton(new ButtonType("Delete", ButtonBar.ButtonData.RIGHT));
-//        clickOn(deleteButton);
-//        assertFalse(user.getLibrary().getBookEntries().contains(bookEntry));
-//
-//    }
-
     @Test
     public void editBookFieldTest(){
 
