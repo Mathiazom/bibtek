@@ -40,8 +40,8 @@ public final class StorageHandler implements UserMapHandler {
     }
 
     /**
-     * Get user from server, or from local storage if server is not available.
-     * If server is available, the retrieved data will overwrite local storage.
+     * Get user from server, or from local storage if server is not available. If
+     * server is available, the retrieved data will overwrite local storage.
      *
      * @param username the User's username
      * @return user

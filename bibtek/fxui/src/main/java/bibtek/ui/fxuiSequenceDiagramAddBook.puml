@@ -3,12 +3,17 @@ title Sequence diagram for adding a book to your library
 Actor Actor
 participant LibraryController
 participant AddBookController
+participant BooksAPIHandler
 participant StorageHandler
+participant RemoteStorageHandler
+participant LocalStorageHandler
+
 
 
 Actor -> LibraryController: "clicks button to add book" -> handleAddBook()
-LibraryController -> AddBookController: update(user)
-LibraryController --> Actor: Opens "Add new book" page
+LibraryController -> AddBookController: changeSceneAndUpdateUser()
+note left of Actor: Shows Add book page
+
 
 alt add Book Manually
     note left of Actor: Enter Book title, author, year published, \n enter image (optional), enter \n reading state and date added
@@ -20,19 +25,40 @@ else add Book with ISBN
     Actor -> AddBookController: "Clicks add book by ISBN button" -> handleLoadBookFromISBNInput()
     alt successful ISBN Number
         Actor <-- AddBookController: Fills corresponding title, author and year published to ISBN number
-   else invalid ISBN
-        Actor <- AddBookController: "Looks like an invalid ISBN"
+    else invalid ISBN
+        Actor <-- AddBookController: "Looks like an invalid ISBN"
     else no search results for that ISBN
-        Actor <- AddBookController: "Looks like an invalid ISBN :("
-
-end
+        Actor <-- AddBookController: "Looks like an invalid ISBN :("
+    end
 end
     Actor -> AddBookController: "Clicks confirm book info button" -> handleAddBook()
+alt Is not valid input
+    AddBookController -> Actor: "You must fill out all fields except 'cover image'
+else Is valid input
     note right of AddBookController: updates the user \nobject in \nAddBookConroller \nwith  the new book
-    AddBookController -> StorageHandler: updateUser(user)
-    AddBookController -> AddBookController: handleShowLibrary()
-    LibraryController <- AddBookController: update(user)
-    AddBookController --> Actor: Shows the users\n library, with the added book
+    AddBookController -> StorageHandler: notifyUserChanged(user)
+    alt Remote is available
+        StorageHandler -> RemoteStorageHandler: notifyUserChanged(username)
+        RemoteStorageHandler --> StorageHandler: Status
+        StorageHandler --> AddBookController: Status
+        alt Status not OK 
+            AddBookController --> Actor: "There was an error updating your library"
+        else
+            AddBookController -> AddBookController: handleShowLibrary()
+            AddBookController -> LibraryController: changeSceneAndUpdateUser() 
+            LibraryController --> Actor: Shows books in library with the added book to user 
+       
+else Remote if unavailable
+        StorageHandler -> LocalStorageHandler: notifyUserChanged(username)
+        LocalStorageHandler --> StorageHandler: Status
+        StorageHandler --> AddBookController: Status
+        alt Status not OK 
+            AddBookController --> Actor: "There was an error updating your library"
+        else
+            AddBookController -> AddBookController: handleShowLibrary()
+            AddBookController -> LibraryController: changeSceneAndUpdateUser()  
+            LibraryController --> Actor: Shows books in library with the added book to user 
+
 
 note left of Actor: Finsihed adding book
 

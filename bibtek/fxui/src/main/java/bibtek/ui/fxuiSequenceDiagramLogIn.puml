@@ -4,24 +4,38 @@ actor Actor #red
 participant LogInPageController
 participant LibraryController
 participant StorageHandler
+participant RemoteStorageHandler
+participant LocalStorageHandler
 
 
 note left of Actor: Enter username
 Actor -> LogInPageController: "Clicks Log in button" -> logIn()
-LogInPageController -> StorageHandler: fetchAllUsernamesFromRemote()
-LogInPageController <-- StorageHandler: List of usernames in remote
-alt Finds username in that list
-   LogInPageController -> StorageHandler: fetchUserFromRemote(name)
-   LogInPageController <- StorageHandler: return user with given username
+LogInPageController -> StorageHandler: getUser(username)
+alt Remote is available
+   StorageHandler -> RemoteStorageHandler: getUser(username)
+   alt User with username exists
+      RemoteStorageHandler --> StorageHandler: user with given username
+      StorageHandler --> LogInPageController: user
+      LogInPageController -> LibraryController: changeSceneAndUpdateUser()
+      LibraryController --> Actor: Shows books in library to user 
 note left of Actor: Has now logged in
-   LogInPageController -> Actor: Opens "Your Library" page
-   LibraryController -> Actor: Shows books in library to user
-     
-else User not in Usernames
-   Actor <-- LogInPageController: No user with given username
+   else User with given username does not exist in server
+      RemoteStorageHandler --> StorageHandler: null
+      StorageHandler --> LogInPageController: null
+      LogInPageController --> Actor: "No user with given username" 
+   end
+else Remote if unavailable
+   StorageHandler -> LocalStorageHandler: getUser(username)
+   alt User with username exists locally
+      LocalStorageHandler --> StorageHandler: user with given username
+      StorageHandler --> LogInPageController: user
+      LogInPageController -> LogInPageController: changeSceneAndUpdateUser()
+      LibraryController --> Actor: Shows books in library to user 
+note left of Actor: Has now logged in
+   else User with given username does not exist locally
+      LocalStorageHandler --> StorageHandler: null
+      StorageHandler --> LogInPageController: null
+      LogInPageController --> Actor: "No user with given username" 
+      end
 end
-
-
-
-
 @enduml
