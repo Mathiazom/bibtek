@@ -1,7 +1,6 @@
 package bibtek.restapi;
 
 
-import bibtek.core.User;
 import bibtek.core.UserMap;
 
 import javax.inject.Inject;
@@ -36,15 +35,13 @@ public final class UserMapService {
     /**
      * Redirect request on specific user to UserResource.
      *
-     * @param username for the associated User
+     * @param username of the associated User
      * @return UserResource for further request handling
      */
     @Path("/{username}")
     public UserResource getUser(@PathParam("username") final String username) {
 
-        final User user = getUserMap().getUser(username);
-
-        return new UserResource(userMap, user);
+        return new UserResource(userMap, username);
 
     }
 

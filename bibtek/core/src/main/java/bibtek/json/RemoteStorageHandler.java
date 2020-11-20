@@ -107,8 +107,6 @@ public final class RemoteStorageHandler implements UserMapHandler<UserMapHandler
 
         final ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).put(ClientResponse.class, input);
 
-        System.out.println("Putted user with response " + response.getStatus() + " (" + statusFromHttp(response.getStatus()) + ")");
-
         return statusFromHttp(response.getStatus());
 
     }

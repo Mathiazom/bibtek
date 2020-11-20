@@ -19,24 +19,25 @@ import java.io.IOException;
  */
 public final class UserResource {
 
+    private static final String SERVER_PERSISTENCE_DIRECTORY = "target/remoteUsers";
+
     private final UserMap userMap;
-    private final User user;
+    private final String username;
 
     private final LocalStorageHandler localStorageHandler;
 
     /**
-     * @param userMap holding all users
-     * @param user    associated with request
-     *
+     * @param userMap  holding all users
+     * @param username associated with request
      * @throws WebApplicationException INTERNAL_SERVER_ERROR if local persistence fails.
      */
-    public UserResource(final UserMap userMap, final User user) {
+    public UserResource(final UserMap userMap, final String username) {
 
         this.userMap = userMap;
-        this.user = user;
+        this.username = username;
 
         try {
-            this.localStorageHandler = new LocalStorageHandler("../target/remoteUsers");
+            this.localStorageHandler = new LocalStorageHandler(SERVER_PERSISTENCE_DIRECTORY);
         } catch (IOException e) {
             e.printStackTrace();
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
@@ -50,14 +51,13 @@ public final class UserResource {
      * @return true if user exists, false otherwise
      */
     private boolean userExists() {
-        return user != null;
+        return userMap.getUser(username) != null;
     }
 
     /**
      * Handles request to access User object associated with username in path.
      *
      * @return user object, or null if not available
-     *
      * @throws WebApplicationException NOT_FOUND if user does not exist
      */
     @GET
@@ -66,7 +66,7 @@ public final class UserResource {
         if (!userExists()) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
-        return this.user;
+        return this.userMap.getUser(username);
     }
 
     /**
@@ -97,10 +97,10 @@ public final class UserResource {
         if (!userExists()) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
-        if (localStorageHandler.removeUser(user.getUserName()) != LocalStorageHandler.Status.OK) {
+        if (localStorageHandler.removeUser(username) != LocalStorageHandler.Status.OK) {
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }
-        userMap.removeUser(user);
+        userMap.removeUser(username);
     }
 
 }

@@ -16,11 +16,11 @@ public final class UserMap implements Iterable<User> {
     /**
      * Removes the User from this UserMap.
      *
-     * @param user the User
+     * @param username of User to be removed
      * @throws IllegalArgumentException if the user's name is invalid
      */
-    public void removeUser(final User user) {
-        users.remove(user.getUserName());
+    public void removeUser(final String username) {
+        users.remove(username);
     }
 
     /**

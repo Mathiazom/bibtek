@@ -16,7 +16,7 @@ public final class BibtekConfig extends ResourceConfig {
 
     /**
      * Setup server configs.
-     *
+     * <p>
      * Specify Gson as JSON serializer
      * Connect to rest API and inject user map
      *
@@ -40,18 +40,23 @@ public final class BibtekConfig extends ResourceConfig {
      */
     private static UserMap getPreviouslyLoadedData() {
 
-        UserMap loadedUserMap;
+        final LocalStorageHandler localStorageHandler;
         try {
-            // Try to retrieve previously loaded data if it exists.
-            final LocalStorageHandler localStorageHandler = new LocalStorageHandler(SERVER_PERSISTENCE_DIRECTORY);
-            loadedUserMap = localStorageHandler.getUserMap();
-            if (loadedUserMap == null || !loadedUserMap.iterator().hasNext()) {
-                loadedUserMap = createDefaultUserMap();
-            }
+            localStorageHandler = new LocalStorageHandler(SERVER_PERSISTENCE_DIRECTORY);
         } catch (IOException e) {
-            // Otherwise use the default data
-            loadedUserMap = createDefaultUserMap();
+            throw new RuntimeException("Server persistence failed");
         }
+
+        // Retrieve previously loaded data if it exists.
+        UserMap loadedUserMap = localStorageHandler.getUserMap();
+
+        if (loadedUserMap == null || !loadedUserMap.iterator().hasNext()) {
+            // Otherwise store default data
+            loadedUserMap = createDefaultUserMap();
+            localStorageHandler.putUserMap(loadedUserMap);
+        }
+
+        // Otherwise use the default data
         return loadedUserMap;
 
     }
