@@ -7,6 +7,7 @@ import bibtek.core.BookEntry;
 import bibtek.core.BookReadingState;
 import bibtek.core.User;
 import bibtek.json.StorageHandler;
+import bibtek.json.UserMapHandler;
 import bibtek.ui.utils.FxUtil;
 import bibtek.ui.utils.ToastUtil;
 import javafx.fxml.FXML;
@@ -82,7 +83,8 @@ public final class ViewBookController extends SceneChangerController {
             bookEntry.setReadingState(newState);
 
             final StorageHandler storageHandler = new StorageHandler();
-            if (storageHandler.putUser(user) != StorageHandler.Status.LOCAL_OK) {
+            final UserMapHandler.Status updateStatus = storageHandler.putUser(user);
+            if (!updateStatus.isOk()) {
 
                 // Undo changes
                 bookEntry.setReadingState(oldState);
@@ -90,7 +92,7 @@ public final class ViewBookController extends SceneChangerController {
 
                 final Stage stage = (Stage) bookReadingStateCombo.getScene().getWindow();
                 ToastUtil.makeToast(stage, Toast.ToastState.ERROR,
-                        "There was an error updating the reading status");
+                        "There was an error updating the reading status", updateStatus.toString());
                 return;
             }
 

@@ -8,6 +8,7 @@ import bibtek.core.User;
 import bibtek.json.BooksAPIHandler;
 import bibtek.json.ISBNUtils;
 import bibtek.json.StorageHandler;
+import bibtek.json.UserMapHandler;
 import bibtek.ui.Toast.ToastState;
 import bibtek.ui.utils.ToastUtil;
 import javafx.fxml.FXML;
@@ -46,11 +47,12 @@ public final class AddBookController extends BaseBookController {
         user.getLibrary().addBookEntry(bookEntry);
 
         final StorageHandler storageHandler = new StorageHandler();
-        if (storageHandler.notifyUserChanged(user) != StorageHandler.Status.LOCAL_OK) {
+        final UserMapHandler.Status updateStatus = storageHandler.notifyUserChanged(user);
+        if (!updateStatus.isOk()) {
             user.getLibrary().removeBookEntry(bookEntry);
             final Stage stage = (Stage) addBookISBNContainer.getScene().getWindow();
             ToastUtil.makeToast(stage, Toast.ToastState.ERROR,
-                    "There was an error updating your library, try again later.");
+                    "There was an error updating your library", updateStatus.toString());
             return;
         }
 

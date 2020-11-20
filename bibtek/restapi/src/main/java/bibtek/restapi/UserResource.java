@@ -79,7 +79,7 @@ public final class UserResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public void putUser(final User user) {
-        if (localStorageHandler.putUser(user) != LocalStorageHandler.Status.OK) {
+        if (!localStorageHandler.putUser(user).isOk()) {
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }
         userMap.putUser(user);
@@ -97,7 +97,7 @@ public final class UserResource {
         if (!userExists()) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
-        if (localStorageHandler.removeUser(username) != LocalStorageHandler.Status.OK) {
+        if (!localStorageHandler.removeUser(username).isOk()) {
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }
         userMap.removeUser(username);

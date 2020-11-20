@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import bibtek.core.User;
 import bibtek.json.StorageHandler;
+import bibtek.json.UserMapHandler;
 import bibtek.ui.utils.ToastUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -112,9 +113,10 @@ public class CreateUserController extends SceneChangerController implements Init
 
         final User user = new User(username, age);
         final StorageHandler storageHandler = new StorageHandler();
-        if (storageHandler.putUser(user) != StorageHandler.Status.LOCAL_OK) {
+        final UserMapHandler.Status putStatus = storageHandler.putUser(user);
+        if (!putStatus.isOk()) {
             ToastUtil.makeToast(stage, Toast.ToastState.ERROR,
-                    "There was an error storing new user");
+                    "There was an error storing new user", putStatus.toString());
             return;
         }
 

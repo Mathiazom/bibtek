@@ -7,6 +7,7 @@ import bibtek.core.Book;
 import bibtek.core.BookEntry;
 import bibtek.core.User;
 import bibtek.json.StorageHandler;
+import bibtek.json.UserMapHandler;
 import bibtek.ui.utils.ToastUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -45,7 +46,8 @@ public final class EditBookController extends BaseBookController {
         bookEntry.setReadingState(bookReadingStateCombo.getValue());
 
         final StorageHandler storageHandler = new StorageHandler();
-        if (storageHandler.notifyUserChanged(getUser()) != StorageHandler.Status.LOCAL_OK) {
+        final UserMapHandler.Status editStatus = storageHandler.notifyUserChanged(getUser());
+        if (!editStatus.isOk()) {
 
             // Undo changes
             bookEntry.setBook(oldBookEntry.getBook());
@@ -54,7 +56,7 @@ public final class EditBookController extends BaseBookController {
 
             final Stage stage = (Stage) bookAuthorInput.getScene().getWindow();
             ToastUtil.makeToast(stage, Toast.ToastState.ERROR,
-                    "There was an error updating book, try again later.");
+                    "There was an error updating book", editStatus.toString());
             return;
         }
 
@@ -91,11 +93,12 @@ public final class EditBookController extends BaseBookController {
         user.getLibrary().removeBookEntry(bookEntry);
 
         final StorageHandler storageHandler = new StorageHandler();
-        if (storageHandler.notifyUserChanged(user) != StorageHandler.Status.LOCAL_OK) {
+        final UserMapHandler.Status editStatus = storageHandler.notifyUserChanged(getUser());
+        if (!editStatus.isOk()) {
             user.getLibrary().addBookEntry(bookEntry);
             final Stage stage = (Stage) bookDatePicker.getScene().getWindow();
             ToastUtil.makeToast(stage, Toast.ToastState.ERROR,
-                    "There was an error deleting book, try again later.");
+                    "There was an error deleting book", editStatus.toString());
             return;
         }
 

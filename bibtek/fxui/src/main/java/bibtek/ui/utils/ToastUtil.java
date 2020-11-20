@@ -24,31 +24,50 @@ public final class ToastUtil {
     }
 
     /**
-     * Utility method to display simple toast message.
-     *
-     * @param ownerStage where toast should be hosted
-     * @param state      to specify toast color and icon
-     * @param message    to display inside toast
+     * @see #makeToast(Stage, Toast.ToastState, String, String).
+     * {@inheritDoc}
      */
     public static void makeToast(final Stage ownerStage, final Toast.ToastState state, final String message) {
 
-        makeToast(ownerStage, state, message, DEFAULT_MSG_TIME, DEFAULT_FADE_IN_TIME, DEFAULT_FADE_OUT_TIME);
+        makeToast(ownerStage, state, toastMsg, null, DEFAULT_MSG_TIME, DEFAULT_FADE_IN_TIME, DEFAULT_FADE_OUT_TIME);
+
+    }
+
+    /**
+     * @see #makeToast(Stage, Toast.ToastState, String, String, int, int, int) .
+     * {@inheritDoc}
+     */
+    public static void makeToast(final Stage ownerStage, final Toast.ToastState state, final String toastMsg, final String extraMsg) {
+
+        makeToast(ownerStage, state, toastMsg, extraMsg, DEFAULT_MSG_TIME, DEFAULT_FADE_IN_TIME, DEFAULT_FADE_OUT_TIME);
 
     }
 
     /**
      * Utility method to display simple toast message.
      *
-     * @param ownerStage        where toast should be hosted
-     * @param state             to specify toast color and icon
-     * @param message           to display inside toast
-     * @param displayTime       total time toast should be visible
-     * @param transitionInTime  total time used to transition in toast
-     * @param transitionOutTime total time used to transition out toast
+     * @param ownerStage   where toast should be hosted
+     * @param state        to specify toast color and icon
+     * @param toastMsg     to display inside toast
+     * @param extraMsg     to display in parenthesis after main message (unless null)
+     * @param toastMsgTime total time toast should be visible
+     * @param fadeInTime   total time used to transition in toast
+     * @param fadeOutTime  total time used to transition out toast
      */
-    public static void makeToast(final Stage ownerStage, final Toast.ToastState state, final String message, final int displayTime, final int transitionInTime, final int transitionOutTime) {
+    public static void makeToast(final Stage ownerStage,
+                                final Toast.ToastState state,
+                                final String toastMsg,
+                                final String extraMsg,
+                                final int toastMsgTime,
+                                final int fadeInTime,
+                                final int fadeOutTime) {
 
-        final Toast toast = new Toast(message, state);
+        String msg = toastMsg;
+        if (extraMsg != null) {
+            msg += " (" + extraMsg + ")";
+        }
+
+        final Toast toast = new Toast(msg, state);
 
         final Pane parentPane = (Pane) ownerStage.getScene().getRoot();
 

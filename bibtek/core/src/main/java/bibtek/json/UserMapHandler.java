@@ -3,29 +3,49 @@ package bibtek.json;
 import bibtek.core.User;
 
 /**
- * Standard for UserMap access.
- *
- * @param <T> status type
+ * Standard for UserMap request handling.
  */
-public interface UserMapHandler<T> {
+public interface UserMapHandler {
 
-    enum Status {
+    /**
+     * Response status of handled request.
+     */
+    class Status {
+
+        private final int code;
+        private final String message;
+        private final boolean isOk;
+
+        Status(final int code, final String message, final boolean isOk) {
+
+            this.code = code;
+            this.message = message;
+            this.isOk = isOk;
+
+        }
 
         /**
-         * Storage request was handled without problems.
+         * Request response status code.
+         *
+         * @return code
          */
-        OK,
+        public int getCode() {
+            return code;
+        }
 
         /**
-         * Storage did not find request-related resource.
+         * Request was handled without problems.
+         *
+         * @return true if no problems occurred, false otherwise
          */
-        NOT_FOUND,
+        public boolean isOk() {
+            return isOk;
+        }
 
-        /**
-         * An error occurred while processing storage request.
-         */
-        ERROR
-
+        @Override
+        public String toString() {
+            return code + " " + message;
+        }
     }
 
     /**
@@ -42,7 +62,7 @@ public interface UserMapHandler<T> {
      * @param user the User
      * @return response status code
      */
-    T putUser(User user);
+    Status putUser(User user);
 
     /**
      * Notifies that the User has changed, e.g. Library entries have been edited,
@@ -51,7 +71,7 @@ public interface UserMapHandler<T> {
      * @param user the User that has changed
      * @return response status code
      */
-    T notifyUserChanged(User user);
+    Status notifyUserChanged(User user);
 
     /**
      * Removes the User with the given username from the UserMap.
@@ -59,6 +79,6 @@ public interface UserMapHandler<T> {
      * @param username the username of the User to remove
      * @return response status code
      */
-    T removeUser(String username);
+    Status removeUser(String username);
 
 }

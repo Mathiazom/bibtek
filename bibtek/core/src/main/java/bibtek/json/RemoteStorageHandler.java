@@ -16,11 +16,22 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 
-import static bibtek.json.UserMapHandler.Status.ERROR;
-import static bibtek.json.UserMapHandler.Status.NOT_FOUND;
-import static bibtek.json.UserMapHandler.Status.OK;
+public final class RemoteStorageHandler implements UserMapHandler {
 
-public final class RemoteStorageHandler implements UserMapHandler<UserMapHandler.Status> {
+    /**
+     * Remote storage request has been handled without problems.
+     */
+    public static final Status OK = new Status(HttpURLConnection.HTTP_OK, "OK", true);
+
+    /**
+     * Could not find requested resource in remote storage.
+     */
+    public static final Status NOT_FOUND = new Status(HttpURLConnection.HTTP_NOT_FOUND, "Not Found", false);
+
+    /**
+     * An error occurred while handling local storage request.
+     */
+    public static final Status ERROR = new Status(HttpURLConnection.HTTP_INTERNAL_ERROR, "Error", false);
 
     /**
      * Base path to reach remote server.
@@ -34,25 +45,6 @@ public final class RemoteStorageHandler implements UserMapHandler<UserMapHandler
     private final Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
             .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer()).setPrettyPrinting().create();
 
-    /**
-     * Convert http status code to {@link UserMapHandler.Status}.
-     *
-     * @param statusCode to convert
-     * @return status
-     */
-    static Status statusFromHttp(final int statusCode) {
-
-        switch (statusCode) {
-            case HttpURLConnection.HTTP_NO_CONTENT:
-            case HttpURLConnection.HTTP_OK:
-                return OK;
-            case HttpURLConnection.HTTP_NOT_FOUND:
-                return NOT_FOUND;
-            default:
-                return ERROR;
-        }
-
-    }
 
     /**
      * Parse remote server base path.
@@ -61,6 +53,19 @@ public final class RemoteStorageHandler implements UserMapHandler<UserMapHandler
      */
     RemoteStorageHandler() throws URISyntaxException {
         remoteBaseURI = new URI(REMOTE_BASE_PATH);
+    }
+
+    private Status statusFromHttp(final int code) {
+
+        switch (code) {
+            case HttpURLConnection.HTTP_OK:
+                return OK;
+            case HttpURLConnection.HTTP_NOT_FOUND:
+                return NOT_FOUND;
+            default:
+                return ERROR;
+        }
+
     }
 
     /**

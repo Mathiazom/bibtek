@@ -26,7 +26,23 @@ import java.time.LocalDate;
  * - heinrich.json
  * - sigmund.json
  */
-public final class LocalStorageHandler implements UserMapHandler<UserMapHandler.Status> {
+public final class LocalStorageHandler implements UserMapHandler {
+
+    /**
+     * Local storage request has been handled without problems.
+     */
+    public static final Status OK = new Status(1, "OK", true);
+
+    /**
+     * Could not find requested resource in local storage.
+     */
+    public static final Status NOT_FOUND = new Status(2, "Not Found", false);
+
+    /**
+     * An error occurred while handling local storage request.
+     */
+    public static final Status ERROR = new Status(0, "Error", false);
+
 
     /**
      * The path of bibtek.
@@ -181,9 +197,9 @@ public final class LocalStorageHandler implements UserMapHandler<UserMapHandler.
 
         } catch (IOException e) {
             e.printStackTrace();
-            return Status.ERROR;
+            return ERROR;
         }
-        return Status.OK;
+        return OK;
 
     }
 
@@ -199,10 +215,10 @@ public final class LocalStorageHandler implements UserMapHandler<UserMapHandler.
         final File userFile = getUserFile(username);
 
         if (!userFile.exists()) {
-            return Status.NOT_FOUND;
+            return NOT_FOUND;
         }
 
-        return userFile.delete() ? Status.OK : Status.ERROR;
+        return userFile.delete() ? OK : ERROR;
 
     }
 
