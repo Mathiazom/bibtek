@@ -1,0 +1,27 @@
+@startuml 
+title Sequence diagram for logging in
+actor Actor #red
+participant LogInPageController
+participant LibraryController
+participant StorageHandler
+
+
+note left of Actor: Enter username
+Actor -> LogInPageController: "Clicks Log in button" -> logIn()
+LogInPageController -> StorageHandler: fetchAllUsernamesFromRemote()
+LogInPageController <-- StorageHandler: List of usernames in remote
+alt Finds username in that list
+   LogInPageController -> StorageHandler: fetchUserFromRemote(name)
+   LogInPageController <- StorageHandler: return user with given username
+note left of Actor: Has now logged in
+   LogInPageController -> Actor: Opens "Your Library" page
+   LibraryController -> Actor: Shows books in library to user
+     
+else User not in Usernames
+   Actor <-- LogInPageController: No user with given username
+end
+
+
+
+
+@enduml

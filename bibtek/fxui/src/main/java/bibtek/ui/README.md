@@ -6,3 +6,9 @@ The **Library** scene displays the users personal library consisting of the book
 
 The **AddBook** screen lets the user add new books.
 Currently the attributes are limit to title, author, publishing year, date of acquisition and reading state.
+
+**Sequence diagram for logging in**
+![Sequence diagram for loggin](fxuiSequenceDiagramLogIn.png)
+
+**Sequence diagram for adding book**
+![Sequence diagram for adding book](fxuiSequenceDiagramAddBook.png)
