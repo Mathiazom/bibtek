@@ -45,7 +45,6 @@ public final class RemoteStorageHandler implements UserMapHandler {
     private final Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
             .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer()).setPrettyPrinting().create();
 
-
     /**
      * Parse remote server base path.
      *
@@ -59,6 +58,8 @@ public final class RemoteStorageHandler implements UserMapHandler {
 
         switch (code) {
             case HttpURLConnection.HTTP_OK:
+                return OK;
+            case HttpURLConnection.HTTP_NO_CONTENT:
                 return OK;
             case HttpURLConnection.HTTP_NOT_FOUND:
                 return NOT_FOUND;
@@ -111,7 +112,8 @@ public final class RemoteStorageHandler implements UserMapHandler {
         final String input = gson.toJson(user);
 
         final ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).put(ClientResponse.class, input);
-
+        System.out.println(response);
+        System.out.println(statusFromHttp(response.getStatus()));
         return statusFromHttp(response.getStatus());
 
     }
