@@ -25,12 +25,12 @@ public final class BookEntry {
     }
 
     /**
-     * Create copy of given book entry.
+     * Create shallow copy of given book entry.
      *
      * @param bookEntry to copy
      */
     public BookEntry(final BookEntry bookEntry) {
-        this(bookEntry.book, bookEntry.dateAcquired, bookEntry.readingState);
+        this(bookEntry.book, bookEntry.getDateAcquired(), bookEntry.getReadingState());
     }
 
     /**
