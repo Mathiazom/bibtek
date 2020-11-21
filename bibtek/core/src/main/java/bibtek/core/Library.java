@@ -45,13 +45,6 @@ public final class Library {
         return bookEntries;
     }
 
-    // TODO
-    /*
-     * public void removeBookEntriesByProperty(String property, String value) {
-     *
-     * }
-     */
-
     /**
      * @param bookEntry describes a readers relation with a Book
      * @return whether or not the BookEntry is valid

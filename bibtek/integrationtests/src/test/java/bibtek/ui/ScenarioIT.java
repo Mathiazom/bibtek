@@ -145,12 +145,6 @@ public class ScenarioIT extends ApplicationTest {
                 .type(KeyCode.ENTER) // Pick date
                 .type(KeyCode.ESCAPE); // Hide datepicker
 
-        final ComboBox<BookReadingState> addBookReadingStatusCombo = (ComboBox<BookReadingState>) parent.lookup("#bookReadingStateCombo");
-        clickOn(addBookReadingStatusCombo)
-                .press(KeyCode.DOWN)
-                .press(KeyCode.UP)
-                .press(KeyCode.ENTER); // Select first element
-
         clickOn("#confirmAddBookButton");
 
         final BookEntry expected = new BookEntry(

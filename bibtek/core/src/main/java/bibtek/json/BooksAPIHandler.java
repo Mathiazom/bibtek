@@ -140,7 +140,6 @@ public final class BooksAPIHandler {
     public String getFetchURI(final String searchTerm) {
         System.out.println("fetching: " + BOOKS_API_URI_PREFIX + searchTerm.replaceAll(" ", "%20"));
         return BOOKS_API_URI_PREFIX + searchTerm.replaceAll(" ", "%20");
-
     }
 
     /**

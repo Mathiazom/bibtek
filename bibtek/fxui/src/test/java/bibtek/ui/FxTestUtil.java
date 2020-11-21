@@ -57,20 +57,4 @@ public class FxTestUtil {
         assertEquals(expectedState, ((Toast) parent.lookup("Toast")).getState());
     }
 
-
-    static Stage getTopModalStage(final FxRobot robot) {
-        // Get a list of windows but ordered from top[0] to bottom[n] ones.
-        // It is needed to get the first found modal window.
-        final List<Window> allWindows = new ArrayList<>(robot.listWindows());
-        System.out.println(allWindows);
-        Collections.reverse(allWindows);
-
-        return (Stage) allWindows
-                .stream()
-                .filter(window -> window instanceof Stage)
-                .filter(window -> ((Stage) window).getModality() == Modality.APPLICATION_MODAL)
-                .findFirst()
-                .orElse(null);
-    }
-
 }
