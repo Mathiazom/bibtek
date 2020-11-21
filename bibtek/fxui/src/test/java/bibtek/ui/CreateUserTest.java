@@ -1,5 +1,6 @@
 package bibtek.ui;
 
+import bibtek.core.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -90,17 +91,19 @@ public class CreateUserTest extends WireMockApplicationTest {
         ((DigitsField) parent.lookup("#ageInput")).setText("17");
         clickOn("#confirmCheckbox");
 
-        /*// Mock request response
+        // Mock request response
         stubFor(put(urlEqualTo("/bibtek/users/heinrich"))
-                .withHeader("Accept", equalTo("application/json"))
+                .withHeader("Content-Type", equalTo("application/json"))
                 .willReturn(aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("true")
+                        .withStatus(204)
                 )
-        );*/
+        );
 
         clickOn("#createUserButton");
+
+        this.parent = stage.getScene().getRoot();
+
+        assertNotNull(parent.lookup("#loginRoot"),"Failed to create user");
 
     }
 

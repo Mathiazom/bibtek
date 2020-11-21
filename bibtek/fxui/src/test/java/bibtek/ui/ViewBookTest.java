@@ -10,7 +10,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
-import org.testfx.framework.junit5.ApplicationTest;
 
 import static bibtek.ui.TestConstants.ROBOT_PAUSE_MS;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -20,10 +19,9 @@ import static org.junit.jupiter.api.Assertions.*;
  * Testing if the logic connected to this fxml scene works as expected.
  */
 
-public class ViewBookTest extends /*WireMock*/ApplicationTest {
+public class ViewBookTest extends WireMockApplicationTest {
 
     private Parent parent;
-    private ViewBookController controller;
     private Stage stage;
 
     private BookEntry bookEntry;
@@ -38,10 +36,10 @@ public class ViewBookTest extends /*WireMock*/ApplicationTest {
         this.stage = stage;
         final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/fxml/ViewBook.fxml"));
         parent = fxmlLoader.load();
-        this.controller = fxmlLoader.getController();
-        final User dummyUser = TestConstants.userDante();
-        this.bookEntry = dummyUser.getLibrary().getBookEntries().iterator().next();
-        controller.update(bookEntry, dummyUser);
+        ViewBookController controller = fxmlLoader.getController();
+        final User user = TestConstants.userDante();
+        this.bookEntry = TestConstants.fahrenheit();
+        controller.update(bookEntry, user); // Dummy user
         stage.setScene(new Scene(parent));
         stage.show();
 
@@ -74,15 +72,13 @@ public class ViewBookTest extends /*WireMock*/ApplicationTest {
 
         final ComboBox<BookReadingState> bookReadingStateCombo = (ComboBox<BookReadingState>) parent.lookup("#bookReadingStateCombo");
 
-        /*// Mock request response
+        // Mock request response
         stubFor(put(urlEqualTo("/bibtek/users/dante"))
-                .withHeader("Accept", equalTo("application/json"))
+                .withHeader("Content-Type", equalTo("application/json"))
                 .willReturn(aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("true")
+                        .withStatus(204)
                 )
-        );*/
+        );
 
         clickOn(bookReadingStateCombo)
                 .sleep(ROBOT_PAUSE_MS)

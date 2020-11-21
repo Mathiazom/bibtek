@@ -12,7 +12,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
-import org.testfx.framework.junit5.ApplicationTest;
 
 import static bibtek.ui.TestConstants.ROBOT_PAUSE_MS;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -22,13 +21,12 @@ import static org.junit.jupiter.api.Assertions.*;
  * Testing if the logic connected to this fxml scene works as expected.
  */
 
-public class EditBookTest extends /*WireMock*/ApplicationTest {
+public class EditBookTest extends WireMockApplicationTest {
 
     private Parent parent;
     private EditBookController controller;
     private Stage stage;
 
-    private User user;
     private BookEntry bookEntry;
 
     /**
@@ -42,8 +40,8 @@ public class EditBookTest extends /*WireMock*/ApplicationTest {
         final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/bibtek/ui/fxml/EditBook.fxml"));
         parent = fxmlLoader.load();
         this.controller = fxmlLoader.getController();
-        this.user = TestConstants.userDante();
-        this.bookEntry = user.getLibrary().getBookEntries().iterator().next();
+        final User user = TestConstants.userDante();
+        this.bookEntry = TestConstants.fahrenheit();
         controller.update(bookEntry, user); // Dummy user
         stage.setScene(new Scene(parent));
         stage.show();
@@ -62,15 +60,13 @@ public class EditBookTest extends /*WireMock*/ApplicationTest {
         assertEquals(BookReadingState.READING, addBookReadingStateCombo.getValue(),
                 "BookReadingState should be READING");
 
-        /*// Mock request response
+        // Mock request response
         stubFor(put(urlEqualTo("/bibtek/users/dante"))
-                .withHeader("Accept", equalTo("application/json"))
+                .withHeader("Content-Type", equalTo("application/json"))
                 .willReturn(aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("true")
+                        .withStatus(204)
                 )
-        );*/
+        );
 
         clickOn("#confirmEditBookButton");
 

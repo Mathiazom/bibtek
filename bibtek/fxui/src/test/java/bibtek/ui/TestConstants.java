@@ -51,12 +51,9 @@ public class TestConstants {
 
                 final int danteBigBoyAge = 800;
 
-                final int dummyBookYear = 1953;
                 final int dummyBookYear2 = 1948;
 
-                library.addBookEntry(new BookEntry(new Book("Fahrenheit 451", "Ray Bradbury", dummyBookYear,
-                                "https://s2982.pcdn.co/wp-content/uploads/2017/09/fahrenheit-451-flamingo-edition.jpg"),
-                                LocalDate.now(), BookReadingState.READING));
+                library.addBookEntry(fahrenheit());
                 library.addBookEntry(new BookEntry(new Book("1984", "George Orwell", dummyBookYear2), LocalDate.now(),
                                 BookReadingState.COMPLETED));
 
@@ -67,6 +64,22 @@ public class TestConstants {
                                 LocalDate.now(), BookReadingState.NOT_STARTED));
 
                 return new User("dante", danteBigBoyAge, library);
+
+        }
+
+        public static BookEntry fahrenheit(){
+
+                final int fahrenheitYear = 1953;
+
+                return new BookEntry(new Book("Fahrenheit 451", "Ray Bradbury", fahrenheitYear,
+                        "https://s2982.pcdn.co/wp-content/uploads/2017/09/fahrenheit-451-flamingo-edition.jpg"),
+                        LocalDate.now(), BookReadingState.NOT_STARTED);
+
+        }
+
+        public static String userHeinrichJson(){
+
+                return gson.toJson(new User("heinrich", 17));
 
         }
 

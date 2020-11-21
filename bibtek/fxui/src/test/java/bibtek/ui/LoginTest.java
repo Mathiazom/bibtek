@@ -6,12 +6,12 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
-import org.testfx.framework.junit5.ApplicationTest;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class LoginTest extends /*WireMock*/ApplicationTest {
+public class LoginTest extends WireMockApplicationTest {
 
     private Parent parent;
     private Stage stage;
@@ -37,13 +37,13 @@ public class LoginTest extends /*WireMock*/ApplicationTest {
         clickOn("#userNameInput").write("dante");
 
         // Disabled because of fail in GitPod
-        /*stubFor(get(urlEqualTo("/bibtek/users/dante"))
+        stubFor(get(urlEqualTo("/bibtek/users/dante"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBody(TestConstants.userDanteJson())
                 )
-        );*/
+        );
 
         clickOn("#logInButton");
 
